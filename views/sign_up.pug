@@ -1,0 +1,14 @@
+html
+   head
+      title Signup
+   body
+      form(action = "/sign_up" method = "POST")
+         input(name = "username" type = "text" required placeholder = "User ID") 
+         <br/>
+         input(name = "mobile" type = "text" required placeholder = "Mobile Number")
+         <br/>
+         input(name = "email" type = "email" placeholder = "Email ID") 
+         <br/>
+         input(name = "password" type = "password" required placeholder = "Password") 
+         <br/>
+         button(type = "Submit") Sign me up!
