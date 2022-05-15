@@ -1,20 +1,37 @@
-// const dns = require('dns')
 const express = require('express')
 const mongoose = require('mongoose')
-const bodyParser = require('body-parser');
-const dotenv = require('dotenv').config()
+const bodyParser = require('body-parser')
+const session = require('express-session')
+const passport = require('passport')
+const config = require('dotenv').config().parsed
 
-const host = process.env.HOST
-const port = process.env.PORT || 3000;
-const db = process.env.DB
+const secret = config.SECRET
+const host = config.HOST
+const port = config.PORT || 3000;
+const db = config.DB
 
 const app = express()
 
 app.set('view engine', 'pug');
-app.set('views', './views');
-app.use(bodyParser.urlencoded({ extended: true }));
+app.set('views', './server/views');
+
+app.use(session({
+    secret: secret,
+    resave: false,
+    saveUninitialized: true
+}));
+
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
-app.use('/', require('./routes/index'))
+
+// passport setup
+require('./server/config-passport')(passport);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+//routing setup
+app.use('/', require('./server/routes/index'));
 
 //connect to mongodb
 mongoose
