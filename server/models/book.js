@@ -5,12 +5,12 @@ var Schema = mongoose.Schema;
 var BookSchema = new Schema(
     {
         title: { type: String, required: true },
-        author_id: { type: Schema.Types.ObjectId, ref: 'Author', required: true },
+        author_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
         summary: { type: String, required: true },
         isbn: { type: String, required: true },
         genre_id: [{ type: Schema.Types.ObjectId, ref: 'Genre' }],
         doc: {},
-        img: { required: true },
+        // img: { required: true },
         rating: {type: Number},
         review_id: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
         price: { type: Number, required: true },

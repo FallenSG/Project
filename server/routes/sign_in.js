@@ -5,8 +5,7 @@ const routePlan = require('../route_plan');
 const sign_in = routePlan.sign_in;
 const dash = routePlan.dash;
 
-const { auth, isAuthReq } = require('../middleware/authHandler');
-const User = require('../models/user');
+const isAuthReq = require('../middleware/authHandler').isAuthReq;
 
 router.get('/', isAuthReq, async(req, res) => {
     res.render(sign_in[2], {post_to: sign_in[0]});

@@ -6,6 +6,6 @@ module.exports = {
     'sign_up': ['/sign_up', './sign_up', 'sign_up'],
     'dash': ['/dashboard', './dashboard', 'dashboard'],
     'profile': [],
-    'book': [],
+    'book': ['/book', './book', 'book'],
     'author': []
 }

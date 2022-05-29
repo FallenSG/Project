@@ -1,0 +1,10 @@
+html 
+    head                
+        title Create Book 
+    body 
+        form(action=post_to, method="POST") 
+            input(name="title" type="text" required placeholder="Enter Book Title..")
+            <br/>
+            input(name="isbn" type="text" required placeholder="Enter ISBN Number if avail")
+            <br/>
+            button(type = "Submit") Register Book
