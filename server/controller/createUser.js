@@ -42,14 +42,14 @@ module.exports = async function(req, res){
         res.status(406);
         return res.render('error', { message: err.details[0].message })
     } else {
-        user = await User.findOne({
+        const ExistUser = await User.findOne({
             $or: [
                 { email: req.body.email },
                 { mobile: req.body.mobile }
             ]
         });
 
-        if (user) return res.status(400).render('error', { message: "User Already Exists" });
+        if (ExistUser) return res.status(400).render('error', { message: "User Already Exists" });
 
         req.validatedUser = user;
         createUser(req, res);

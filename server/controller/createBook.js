@@ -76,14 +76,14 @@ module.exports = async function(req, res){
         res.status(406);
         return res.render('error', { message: err.details[0].message });
     } else {
-        book = await Book.findOne({
+        const ExistBook = await Book.findOne({
             $or: [
                 { title: book.title },
                 { isbn: book.isbn }
             ]
         });
 
-        if (book) return res.status(400).render('error', {
+        if (ExistBook) return res.status(400).render('error', {
             message: "It Seems book with same title or isbn already exists"
         });
 

@@ -13,7 +13,7 @@ const db = config.DB
 const app = express()
 
 app.set('view engine', 'pug');
-app.set('views', './server/views');
+app.set('views', './views');
 
 app.use(session({
     secret: secret,
@@ -25,13 +25,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 
 // passport setup
-require('./server/config-passport')(passport);
+require('./config-passport')(passport);
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 //routing setup
-app.use('/', require('./server/routes/index'));
+app.use('/', require('./routes/index'));
 
 //connect to mongodb
 mongoose
@@ -44,7 +44,3 @@ app.listen(port, host, (err) => {
     if(err) console.error(err);
     console.log(`Listening on ${host}:${port}`)
 })
-
-// dns.resolve('fallen.com', 'A', (err, records) => {
-//     console.log(records);
-// })
