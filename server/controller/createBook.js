@@ -4,6 +4,7 @@ const Joi = require('joi');
 
 //validation schema
 const joiBookSchema = Joi.object({
+    img: Joi.binary().required(),
     title: Joi.string().min(3).max(50).required(),
     // author_id: 
     summary: Joi.string().required(),
@@ -63,6 +64,7 @@ function checkISBN(isbn){
 //else book creation process is executed 
 module.exports = async function(req, res){
     let book = {
+        img: req.file.buffer,
         title: req.body.title,
         isbn: req.body.isbn,
         author_id: req.user.id,

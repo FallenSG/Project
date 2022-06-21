@@ -7,5 +7,7 @@ module.exports = {
     'dash': ['/dashboard', './dashboard', 'dashboard'],
     'profile': [],
     'book': ['/book', './book', 'book'],
-    'author': []
+    'createBook': ['/createBook', './createBook', 'book'],
+    'author': [],
+    'sample': ['/sample', './sample', 'sample']
 }
