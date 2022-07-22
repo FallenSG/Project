@@ -1,19 +1,22 @@
 const router = require('express').Router();
 const passport = require('passport');
+
 const routePlan = require('../route_plan');
+const successRedirectUrl = routePlan.dash[0];
+const failureRedirectUrl = routePlan.sign_in[0];
+const renderFilePath = routePlan.sign_in[2];
 
-const sign_in = routePlan.sign_in;
-const dash = routePlan.dash;
+const { isAuthReq } = require('../middleware/authHandler');
 
-const isAuthReq = require('../middleware/authHandler').isAuthReq;
+router.use(isAuthReq);
 
-router.get('/', isAuthReq, async(req, res) => {
-    res.render(sign_in[2], {post_to: sign_in[0]});
+router.get('/', async(req, res) => {
+    res.render(renderFilePath, {post_to: failureRedirectUrl});
 });
 
 router.post('/', passport.authenticate('local', {
-    successRedirect: dash[0], 
-    failureRedirect: sign_in[0]
+    successRedirect: successRedirectUrl, 
+    failureRedirect: failureRedirectUrl
 }));
 
 module.exports = router;

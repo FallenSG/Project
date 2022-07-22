@@ -1,11 +1,12 @@
 const router = require('express').Router();
 const multer = require('multer');
-const routePlan = require('../route_plan');
-
-const book = routePlan.createBook;
 
 const createBook = require('../controller/createBook');
-const auth = require('../middleware/authHandler').auth;
+const { auth } = require('../middleware/authHandler');
+
+const routePlan = require('../route_plan');
+const renderFilePath = routePlan.createBook[2];
+const redirectUrl = routePlan.createBook[0]
 
 const upload = multer({
     // dest: 'public/buffer',
@@ -23,7 +24,7 @@ const upload = multer({
 router.use(auth);
 
 router.get('/', async(req, res) => {
-    res.render(book[2], { post_to: book[0] });
+    res.render(renderFilePath, { post_to: redirectUrl });
 });
 
 router.post('/', upload.single('bookCover'), createBook);

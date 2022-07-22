@@ -1,15 +1,15 @@
 const routePlan = require('../route_plan');
-const sign_in = routePlan.sign_in;
-const dash = routePlan.dash;
+const successRedirectUrl = routePlan.dash[0];
+const failureRedirectUrl = routePlan.sign_in[0];
 
 module.exports = {
     auth: function(req, res, next){
         if (req.isAuthenticated()) next();
-        else return res.redirect(sign_in[0]);
+        else return res.redirect(failureRedirectUrl);
     },
 
     isAuthReq: function(req, res, next) {
         if (req.isUnauthenticated()) next();
-        else return res.redirect(dash[0]);
+        else return res.redirect(successRedirectUrl);
     }
 };

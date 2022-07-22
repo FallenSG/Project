@@ -1,20 +1,24 @@
 const router = require('express').Router()
+
+const { auth } = require('../middleware/authHandler');
+
 const routePlan = require('../route_plan');
+const renderUrl = routePlan.sign_out[0]
+const renderFilePath = routePlan.sign_out[2];
+const redirectUrl = routePlan.index[0];
 
-const sign_out = routePlan.sign_out;
-const index = routePlan.index;
-
-const auth = require('../middleware/authHandler').auth;
 
 router.use(auth);
 
 router.get('/', async(req, res) => {
-    res.render(sign_out[2], {post_to: sign_out[0]});
+    res.render(renderFilePath, {post_to: renderUrl});
 });
 
 router.post('/', async(req, res) => {
-    req.logout();
-    res.render(index[2]);
+    req.logout(function (err) {
+        if (err) { return next(err); }
+        res.redirect(redirectUrl);
+    });
 })
 
 module.exports = router;

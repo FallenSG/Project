@@ -1,10 +1,17 @@
 const router = require('express').Router();
-const routePlan = require('../route_plan');
+const config = require('dotenv').config().parsed
 
+const { auth } = require('../middleware/authHandler')
+
+const routePlan = require('../route_plan');
 const path = routePlan.sample;
 
-router.get('/', async(req, res) => {
-    res.render(path[2]);
+router.get('/', auth, async(req, res) => {
+   res.end();
+})
+
+router.get('/:token', async(req, res) => {
+    res.end();
 })
 
 module.exports = router;

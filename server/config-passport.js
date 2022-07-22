@@ -32,5 +32,7 @@ module.exports = (passport) => {
         });
     });
 
-    passport.use(new LocalStrategy(authUser));
+    passport.use(new LocalStrategy({
+        usernameField: 'email'
+    }, authUser));
 }

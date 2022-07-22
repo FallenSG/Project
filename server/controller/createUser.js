@@ -1,5 +1,4 @@
 const User = require('../models/user');
-const bcrypt = require('bcrypt');
 const Joi = require('joi');
 
 //Valdation schema
@@ -11,17 +10,6 @@ const joiUserSchema = Joi.object({
     lib: Joi.array().items(),
     book_id: Joi.array().items(),
 });
-
-//create User after validation returns true.
-async function createUser(req, res){
-    const validUser = req.validatedUser;
-
-    let user = new User(validUser);
-    user.password = await bcrypt.hash(user.password, 10);
-    await user.save();
-
-    res.send({ msg: "User created" });
-}
 
 //takes data posted and form it in a readable format
 //then validate/sanitize it against schema
@@ -51,7 +39,9 @@ module.exports = async function(req, res){
 
         if (ExistUser) return res.status(400).render('error', { message: "User Already Exists" });
 
-        req.validatedUser = user;
-        createUser(req, res);
+        user = new User(user);
+        await user.save();
+        
+        res.send({ msg: "User Created" });
     }
 }

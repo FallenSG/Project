@@ -1,7 +1,6 @@
-import { AppBar, Toolbar, styled, Typography, InputBase, Paper, IconButton, Stack, InputLabel, Input, InputAdornment } from '@mui/material'
-import { AccountCircleOutlined, Book, ExploreOutlined, Search } from '@mui/icons-material'
-import React from 'react'
-import { Box } from '@mui/system';
+import { AppBar, Toolbar, styled, InputBase, Paper, Stack, InputAdornment, Link, IconButton, Menu, MenuItem } from '@mui/material'
+import { AccountCircleSharp, CategorySharp, BookSharp, SearchSharp } from '@mui/icons-material'
+import { useState } from 'react';
 
 const dispStyle = {
   fullScreen: {
@@ -15,73 +14,140 @@ const dispStyle = {
   }
 };
 
-const StyledToolbar = styled(Toolbar)({
+const StyledToolbar = styled(Toolbar)( ({ theme }) => ({
     display: "flex",
-    justifyContent: "space-between"
-});
-
-const Left = styled(Stack)(({ theme }) => ({
-  display: "flex",
-  justifyContent: "space-between",
-  alignContent: "center",
+    justifyContent: "space-between",
+    backgroundColor: theme.palette.navbar.main
 }));
 
 const Center = styled(Paper)(({ theme }) => ({
-  backgroundColor: "white",
+  backgroundColor: "#00000054",
   padding: "0 10px",
-  // margin: "0 0 0 5px",
-  borderRadius: theme.shape.borderRadius,
-  width: "30%",
+  borderRadius: '1200px',
+  width: "35%",
   display: "flex",
   justifyContent: "space-between",
-  alignItems: "center"
 }));
 
-const Right = styled(Stack)(({ theme }) => ({
-  display: "none",
-  alignItems: "center",
-  gap: "10px",
-  [theme.breakpoints.up("sm")]: {
-    display: "flex",
-  },
-  color: 'black'
-}));
+
+function Avatar(){
+  const [authToken, setAuthToken] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const isMenuOpen = Boolean(anchorEl);
+
+  const profileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget)
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right'
+      }}
+      id='profileMenu'
+      keepMounted={false}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right'
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+      sx={{
+        mt: '45px'
+      }}
+    >
+      <MenuItem>Profile</MenuItem>
+      <MenuItem sx={{ display: dispStyle.mobScreen }}>Library</MenuItem>
+      <MenuItem>Sign Out</MenuItem>
+    </Menu>
+  )
+
+  var element = (
+    <IconButton 
+      onClick={() => {
+        setAuthToken('sampleVal');
+      }}
+    >
+      <AccountCircleSharp fontSize="large" sx={{ color: '#fff' }} />
+    </IconButton>
+  )
+  if(authToken){
+    element = (
+      <IconButton
+        aria-controls='profileMenu'
+        aria-haspopup="true"
+        onClick={profileMenuOpen}
+      >
+        <AccountCircleSharp fontSize="large" sx={{ color: '#fff' }} />
+      </IconButton>
+    )
+  }
+
+  return (
+    <div>
+    {element}
+    {renderMenu}
+    </div>
+  )
+}
 
 function Navbar() {
   return (
     <AppBar position="sticky">
         <StyledToolbar>
-          <Left direction="row" spacing={2}>
-            <Typography variant="h5" sx={{ display: dispStyle.fullScreen }}>
-              Online Lib
-            </Typography>
-            <Book fontSize="large" sx={{ display: dispStyle.mobScreen }} />
+        <Stack direction="row" spacing={2}>
+          <Link
+            variant="h6"
+            underline="none"
+            color="inherit"
+            href="/"
+            sx={{ fontSize: 24 }}
+          >
+            {'Project'}
+          </Link>
 
-            <IconButton>
-              <ExploreOutlined fontSize="large"/>
-              <InputLabel sx={{display: dispStyle.fullScreen}}>Browse</InputLabel>
-            </IconButton>
-          </Left>
-            
-          <Center>
-            <InputBase
-              startAdornment={
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              }
+          <IconButton>
+            <CategorySharp fontSize="medium" sx={{ color: "white" }}/>
+          </IconButton>
+        </Stack>
 
-              placeholder="Search..."
-            />
-          </Center>
-          
-          <Right direction="row">
-            <InputLabel>Library</InputLabel>
-            <IconButton>
-              <AccountCircleOutlined fontSize="large" />
-            </IconButton>
-          </Right>
-        </StyledToolbar>
+        <Center>
+          <InputBase sx={{ color: "#fff", width: '100%', }}
+            startAdornment={
+              <InputAdornment position="start">
+                <SearchSharp sx={{ color: "#fff" }} />
+              </InputAdornment>
+            }
+
+            placeholder="Search..."
+          />
+        </Center>
+       
+       <Stack 
+        direction="row" 
+        spacing={1}
+      >
+        <Link 
+          variant="h6"
+          underline="none"
+          color="primary"
+          sx={{ padding: 1, display: dispStyle.fullScreen }}
+          href="/library"
+        >
+          Library
+        </Link> 
+
+        <Avatar />
+
+       </Stack>
+      </StyledToolbar>
     </AppBar>
   )
 }

@@ -3,6 +3,7 @@ const routePlan = require('../route_plan');
 
 router.get('/', async(req, res) => {
     res.render(routePlan.index[2]);
+    // res.sendFile(routePlan.index[2])
 });
 
 //setting up routes.

@@ -1,9 +1,8 @@
 const router = require('express').Router();
-const routePlan = require('../route_plan');
 const Book = require('../models/book')
 const fs = require('fs');
 
-const path = routePlan.book;
+const { auth } = require('../middleware/authHandler')
 
 var defCover;
 fs.readFile('public/defCover', (err, data) => {
@@ -18,7 +17,7 @@ router.get('/', async(req, res) => {
     res.send({data: bookData, defCover: defCover});
 });
 
-router.get('/:id', async(req, res) => {
+router.get('/:id', auth, async(req, res) => {
     Book.find({_id: req.params.id}, async(err, book) => {
         if(err) res.status(400).render('error', {message: err});
         res.send({data: book, defCover: defCover});
