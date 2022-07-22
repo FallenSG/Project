@@ -1,9 +1,4 @@
 const router = require('express').Router()
-<<<<<<< HEAD
-=======
-const passport = require('passport')
-const routePlan = require('../route_plan');
->>>>>>> 38fb88b8dbab77040a35fafd0c284b5bedc0c2b5
 
 const { auth } = require('../middleware/authHandler');
 
@@ -20,15 +15,10 @@ router.get('/', async(req, res) => {
 });
 
 router.post('/', async(req, res) => {
-<<<<<<< HEAD
     req.logout(function (err) {
         if (err) { return next(err); }
         res.redirect(redirectUrl);
     });
-=======
-    res.cookie('AccessToken', { maxAge: 0 })
-    res.render(index[2]);
->>>>>>> 38fb88b8dbab77040a35fafd0c284b5bedc0c2b5
 })
 
 module.exports = router;
