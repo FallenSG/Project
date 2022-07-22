@@ -64,7 +64,7 @@ function checkISBN(isbn){
 //else book creation process is executed 
 module.exports = async function(req, res){
     let book = {
-        img: req.file.buffer,
+        img: req.file?.buffer,
         title: req.body.title,
         isbn: req.body.isbn,
         author_id: req.user.id,

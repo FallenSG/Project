@@ -1,7 +1,8 @@
 const express = require('express')
-const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const session = require('express-session')
+const passport = require('passport')
 const config = require('dotenv').config().parsed
 
 const secret = config.SECRET
@@ -14,9 +15,20 @@ const app = express()
 app.set('view engine', 'pug');
 app.set('views', './views');
 
-app.use(cookieParser());
+app.use(session({
+    secret: secret,
+    resave: false,
+    saveUninitialized: true
+}));
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
+
+// passport setup
+require('./config-passport')(passport);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 //routing setup
 app.use('/', require('./routes/index'));
@@ -29,6 +41,6 @@ mongoose
 
 
 app.listen(port, host, (err) => {
-    if(err) console.error(err);
+    if (err) console.error(err);
     console.log(`Listening on ${host}:${port}`)
 })

@@ -10,7 +10,7 @@ var BookSchema = new Schema(
         isbn: { type: String, required: true },
         genre_id: [{ type: Schema.Types.ObjectId, ref: 'Genre' }],
         doc: {},
-        img: { type: Buffer, required: true },
+        img: { type: Buffer },
         rating: {type: Number},
         review_id: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
         price: { type: Number, required: true },
