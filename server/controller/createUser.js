@@ -11,6 +11,18 @@ const joiUserSchema = Joi.object({
     book_id: Joi.array().items(),
 });
 
+<<<<<<< HEAD
+=======
+//create User after validation returns true.
+async function createUser(req, res){
+
+    let user = new User(req.validatedUser);
+    await user.save();
+
+    res.send({ msg: "User created" });
+}
+
+>>>>>>> 38fb88b8dbab77040a35fafd0c284b5bedc0c2b5
 //takes data posted and form it in a readable format
 //then validate/sanitize it against schema
 //if error arises or user already exists a msg is passed on
