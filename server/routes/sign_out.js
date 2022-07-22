@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const passport = require('passport')
 const routePlan = require('../route_plan');
 
 const sign_out = routePlan.sign_out;
@@ -13,7 +14,7 @@ router.get('/', async(req, res) => {
 });
 
 router.post('/', async(req, res) => {
-    req.logout();
+    res.cookie('AccessToken', { maxAge: 0 })
     res.render(index[2]);
 })
 

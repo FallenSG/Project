@@ -1,5 +1,6 @@
 import { Grid, Stack } from "@mui/material";
 import { styled, Box } from "@mui/system";
+import {Outlet} from "react-router-dom";
 import Feed from "../Components/Feed";
 import Navbar from "../Components/Navbar";
 import Sidebar from "../Components/Sidebar";
@@ -21,6 +22,7 @@ export default function Home(){
                 </Grid>
 
             </Grid>
+            <Outlet />
        </Box>
     )
 }   

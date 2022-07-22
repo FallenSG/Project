@@ -1,5 +1,4 @@
 const User = require('../models/user');
-const bcrypt = require('bcrypt');
 const Joi = require('joi');
 
 //Valdation schema
@@ -14,10 +13,8 @@ const joiUserSchema = Joi.object({
 
 //create User after validation returns true.
 async function createUser(req, res){
-    const validUser = req.validatedUser;
 
-    let user = new User(validUser);
-    user.password = await bcrypt.hash(user.password, 10);
+    let user = new User(req.validatedUser);
     await user.save();
 
     res.send({ msg: "User created" });

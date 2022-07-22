@@ -17,7 +17,7 @@ function ChangeFeed(bookData){
   let elem;
   if (Object.keys(bookData).length === 0) elem = <p>Loading...</p>
   else{
-    elem = <ImageList cols={5}>
+    elem = <ImageList cols={5} spacing={2}>
       {bookData.map((book) => (
         <ImageListItem key={book._id}>
           <img 
@@ -27,7 +27,7 @@ function ChangeFeed(bookData){
             alt='Not Found'
             loading="lazy"
           />
-          <ImageListItemBar 
+          <ImageListItemBar
             title={book.title}
             position="below"
           />
