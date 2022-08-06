@@ -1,15 +1,4 @@
-const User = require('../models/user');
-const Joi = require('joi');
-
-//Valdation schema
-const joiUserSchema = Joi.object({
-    username: Joi.string().min(3).max(50).required(),
-    email: Joi.string().email().min(5).max(50).required(),
-    mobile: Joi.string().regex(/^[0-9]{10}$/).required().messages({ 'string.pattern.base': `Phone number must have 10 digits.` }),
-    password: Joi.string().min(5).max(255).required(),
-    lib: Joi.array().items(),
-    book_id: Joi.array().items(),
-});
+const { User, JoiValidUser } = require('../models/user');
 
 //takes data posted and form it in a readable format
 //then validate/sanitize it against schema
@@ -25,11 +14,9 @@ module.exports = async function(req, res){
         book_id: []
     }
 
-    const { err } = joiUserSchema.validate(user);
-    if (err) {
-        res.status(406);
-        return res.render('error', { message: err.details[0].message })
-    } else {
+    try{
+        JoiValidUser.validate(user);
+
         const ExistUser = await User.findOne({
             $or: [
                 { email: req.body.email },
@@ -37,11 +24,13 @@ module.exports = async function(req, res){
             ]
         });
 
-        if (ExistUser) return res.status(400).render('error', { message: "User Already Exists" });
+        if(ExistUser) 
+            throw new Error("Email/Mobile Number already Registered");
 
-        user = new User(user);
-        await user.save();
-        
+        await (new User(user)).save();
         res.send({ msg: "User Created" });
+        
+    } catch(err) {
+        res.render('error', { message: err.message })
     }
 }

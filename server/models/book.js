@@ -1,25 +1,57 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const Joi = require('joi');
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var BookSchema = new Schema(
+const { wilsonScore, baysonAvg } = require('../controller/bookRanker')
+
+const BookSchema = new Schema(
     {
         title: { type: String, required: true },
-        author_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+        author_name: { type: String, required: true },
         summary: { type: String, required: true },
         isbn: { type: String, required: true },
-        genre_id: [{ type: Schema.Types.ObjectId, ref: 'Genre' }],
+        genre: [{ type: String, required: true }],
         doc: {},
-        img: { type: Buffer },
-        rating: {type: Number},
+        img: { type: String },
         review_id: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
-        price: { type: Number, required: true },
-        pub_date: { type: Date, required: true } 
+        pub_date: { type: Date, required: true },
+        totalRating: { type: Number, default: 0},
+        ratingCount: { type: Number, default: 0 },
+        hotRank: { type: Number, default: 0 },
+        popRank: { type: Number, default: 0 }
     }
 );
 
+const JoiValidBook = Joi.object({
+    title: Joi.string().min(3).max(50).required(),
+    author_name: Joi.string().required(),
+    summary: Joi.string().required(),
+    isbn: Joi.string().min(10).max(13),
+    genre: Joi.array().items(Joi.string()),
+    // doc: 
+    img: Joi.string(),
+    // review_id: 
+    pub_date: Joi.date().required(),
+    totalRating: Joi.number(),
+    ratingCount: Joi.number(),
+    hotRank: Joi.number(),
+    popRank: Joi.number()
+});
+
+BookSchema.methods.rateBook = async (rating) => {
+    var book = this;
+    book['totalRating'] += rating;
+    book['ratingCount']++;
+
+    book['hotRank'] = wilsonScore(book['totalRanking'], book['pub_date'])
+    book['popRank'] = baysonAvg(book['totalRating'], book['ratingCount'])
+
+    await book.save();
+}
+
 const Book = mongoose.model('Book', BookSchema);
 
-module.exports = Book;
+module.exports = { Book, JoiValidBook };
 
 

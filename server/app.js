@@ -14,6 +14,8 @@ const app = express()
 
 app.set('view engine', 'pug');
 app.set('views', './views');
+app.use(express.static('public'))
+app.use('/bookCover', express.static('bookCover'))
 
 app.use(session({
     secret: secret,

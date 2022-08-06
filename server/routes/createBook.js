@@ -9,7 +9,7 @@ const renderFilePath = routePlan.createBook[2];
 const redirectUrl = routePlan.createBook[0]
 
 const upload = multer({
-    // dest: 'public/buffer',
+    dest: 'public/bookCover/',
     limits: {
         fileSize: 10 * 1024 * 1024,
     },

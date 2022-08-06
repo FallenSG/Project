@@ -1,17 +1,24 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const Joi = require('joi')
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var ReviewSchema = new Schema(
+const ReviewSchema = new Schema(
     {
-        user_id: { type: Schema.Types.ObjectId, required: true },
-        comment: {},
-        rating: { type: Integer }
+        book_id: { type: Schema.Types.ObjectId, required: true },
+        comment: { type: String },
+        rating: { type: Number, default: 5 }
     }
 );
 
+const JoiValidReview =  Joi.object({
+    // book_id: ,
+    comment: Joi.string(),
+    rating: Joi.number().required()
+})
+
 const Review = mongoose.model('Review', ReviewSchema);
 
-module.exports = { Review };
+module.exports = { Review, JoiValidReview };
 
 

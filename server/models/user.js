@@ -1,6 +1,7 @@
 'use strict';
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt')
+const Joi = require('joi');
 
 const Schema = mongoose.Schema;
 
@@ -12,6 +13,15 @@ const userSchema = new Schema({
     password: {type: String, required: true},
     lib: [{ type: Schema.Types.ObjectId, ref: 'Book' }],
     book_id: [{ type: Schema.Types.ObjectId, ref: 'Book' }]
+});
+
+const JoiValidUser = Joi.object({
+    username: Joi.string().min(3).max(50).required(),
+    email: Joi.string().email().min(5).max(50).required(),
+    mobile: Joi.string().regex(/^[0-9]{10}$/).required().messages({ 'string.pattern.base': `Phone number must have 10 digits.` }),
+    password: Joi.string().min(5).max(255).required(),
+    lib: Joi.array().items(),
+    book_id: Joi.array().items(),
 });
 
 userSchema.pre('save', async function(next){
@@ -31,4 +41,4 @@ userSchema.methods.isValidPassword = async function(password) {
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = User;
+module.exports = { User, JoiValidUser };
