@@ -7,6 +7,8 @@ module.exports = {
     'sign_in': ['/sign_in', './sign_in', 'sign_in'],
     'sign_out': ['/sign_out', './sign_out', 'sign_out'],
     'sign_up': ['/sign_up', './sign_up', 'sign_up'],
+    'verify': ['/verify', './verify', renderPath],
+    'forgotPass': ['/forgot-password', './forgotPass', 'forgotPass'],
     'dash': ['/dashboard', './dashboard', 'dashboard'],
     'profile': [],
     'book': ['/book', './book', 'book'],
@@ -14,3 +16,19 @@ module.exports = {
     'author': [],
     'sample': ['/sample', './sample', 'sample']
 }
+
+// module.exports = {
+//     //reference_name: [route, routeDefLoc, renderPugFile]
+//     'index': ['/', './index', renderPath],
+//     // 'admin': ['/admin', './admin', ''],
+//     'sign_in': ['/sign_in', './sign_in', renderPath],
+//     'sign_out': ['/sign_out', './sign_out', renderPath],
+//     'sign_up': ['/sign_up', './sign_up', renderPath],
+//     'verify': ['/verify', './verify', renderPath],
+//     'dash': ['/dashboard', './dashboard', renderPath],
+//     'profile': [],
+//     'book': ['/book', './book', renderPath],
+//     'createBook': ['/createBook', './createBook', renderPath],
+//     'author': [],
+//     'sample': ['/sample', './sample', renderPath]
+// }

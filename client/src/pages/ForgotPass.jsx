@@ -1,15 +1,18 @@
 import AppForm from '../Components/AppForm'
 import AppFormNav from '../Components/AppFormNav'
-import { Box, Button, Typography, TextField, Link } from "@mui/material";
+import { Box, Button, Typography, TextField } from "@mui/material";
+import { GutterBottom } from '../Components/GutterDivider'
 
 export default function ForgotPass() {
     return (
         <>
             <AppFormNav />
             <AppForm>
-                <Typography variant="h3" gutterBottom marked="center" align="center">
+                <Typography variant="h3" marked="center" align="center">
                     Forgot your password?
                 </Typography>
+
+                <GutterBottom />
 
                 <Typography variant="body2" align="center">
                     {"Enter your email address below and we'll " +

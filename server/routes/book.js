@@ -2,6 +2,8 @@ const router = require('express').Router();
 const { Book } = require('../models/book')
 
 const { auth } = require('../middleware/authHandler')
+const limit = 8
+const project = { title: 1, img: 1 }
 
 router.get('/', async(req, res) => {
     const bookData = await Book.aggregate([
@@ -9,34 +11,35 @@ router.get('/', async(req, res) => {
             $facet: {
                 popRating: [
                     { $sort: { popRank: -1 } },
-                    { $limit: 5 },
-                    { $project: { title: 1 } },
+                    { $limit: limit },
+                    { $project: project },
                 ],
 
                 hotRating: [
                     { $sort: { hotRank: -1 } },
-                    { $limit: 5 },
-                    { $project: { title: 1 } },
+                    { $limit: limit },
+                    { $project: project },
                 ],
 
                 ranking: [
                     { $sort: { totalRating: -1 } },
-                    { $limit: 5 },
-                    { $project: { title: 1 } },
+                    { $limit: limit },
+                    { $project: project },
                 ],
 
                 newArrival: [
                     { $sort: { pub_date: -1 } },
-                    { $limit: 5 },
-                    { $project: { title: 1 } },
+                    { $limit: limit },
+                    { $project: project },
                 ]
             }
         }
     ])
-    res.send({ data: bookData });
+    
+    res.json({ data: bookData })
 });
 
-router.get('/:id', auth, async(req, res) => {
+router.get('/api/:id', auth, async(req, res) => {
     Book.find({ _id: req.params.id }, async(err, book) => {
         if(err) res.status(400).render('error', {message: err});
         res.send({ data: book });

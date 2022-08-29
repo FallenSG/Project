@@ -24,7 +24,7 @@ const upload = multer({
 router.use(auth);
 
 router.get('/', async(req, res) => {
-    res.render(renderFilePath, { post_to: redirectUrl });
+    res.render(renderFilePath);
 });
 
 router.post('/', upload.single('bookCover'), createBook);

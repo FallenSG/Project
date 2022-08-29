@@ -31,12 +31,7 @@ const JoiValidBook = Joi.object({
     genre: Joi.array().items(Joi.string()),
     // doc: 
     img: Joi.string(),
-    // review_id: 
     pub_date: Joi.date().required(),
-    totalRating: Joi.number(),
-    ratingCount: Joi.number(),
-    hotRank: Joi.number(),
-    popRank: Joi.number()
 });
 
 BookSchema.methods.rateBook = async (rating) => {

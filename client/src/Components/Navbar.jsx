@@ -1,5 +1,5 @@
 import { AppBar, Toolbar, styled, InputBase, Paper, Stack, InputAdornment, Link, IconButton, Menu, MenuItem } from '@mui/material'
-import { AccountCircleSharp, CategorySharp, BookSharp, SearchSharp } from '@mui/icons-material'
+import { Explore, AccountCircleSharp, SearchSharp } from '@mui/icons-material'
 import { useState } from 'react';
 
 const dispStyle = {
@@ -102,19 +102,25 @@ function Navbar() {
   return (
     <AppBar position="sticky">
         <StyledToolbar>
-        <Stack direction="row" spacing={2}>
+        <Stack direction="row" spacing={2}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexWrap: "wrap"
+          }}
+        >
           <Link
             variant="h6"
             underline="none"
             color="inherit"
             href="/"
             sx={{ fontSize: 24 }}
-          >
+          > 
             {'Project'}
           </Link>
 
           <IconButton>
-            <CategorySharp fontSize="medium" sx={{ color: "white" }}/>
+            <Explore fontSize="large" sx={{ color: "white" }}/>
           </IconButton>
         </Stack>
 

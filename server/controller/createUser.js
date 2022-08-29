@@ -1,4 +1,5 @@
 const { User, JoiValidUser } = require('../models/user');
+const mailer = require('./mailHandler')
 
 //takes data posted and form it in a readable format
 //then validate/sanitize it against schema
@@ -9,9 +10,7 @@ module.exports = async function(req, res){
         username: req.body.username,
         email: req.body.email,
         mobile: req.body.mobile,
-        password: req.body.password,
-        lib: [],
-        book_id: []
+        password: req.body.password
     }
 
     try{
@@ -28,9 +27,12 @@ module.exports = async function(req, res){
             throw new Error("Email/Mobile Number already Registered");
 
         await (new User(user)).save();
-        res.send({ msg: "User Created" });
+
+        mailer(user.username, user.email);
+        res.send({ msg: "A Verification link is sent to mail" });
         
     } catch(err) {
-        res.render('error', { message: err.message })
+        // res.render('error', { message: err.message })
+        res.send(err.message)
     }
 }

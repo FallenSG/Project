@@ -6,7 +6,7 @@ export default function CreateBook(){
     return (
         <>
            <AppForm>
-                <Typography variant="h3" gutterBottom marked="center" align="center">
+                <Typography variant="h3" marked="center" align="center">
                     Register Book
                 </Typography>
 

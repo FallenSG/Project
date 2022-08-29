@@ -1,63 +1,85 @@
+import { ImageList, ImageListItem, ImageListItemBar, Typography, Link, Grid, styled } from '@mui/material'
 import { useState, useEffect } from 'react'
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import ImageListItemBar from '@mui/material/ImageListItemBar';
+import axios from 'axios'
+import Loading from '../Components/Loading'
+import { Divider } from '../Components/GutterDivider'
 
-const arrayBufferToBase64 = buffer => {
-  let binary = "";
-  let bytes = new Uint8Array(buffer);
-  let len = bytes.byteLength;
-  for (let i = 0; i < len; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return window.btoa(binary);
-};
+function HomeFeed({ bookCatg, catgTitle, routeName = "" }) {
+	return (
+		<>
+			<Grid
+				container
+				direction="row"
+				justifyContent="space-between"
+				alignItems="center"
+			>
+				<Grid item>
+					<Typography variant="h6">{catgTitle}</Typography>
+				</Grid>
 
-function ChangeFeed(bookData){
-  let elem;
-  if (Object.keys(bookData).length === 0) elem = <p>Loading...</p>
-  else{
-    elem = <ImageList cols={5} spacing={2}>
-      {bookData.map((book) => (
-        <ImageListItem key={book._id}>
-          <img 
-            // height="200"
-            // width="200"
-            src={`data:image/jpg;base64,${arrayBufferToBase64(book.img.data)}`}
-            alt='Not Found'
-            loading="lazy"
-          />
-          <ImageListItemBar
-            title={book.title}
-            position="below"
-          />
-        </ImageListItem>
-      ))}
-    </ImageList>
-  } 
-  return elem;
+				<Grid item>
+					<Link
+						href={`/book/${routeName}`}
+						variant="body1"
+						underline="none"
+						component="button"
+					>
+						More..
+					</Link>
+				</Grid>
+			</Grid>
+
+			<Divider />
+
+			<ImageList
+				sx={{ height: 'inherit', pt: '10px' }}
+				cols={8}
+				spacing={1}
+			>
+				{bookCatg.map((book) => (
+					<ImageListItem key={book._id}>
+						<img
+							src={book.img}
+							alt='Not Found'
+							loading="lazy"
+						/>
+						<ImageListItemBar
+							sx={{ width: '10vw' }}
+							title={book.title}
+							position="below"
+						/>
+					</ImageListItem>
+				))}
+			</ImageList>
+		</>
+	)
 }
 
 export default function Feed() {
-  const [bookData, setBookData] = useState({});
+	const [fetchDone, setFetchDone] = useState(true);
+	const [bookData, setBookData] = useState({});
 
-  useEffect(() => {
-    fetch('/book')
-      .then(res => res.json())
-      .then(json => {
-        for(let book of json.data){
-          if(Object.keys(book.img.data).length === 0){
-            book.img = json.defCover;
-          }
-        }
-        setBookData(json.data)
-      })
-      .catch(err => console.error("Custom err: ",err))
-  }, [bookData]);
+	useEffect(() => {
+		async function fetchData() {
+			const resp = await axios.get('/book');
+			setBookData(resp.data.data[0]);
+			setFetchDone(false)
+		}
+		fetchData();
+	}, [fetchDone]);
 
-  return (
-    <div>
-      {ChangeFeed(bookData)}
-    </div>
-  )
+	if (!Object.keys(bookData).length) return <Loading />
+
+	return (
+		<>
+			<HomeFeed catgTitle={'New Arrival'}
+				bookCatg={bookData['newArrival']} routeName={'newest'} />
+			<HomeFeed catgTitle={'Popular Books'}
+				bookCatg={bookData['popRating']} routeName={'popular'} />
+			<HomeFeed catgTitle={'Hot Rated'}
+				bookCatg={bookData['hotRating']} routeName={'hot'} />
+			<HomeFeed catgTitle={'Rank'}
+				bookCatg={bookData['ranking']} routeName={'ranking'} />
+		</>
+	)
 }

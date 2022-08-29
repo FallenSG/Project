@@ -1,4 +1,5 @@
 const express = require('express')
+const path = require('path')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const session = require('express-session')
@@ -13,6 +14,7 @@ const db = config.DB
 const app = express()
 
 app.set('view engine', 'pug');
+// app.use(express.static(path.resolve(__dirname, '../client/build')));
 app.set('views', './views');
 app.use(express.static('public'))
 app.use('/bookCover', express.static('bookCover'))

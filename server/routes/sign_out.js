@@ -11,7 +11,7 @@ const redirectUrl = routePlan.index[0];
 router.use(auth);
 
 router.get('/', async(req, res) => {
-    res.render(renderFilePath, {post_to: renderUrl});
+    res.render(renderFilePath);
 });
 
 router.post('/', async(req, res) => {

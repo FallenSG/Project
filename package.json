@@ -1,0 +1,10 @@
+{
+	"scripts": {
+		"server": "cd server/ && pnpm dev",
+		"client": "npm start --prefix client",
+		"dev": "concurrently \"npm run server \" \" npm run client \""
+	},
+	"dependencies": {
+		"concurrently": "^7.3.0"
+	}
+}

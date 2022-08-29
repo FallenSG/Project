@@ -36,10 +36,10 @@ function checkISBN(isbn) {
 //else book creation process is executed 
 module.exports = async function (req, res) {
     let book = {
-        img: req.file?.path,
+        img: req.file?.path.substr(6),
         title: req.body.title,
         isbn: req.body.isbn,
-        author_name: req.user.username, 
+        author_name: req.user.username,  
         summary: "Summary need to be updated plz check after sometime",
         pub_date: new Date()
     }
@@ -69,9 +69,11 @@ module.exports = async function (req, res) {
         res.send({ msg: "Congrats your book has been published on our website!!! " });
 
     } catch (err) {
-        fs.unlink(book.img, (err) => {
-            //if(err) log it 
-        })
+        if(book.img){
+            fs.unlink(`public/${book.img}`, (err) => {
+                // if(err) logger
+            })
+        }
         res.render('error', { message: err.message })
     }
 };

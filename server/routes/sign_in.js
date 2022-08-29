@@ -11,7 +11,7 @@ const { isAuthReq } = require('../middleware/authHandler');
 router.use(isAuthReq);
 
 router.get('/', async(req, res) => {
-    res.render(renderFilePath, {post_to: failureRedirectUrl});
+    res.render(renderFilePath);
 });
 
 router.post('/', passport.authenticate('local', {

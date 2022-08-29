@@ -11,6 +11,7 @@ const userSchema = new Schema({
     email: {type: String, unique: true, lowercase: true, required: true},
     mobile: {type: Number, unique: true, required: true},
     password: {type: String, required: true},
+    verify: { type: Boolean, enum: [false, true], default: false },
     lib: [{ type: Schema.Types.ObjectId, ref: 'Book' }],
     book_id: [{ type: Schema.Types.ObjectId, ref: 'Book' }]
 });
@@ -19,9 +20,7 @@ const JoiValidUser = Joi.object({
     username: Joi.string().min(3).max(50).required(),
     email: Joi.string().email().min(5).max(50).required(),
     mobile: Joi.string().regex(/^[0-9]{10}$/).required().messages({ 'string.pattern.base': `Phone number must have 10 digits.` }),
-    password: Joi.string().min(5).max(255).required(),
-    lib: Joi.array().items(),
-    book_id: Joi.array().items(),
+    password: Joi.string().min(5).max(255).required()
 });
 
 userSchema.pre('save', async function(next){
@@ -31,6 +30,15 @@ userSchema.pre('save', async function(next){
     this.password = hash;
     next();
 })
+
+userSchema.pre('findOneAndUpdate', async function(next){
+    const user = this;
+    const hash = await bcrypt.hash(user._update.$set.password, 10);
+     
+    this._update.$set.password = hash;
+    next();
+})
+
 
 userSchema.methods.isValidPassword = async function(password) {
     const user = this;

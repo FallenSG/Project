@@ -33,7 +33,8 @@ const formTheme = createTheme({
 
         MuiLink: {
             defaultProps: {
-                color: "secondary"
+                color: "secondary",
+                align: "center"
             },
             style: {
                 textDecorationColor: "grey"
@@ -46,9 +47,21 @@ const formTheme = createTheme({
                 variant: "contained",
                 type: "submit",
                 fullWidth: true,
-                size: "large"
+                size: "large",
             },
         },
+
+        MuiScopedCssBaseline:{
+            styleOverrides: {
+                span: {
+                    height: "4px",
+                    width: "55px",
+                    display: "block",
+                    margin: "8px auto 16px",
+                    backgroundColor: "#ff3366"
+                }
+            }
+        }
     }
 });
 
@@ -60,7 +73,6 @@ function AppForm(props) {
             <Box
                 sx={{
                     display: 'flex',
-                    // backgroundImage: 'url(/static/onepirate/appCurvyLines.png)',
                     backgroundRepeat: 'no-repeat',
                 }}
                 >

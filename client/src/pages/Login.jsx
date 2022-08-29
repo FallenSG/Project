@@ -1,28 +1,27 @@
 import AppForm from '../Components/AppForm'
 import AppFormNav from '../Components/AppFormNav'
 import { Box, Button, Typography, TextField, Link } from "@mui/material";
+import { GutterBottom } from '../Components/GutterDivider'
 
 function Login(){
   return (
     <>
       <AppFormNav />
       <AppForm>
-        <Typography variant="h3" gutterBottom marked="center" align="center">
+        <Typography variant="h3" marked="center" align="center">
           Sign In
         </Typography>
 
+        <GutterBottom />
+
         <Typography variant="body2" align="center">
           {'Not a member yet? '}
-          <Link
-            href="/sign_up"
-            align="center"
-            underline="always"
-          >
+          <Link href="/sign_up">
             Sign Up here
           </Link>
         </Typography>
 
-        <Box component="form" method="post" action="/sign_in" sx={{ mt: 6 }}>
+        <Box component="form" method="post" action="/sign_in" sx={{ mt: 4 }}>
           <TextField
             autoComplete="email"
             autoFocus
