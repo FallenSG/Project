@@ -2,16 +2,13 @@ const router = require('express').Router()
 
 const { auth } = require('../middleware/authHandler');
 
-const routePlan = require('../route_plan');
-const renderUrl = routePlan.sign_out[0]
-const renderFilePath = routePlan.sign_out[2];
-const redirectUrl = routePlan.index[0];
-
+const { Direct, renderType } = require('../routePlan');
+const { renderFilePath, redirectUrl } = Direct();
 
 router.use(auth);
 
 router.get('/', async(req, res) => {
-    res.render(renderFilePath);
+    res[renderType](renderFilePath);
 });
 
 router.post('/', async(req, res) => {

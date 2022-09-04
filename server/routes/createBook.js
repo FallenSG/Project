@@ -4,9 +4,8 @@ const multer = require('multer');
 const createBook = require('../controller/createBook');
 const { auth } = require('../middleware/authHandler');
 
-const routePlan = require('../route_plan');
-const renderFilePath = routePlan.createBook[2];
-const redirectUrl = routePlan.createBook[0]
+const { Direct, renderType } = require('../routePlan');
+const { renderFilePath } = Direct();
 
 const upload = multer({
     dest: 'public/bookCover/',
@@ -24,7 +23,7 @@ const upload = multer({
 router.use(auth);
 
 router.get('/', async(req, res) => {
-    res.render(renderFilePath);
+    res[renderType](renderFilePath);
 });
 
 router.post('/', upload.single('bookCover'), createBook);

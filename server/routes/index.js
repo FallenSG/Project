@@ -1,14 +1,14 @@
 const router = require('express').Router();
-const routePlan = require('../route_plan');
+const { Directory, renderType } = require('../routePlan');
 
 router.get('/', async(req, res) => {
-    res.render(routePlan.index[2]);
+    res[renderType](routePlan.index[2]);
 });
 
 //setting up routes.
-for(key in routePlan){
-    if( key !== 'index' && routePlan[key].length){
-        router.use( routePlan[key][0], require(routePlan[key][1]) );
+for(key in Directory){
+    if( key !== 'index' && Directory[key].length){
+        router.use( Directory[key][0], require(Directory[key][1]) );
     }
 }
 

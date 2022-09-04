@@ -1,26 +1,16 @@
 import AppForm from '../Components/AppForm'
-import AppFormNav from '../Components/AppFormNav'
-import { Box, Button, Typography, TextField, Link } from "@mui/material";
-import { GutterBottom } from '../Components/GutterDivider'
+import { Box, Button, TextField, Link } from "@mui/material";
+import { useLocation } from 'react-router-dom';
 
 export default function Signup() {
-  return (
-    <>
-        <AppFormNav />
-        <AppForm>
-            <Typography variant="h3" marked="center" align="center">
-                Sign Up
-            </Typography>
-
-            <GutterBottom />
-
-            <Typography variant="body2" align="center">
-                <Link href="/sign_in">
-                    Already have an account?
-                </Link>
-            </Typography>
-
-            <Box component="form" method="post" action="/sign_up" sx={{ mt: 4 }}>
+    const loc = useLocation().pathname;
+    return (
+        <AppForm
+            navbar="notAuth"
+            title="Sign Up"
+            underTitle={<Link href="/sign_in">Already have an account?</Link>}
+        >
+            <Box component="form" method="post" action={loc} sx={{ mt: 4 }}>
                 <TextField
                     autoFocus
                     label="Username"
@@ -50,8 +40,6 @@ export default function Signup() {
                     Sign Up
                 </Button>
             </Box>
-
         </AppForm>
-    </>
-  )
+    )
 }

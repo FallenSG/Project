@@ -4,14 +4,14 @@ import { Box, Button, Typography, TextField, Link } from "@mui/material";
 
 export default function CreateBook(){
     return (
-        <>
-           <AppForm>
-                <Typography variant="h3" marked="center" align="center">
-                    Register Book
-                </Typography>
+        <AppForm
+            navbar="auth"
+        >
+            <Typography variant="h3" marked="center" align="center">
+                Register Book
+            </Typography>
 
-                
-            </AppForm> 
-        </>
+            
+        </AppForm> 
     )
 }

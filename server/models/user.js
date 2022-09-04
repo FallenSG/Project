@@ -24,18 +24,17 @@ const JoiValidUser = Joi.object({
 });
 
 userSchema.pre('save', async function(next){
-    const user = this;
-    const hash = await bcrypt.hash(user.password, 10);
-
+    const hash = await bcrypt.hash(this.password, 10);
     this.password = hash;
     next();
 })
 
 userSchema.pre('findOneAndUpdate', async function(next){
-    const user = this;
-    const hash = await bcrypt.hash(user._update.$set.password, 10);
-     
-    this._update.$set.password = hash;
+    const pass = this._update.$set?.password
+    if(pass){
+        const hash = await bcrypt.hash(this._update.$set.password, 10);
+        this._update.$set.password = hash;
+    }
     next();
 })
 

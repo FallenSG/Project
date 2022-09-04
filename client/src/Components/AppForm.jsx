@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
-import { Box, Paper, Container } from '@mui/material';
+import AppFormNav from './AppFormNav'
+import Navbar from './Navbar'
+import { Box, Paper, Container, Typography } from '@mui/material';
+import { GutterBottom } from '../Components/GutterDivider'
 import { createTheme, ThemeProvider } from '@mui/material'
 
 const formTheme = createTheme({
@@ -51,7 +54,7 @@ const formTheme = createTheme({
             },
         },
 
-        MuiScopedCssBaseline:{
+        MuiScopedCssBaseline: {
             styleOverrides: {
                 span: {
                     height: "4px",
@@ -65,30 +68,46 @@ const formTheme = createTheme({
     }
 });
 
-function AppForm(props) {
-    const { children } = props;
-
-    return ( 
+function MainContent(props) {
+    const { title, underTitle, children, bottomPart } = props;
+    return (
         <ThemeProvider theme={formTheme}>
-            <Box
-                sx={{
-                    display: 'flex',
-                    backgroundRepeat: 'no-repeat',
-                }}
-                >
-                <Container maxWidth="sm">
-                    <Box sx={{ mt: 7, mb: 12 }}>
-                        <Paper
-                            background="light"
-                            sx={{ py: { xs: 4, md: 8 }, px: { xs: 3, md: 6 }, backgroundColor: '#fff5f8' }}
-                        >
-                            {children}
-                        </Paper>
-                    </Box>
-                </Container>
-            </Box>
+            <Container maxWidth="sm">
+                <Box sx={{ mt: 7, mb: 12 }}>
+                    <Paper
+                        background="light"
+                        sx={{ py: { xs: 4, md: 8 }, px: { xs: 3, md: 6 }, backgroundColor: '#fff5f8' }}
+                    >
+                        <Typography variant="h3" marked="center" align="center">
+                            {title}
+                        </Typography>
+
+                        <GutterBottom />
+
+                        <Typography variant="body2" align="center">
+                            {underTitle}
+                        </Typography>
+                        {children}
+
+                        <Typography variant="body1" align="center">
+                            {bottomPart}
+                        </Typography>
+                    </Paper>
+                </Box>
+            </Container>
         </ThemeProvider>
-    );
+    )
+}
+
+function AppForm(props) {
+    const { navbar } = props;
+    const elem = {
+        'notAuth': <><AppFormNav /> <MainContent {...props} /></>,
+        'auth': <><Navbar /> <MainContent {...props} /></>,
+        'non': <><MainContent {...props} /></>,
+    }
+   
+    return ( elem[navbar] );
 }
 
 AppForm.propTypes = {

@@ -1,45 +1,60 @@
 const router = require('express').Router();
 const mailer = require('../controller/mailHandler')
-const config = require('dotenv').config().parsed
-const routePlan = require('../route_plan');
-const renderFilePath = routePlan.forgotPass[2];
 
 const { User } = require('../models/user')
-const jwt = require('jsonwebtoken')
+const forgotPass = require('../models/forgotPass');
 
 const { isAuthReq } = require('../middleware/authHandler');
 
+const { Direct, renderType } = require('../routePlan');
+const {
+    renderFilePath, redirectUrl
+} = Direct()
+
+async function tokenVerifier(req, res, next) {
+    const resetReq = await forgotPass.findOne({ token: req.params.token });
+    if(resetReq){
+        return next()
+    }
+    res.redirect(redirectUrl);
+}
+
 router.use(isAuthReq);
 router.get('/', async(req, res) => {
-    res.render(renderFilePath)
+    res[renderType](renderFilePath)
 });
 
 router.post('/', async(req, res) => {
-    const user = await User.findOne({ email: req.body.email }).lean();
-    if(user){
-        mailer(user.username, user.email, 'Reset')
-        res.send("Password reset link is sent to your email..");
+    try{
+        forgotPass.findOne({ email: req.body.email }, async(err, data) => {
+            if(data) res.send("Reset request already exist. Try creating new one after 2 hrs..!!");
+            else{
+                User.findOne({ email: req.body.email }, async(err, user) => {
+                    if (user) {
+                        mailer(user.username, user.email, 'Reset')
+                        res.send("Password reset link is sent to your email..");
+                    }
+                    else res.send("Un-registered email id")
+                }).lean();
+            }
+        })
+    } catch(err) {
+        res.send("An Error occur. Please try again after sometime")
     }
-    else
-        res.send("Un-registed email id...");
 });
 
-router.get('/:token', async(req, res) => {
-    res.render('forgotPass2', {redirectPath: `/forgot-password/${req.params.token}`});
+router.get('/:token', tokenVerifier, async(req, res) => {
+    res[renderType](renderFilePath);
 });
 
-router.post('/:token', async (req, res) => {
-    const token = jwt.verify(req.params.token, config.SECRET);
-
-    User.findOne({ email: token.email }, async (err, user) => {
-        if(user){
-            await User.findOneAndUpdate({ email: token.email }, {
-                $set: { password: req.body.pass }
-            })
-
-            res.send("Changed")
-        }
+router.post('/:token', tokenVerifier, async (req, res) => {
+    await User.findOneAndUpdate({ email: req.email }, {
+        $set: { password: req.body.pass }
     })
+
+    forgotPass.deleteOne({ token: req.params.token }, (err, data) => { });
+    res.send("Changed")
 })
+
 
 module.exports = router;

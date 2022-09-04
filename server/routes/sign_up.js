@@ -3,13 +3,13 @@ const router = require('express').Router();
 const { isAuthReq } = require('../middleware/authHandler');
 const createUser = require('../controller/createUser');
 
-const routePlan = require('../route_plan');
-const redirectFilePath = routePlan.sign_up[2];
+const { Direct, renderType } = require('../routePlan');
+const { renderFilePath } = Direct()
 
 router.use(isAuthReq);
 
 router.get("/", async (req, res) => {
-    res.render(redirectFilePath);
+    res[renderType](renderFilePath);
 })
 
 router.post("/", createUser);
