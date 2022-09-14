@@ -1,38 +1,38 @@
 const path = require('path')
 const renderPath = path.join(__dirname, '../client/build/index.html')
 
-// const Directory = {
-//     //reference_name: [route, routeDefLoc, renderPugFile]
-//     'index': ['/', './index', 'index'],
-//     'sign_in': ['/sign_in', './sign_in', 'sign_in'],
-//     'sign_out': ['/sign_out', './sign_out', 'sign_out'],
-//     'sign_up': ['/sign_up', './sign_up', 'sign_up'],
-//     'verify': ['/verify', './verify', renderPath],
-//     'forgotPass': ['/forgot-password', './forgotPass', 'forgotPass'],
-//     'dash': ['/dashboard', './dashboard', 'dashboard'],
-//     'profile': [],
-//     'book': ['/book', './book', 'book'],
-//     'createBook': ['/createBook', './createBook', 'book'],
-//     'author': [],
-//     'sample': ['/sample', './sample', 'sample']
-// }
-
 const Directory = {
     //reference_name: [route, routeDefLoc, renderPugFile]
-    'index': ['/', './index'],
-    // 'admin': ['/admin', './admin', ''],
-    'signIn': ['/sign_in', './sign_in'],
-    'signOut': ['/sign_out', './sign_out'],
-    'signUp': ['/sign_up', './sign_up'],
-    'verify': ['/verify', './verify'],
-    'forgotPass': ['/forgot-password', './forgotPass'],
-    'dash': ['/dashboard', './dashboard'],
+    'index': ['/', './index', 'index'],
+    'signIn': ['/sign_in', './sign_in', 'sign_in'],
+    'signOut': ['/sign_out', './sign_out', 'sign_out'],
+    'signUp': ['/sign_up', './sign_up', 'sign_up'],
+    'verify': ['/verify', './verify', renderPath],
+    'forgotPass': ['/forgot-password', './forgotPass', 'forgotPass'],
+    'dash': ['/dashboard', './dashboard', 'dashboard'],
     'profile': [],
-    'book': ['/book', './book'],
-    'createBook': ['/createBook', './createBook'],
+    'book': ['/book', './book', 'book'],
+    'createBook': ['/createBook', './createBook', 'book'],
     'author': [],
-    'sample': ['/sample', './sample']
+    'sample': ['/sample', './sample', 'sample']
 }
+
+// const Directory = {
+//     //reference_name: [route, routeDefLoc, renderPugFile]
+//     'index': ['/', './index'],
+//     // 'admin': ['/admin', './admin', ''],
+//     'signIn': ['/sign_in', './sign_in'],
+//     'signOut': ['/sign_out', './sign_out'],
+//     'signUp': ['/sign_up', './sign_up'],
+//     'verify': ['/verify', './verify'],
+//     'forgotPass': ['/forgot-password', './forgotPass'],
+//     'dash': ['/dashboard', './dashboard'],
+//     'profile': [],
+//     'book': ['/book', './book'],
+//     'createBook': ['/createBook', './createBook'],
+//     'author': [],
+//     'sample': ['/sample', './sample']
+// }
 
 const Direct = (path, redirect='index', failure='signIn', success='index') => {
     const renderFilePath = renderPath;

@@ -28,11 +28,11 @@ module.exports = async function(req, res){
 
         await (new User(user)).save();
 
-        mailer(user.username, user.email);
-        res.send({ msg: "A Verification link is sent to mail" });
+        const resp = await mailer(user.username, user.email);
+        res.send({ msg: resp });
         
     } catch(err) {
         // res.render('error', { message: err.message })
-        res.send(err.message)
+        res.send({msg: err.message})
     }
 }

@@ -1,8 +1,9 @@
 const router = require('express').Router();
-const { Directory, renderType } = require('../routePlan');
+const { Directory, renderType, Direct } = require('../routePlan');
+const { renderFilePath } = Direct()
 
 router.get('/', async(req, res) => {
-    res[renderType](routePlan.index[2]);
+    res[renderType](renderFilePath);
 });
 
 //setting up routes.

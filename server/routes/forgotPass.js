@@ -12,11 +12,12 @@ const {
 } = Direct()
 
 async function tokenVerifier(req, res, next) {
-    const resetReq = await forgotPass.findOne({ token: req.params.token });
-    if(resetReq){
-        return next()
-    }
-    res.redirect(redirectUrl);
+    forgotPass.findOne({ token: req.params.token }, (err, resetReq) => {
+        if(resetReq){
+            return next()
+        }
+        res.redirect(redirectUrl);
+    });
 }
 
 router.use(isAuthReq);
@@ -27,19 +28,19 @@ router.get('/', async(req, res) => {
 router.post('/', async(req, res) => {
     try{
         forgotPass.findOne({ email: req.body.email }, async(err, data) => {
-            if(data) res.send("Reset request already exist. Try creating new one after 2 hrs..!!");
+            if(data) res.send({msg: "Reset request already exist. Try creating new one after 2 hrs..!!"});
             else{
                 User.findOne({ email: req.body.email }, async(err, user) => {
                     if (user) {
-                        mailer(user.username, user.email, 'Reset')
-                        res.send("Password reset link is sent to your email..");
+                        const resp = await mailer(user.username, user.email, 'Reset')
+                        res.send({msg: resp});
                     }
-                    else res.send("Un-registered email id")
+                    else res.send({msg: "Un-registered email id"})
                 }).lean();
             }
         })
     } catch(err) {
-        res.send("An Error occur. Please try again after sometime")
+        res.send({msg: "An Error occured. Please try again after sometime!!"})
     }
 });
 
@@ -53,7 +54,7 @@ router.post('/:token', tokenVerifier, async (req, res) => {
     })
 
     forgotPass.deleteOne({ token: req.params.token }, (err, data) => { });
-    res.send("Changed")
+    res.send({msg: "Changed"})
 })
 
 

@@ -19,7 +19,10 @@ router.get('/token-expire', async(req, res) => {
 router.post('/token-expire', async(req, res) => {
     User.findOne({ email: req.email }, async(err, user) => {
         if(err) res.redirect(redirectUrl);
-        if(user && !user.verify) mailer(user.username, user.email);
+        if(user && !user.verify){
+            const resp = await mailer(user.username, user.email);
+            res.send({msg: resp})
+        }
     })
 });
 
@@ -30,7 +33,7 @@ router.get('/:token', async(req, res) => {
             $set: { verify: true }
         });
         
-        res.send("Welcome ...")
+        res.send({msg: "Welcome ..."})
     } catch(err){
         if(err.message === 'jwt expired'){
             res.redirect('/verify/token-expire');

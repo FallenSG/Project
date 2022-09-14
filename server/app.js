@@ -17,7 +17,7 @@ const app = express()
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 app.set('views', './views');
 app.use(express.static('public'))
-app.use('/bookCover', express.static('bookCover'))
+app.use('/bookCover', express.static('public'))
 
 app.use(session({
     secret: secret,

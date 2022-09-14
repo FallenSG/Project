@@ -25,8 +25,12 @@ const respType = {
         <p>Thank you for subscribing. Please confirm your email by clicking on the following link</p>
         <a href=http://${config.HOST}:${config.PORT}/verify/${token}> Click here</a>
         </div>`
+
         
-        return { subject, html }
+        return {
+            mailBody: { subject, html },
+            resp:"A Verification link is sent to mail"
+        }
     },
     
     "Reset": async (username, email) => {
@@ -46,7 +50,10 @@ const respType = {
         <a href=http://${config.HOST}:${config.PORT}/forgot-password/${token}> Click here</a>
         </div>`
         
-        return { subject, html }
+        return {
+            mailBody: { subject, html },
+            resp:"Password reset link has been sent to your email.."
+        }
     }
 }
 
@@ -61,16 +68,20 @@ module.exports = async function(username, recvMail, type='Confirm') {
         }
     });
 
-    const resp = await respType[type](username, recvMail);
+    const response = await respType[type](username, recvMail);
 
     var mailOptions = {
         from: config.EMAIL_ID,
         to: recvMail,
-        ...resp
+        ...response['mailBody']
     };
     
     transport.sendMail(mailOptions, (error, info) => {
-        if (error) console.log(error); //same here logger
+        if (error){
+            console.log(error);
+            return "An Error occured. Please try again after sometime!!";
+        }  //same here logger
+        return response.resp;
         // else console.log('Message sent: %s', info.messageId); change it with logger
     })
 

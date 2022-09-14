@@ -4,6 +4,9 @@ import Navbar from './Navbar'
 import { Box, Paper, Container, Typography } from '@mui/material';
 import { GutterBottom } from '../Components/GutterDivider'
 import { createTheme, ThemeProvider } from '@mui/material'
+import AppFormPopup from '../Components/AppFormPopup'
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const formTheme = createTheme({
     palette: {
@@ -68,11 +71,28 @@ const formTheme = createTheme({
     }
 });
 
+
 function MainContent(props) {
     const { title, underTitle, children, bottomPart } = props;
+    // const [val, setVal] = useState(0);
+
+    // useEffect(async () => {
+    //     const timer = setInterval(() => {
+    //         setVal((oldVal) => {
+    //             console.log(oldVal);
+    //             return oldVal + Math.random() * 10
+    //         });
+    //     }, 500);
+
+    //     return () => {
+    //         clearInterval(timer);
+    //     }
+    // })
+
     return (
         <ThemeProvider theme={formTheme}>
             <Container maxWidth="sm">
+                {/* <AppFormPopup statusCode={200} msg='something'/> */}
                 <Box sx={{ mt: 7, mb: 12 }}>
                     <Paper
                         background="light"
