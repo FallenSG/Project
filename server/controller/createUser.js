@@ -25,11 +25,10 @@ module.exports = async function(req, res){
 
         if(ExistUser) 
             throw new Error("Email/Mobile Number already Registered");
-
         await (new User(user)).save();
 
         const resp = await mailer(user.username, user.email);
-        res.send({ msg: resp });
+        res.status(resp.code).send({ msg: resp.msg });
         
     } catch(err) {
         // res.render('error', { message: err.message })

@@ -1,29 +1,37 @@
 import AppForm from '../Components/AppForm'
-import { Box, Button, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { useLocation } from 'react-router-dom';
+import { useRef } from 'react'
+import axios from 'axios';
 
 export default function VerifyExpired() {
     const loc = useLocation().pathname;
+    const mailRef = useRef(null);
+
+    const reqHandler = async (callback) => {
+        const email = mailRef.current.value;
+        if(email){
+            await callback();
+            const resp = await axios.post(loc, { email });
+            return resp;
+        }
+    }
     return (
         <AppForm
             navbar="notAuth"
             title="token expired"
             underTitle="It Seems like your verification token expired.
                 Please enter your email id to recieve new token."
-
+            buttonText="Resend Verification Link"
+            customHandler={reqHandler}
         >
-            <Box component="form" method="post" action={loc} sx={{ mt: 6 }}>
+            <Box sx={{ mt: 6 }}>
                 <TextField
                     autoFocus
                     label="Enter Email"
-                    name="email"
+                    inputRef={mailRef}
                 />
-
-                <Button sx={{ mt: 3, mb: 2 }}>
-                    Resend Verification Link
-                </Button>
             </Box>
-
         </AppForm>
     )
 }

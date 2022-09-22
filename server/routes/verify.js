@@ -21,7 +21,7 @@ router.post('/token-expire', async(req, res) => {
         if(err) res.redirect(redirectUrl);
         if(user && !user.verify){
             const resp = await mailer(user.username, user.email);
-            res.send({msg: resp})
+            res.status(resp.code).send({msg: resp.msg})
         }
     })
 });

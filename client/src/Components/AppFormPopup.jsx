@@ -1,17 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Grid, LinearProgress, styled } from '@mui/material'
+import { Grid, LinearProgress as Progress, styled } from '@mui/material'
 import {
     CancelOutlined as Error,
     BlockOutlined as Blocked,
     CheckCircleOutlineSharp as Success,
 } from '@mui/icons-material'
 
-const Progress = styled(LinearProgress)({
-    backgroundColor: "inherit"
-});
-
 const StyledGrid = styled(Grid)({
-    // backgroundColor: "#f44336",
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-start",
@@ -31,27 +26,42 @@ const ColorTable = {
     'blocked': ["#3b7bff", ""]
 }
 
-const Icon = {
-    'success': <Success sx={{ stroke: ColorTable['success'][0], ...IconStyle}} />,
-    'error': <Error sx={{ stroke: ColorTable['error'][0],  ...IconStyle}} />,
-    'blocked': <Blocked sx={{ stroke: ColorTable['blocked'][0], ...IconStyle}} />
+const statusArr = {
+    'success': { 
+        bgColor: ColorTable['success'][0], 
+        icon: <Success sx={{ stroke: ColorTable['success'][0], ...IconStyle }} />
+    },
+    'error': { 
+        bgColor: ColorTable['error'][0], 
+        icon: <Error sx={{ stroke: ColorTable['error'][0], ...IconStyle }} /> 
+    },
+    'blocked': { 
+        bgColor: ColorTable['blocked'][0], 
+        icon: <Blocked sx={{ stroke: ColorTable['blocked'][0], ...IconStyle }} />
+    },
 }
 
 
-function MainContent({bgColor, icon, msg}){
+function MainContent(props){
+    const { bgColor, icon, msg } = props;
+
     const [progress, setProgress] = useState(0);
     const [isShown, setIsShown] = useState(true);
+
+    useEffect(() => {
+        setIsShown(true);
+        setProgress(0);
+    }, [msg])
 
     useEffect(() => {
         const timer = setInterval(() => {
             setProgress((oldProgress) => {
                 if(oldProgress === 100){
                     setIsShown(false);
-                    // return 0;
                 }
-                return Math.min(oldProgress + 10, 100);
+                return Math.min(oldProgress + 5, 100);
             });
-        }, 500);
+        }, 200);
 
         return () => {
             clearInterval(timer);
@@ -73,29 +83,16 @@ function MainContent({bgColor, icon, msg}){
                 }}>&times;</Grid>
             </Grid>
             <Grid item sx={{ width: "100%", pt: 1 }}>
-                <Progress variant="determinate" value={progress} color="secondary" />
+                <Progress sx={{bgcolor: "inherit"}} variant="determinate" value={progress} color="secondary" />
             </Grid>
         </StyledGrid>
     )
 }
 
 export default function AppFormPopup({statusCode, msg}) {
-    var bgColor, icon;
-    if(statusCode === 200){
-        bgColor = ColorTable['success'][0];
-        icon = Icon['success'];
-    }
+    if(statusCode === null || msg === null) return;
 
-    else if (statusCode === 404) {
-        bgColor = ColorTable['error'][0];
-        icon = Icon['error'];
-    }
-
-    else if (statusCode === 100) {
-        bgColor = ColorTable['blocked'][0];
-        icon = Icon['blocked'];
-    }
-
+    const { bgColor, icon } = statusArr[statusCode];
     return (
         <MainContent bgColor={bgColor} icon={icon}  msg={msg} />
     )

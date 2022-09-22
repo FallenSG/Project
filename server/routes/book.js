@@ -41,7 +41,7 @@ router.get('/', async(req, res) => {
 
 router.get('/api/:id', auth, async(req, res) => {
     Book.find({ _id: req.params.id }, async(err, book) => {
-        if(err) res.status(400).render('error', {message: err});
+        if(err) res.status(400).send(err);
         res.send({ data: book });
     });
 })

@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import AppFormNav from './AppFormNav'
 import Navbar from './Navbar'
-import { Box, Paper, Container, Typography } from '@mui/material';
+import { Box, Paper, Container, Typography, Button } from '@mui/material';
 import { GutterBottom } from '../Components/GutterDivider'
 import { createTheme, ThemeProvider } from '@mui/material'
 import AppFormPopup from '../Components/AppFormPopup'
-import { useEffect } from 'react';
 import { useState } from 'react';
 
 const formTheme = createTheme({
@@ -54,6 +53,7 @@ const formTheme = createTheme({
                 type: "submit",
                 fullWidth: true,
                 size: "large",
+                height: "40px"
             },
         },
 
@@ -73,26 +73,26 @@ const formTheme = createTheme({
 
 
 function MainContent(props) {
-    const { title, underTitle, children, bottomPart } = props;
-    // const [val, setVal] = useState(0);
+    const { title, underTitle, children, buttonText, customHandler, bottomPart } = props;
+    const [isClicked, setIsClicked] = useState(false);
+    const [banner, setBanner] = useState({code: null, msg: null})
 
-    // useEffect(async () => {
-    //     const timer = setInterval(() => {
-    //         setVal((oldVal) => {
-    //             console.log(oldVal);
-    //             return oldVal + Math.random() * 10
-    //         });
-    //     }, 500);
+    const reqHandler = async () => {
+        customHandler(() => setIsClicked(true)).then((resp) => {
+            setBanner({code: 'success', msg: resp.data.msg})
+            setIsClicked(false);
 
-    //     return () => {
-    //         clearInterval(timer);
-    //     }
-    // })
+        }).catch((err) => {
+            setBanner({ code: 'error', msg: err.response.data.msg })
+            setIsClicked(false);
+
+        });
+    }
 
     return (
         <ThemeProvider theme={formTheme}>
             <Container maxWidth="sm">
-                {/* <AppFormPopup statusCode={200} msg='something'/> */}
+                <AppFormPopup statusCode={banner.code} msg={banner.msg} />
                 <Box sx={{ mt: 7, mb: 12 }}>
                     <Paper
                         background="light"
@@ -107,7 +107,12 @@ function MainContent(props) {
                         <Typography variant="body2" align="center">
                             {underTitle}
                         </Typography>
+
                         {children}
+
+                        <Button type='submit' sx={{ mt: 3, mb: 2 }} disabled={isClicked} onClick={reqHandler}>
+                            {buttonText}
+                        </Button>
 
                         <Typography variant="body1" align="center">
                             {bottomPart}

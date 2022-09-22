@@ -8,7 +8,7 @@ module.exports = (passport) => {
         User.findOne({ email: email }, function(err, user){
             if(err) return done(err);
 
-            if(!user || !user.verify) return done(null, false);
+            if(!user || !user.verify) return done(null, false, {message: "Wrong Credentials"});
 
             if(user.verify){
                 bcrypt.compare(password, user.password, (err, isValid) => {
@@ -16,7 +16,7 @@ module.exports = (passport) => {
                         return done(err)
                     }
                     if (!isValid) {
-                        return done(null, false)
+                        return done(null, false, {message: "Wrong Credentials"})
                     }
                     return done(null, user)
                 })

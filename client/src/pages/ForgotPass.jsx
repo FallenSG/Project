@@ -1,26 +1,37 @@
 import AppForm from '../Components/AppForm'
-import { Box, Button, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { useLocation } from 'react-router-dom';
+import { useRef } from 'react'
+import axios from 'axios'
+
 
 export default function ForgotPass() {
     const loc = useLocation().pathname;
+    const mailRef = useRef(null);
+    const reqHandler = async (callback) => {
+        const email = mailRef.current.value;
+        if(email){
+            await callback();
+            const resp = await axios.post(loc, {email})
+            return resp;
+        }
+    }
+
     return (
         <AppForm
             navbar="notAuth"
             title="forgot your password?"
             underTitle="Enter your email address below and we'll
                 send you a link to reset your password."
+            buttonText="Send Reset Link"
+            customHandler={reqHandler}
         >
-            <Box component="form" method="post" action={loc} sx={{ mt: 6 }}>
+            <Box sx={{ mt: 6 }}>
                 <TextField
                     autoFocus
                     label="Email"
-                    name="email"
+                    inputRef={mailRef}
                 />
-
-                <Button sx={{ mt: 3, mb: 2 }}>
-                    Send Reset Link
-                </Button>
             </Box>
 
         </AppForm>
