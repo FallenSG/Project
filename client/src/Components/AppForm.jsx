@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
 import AppFormNav from './AppFormNav'
 import Navbar from './Navbar'
-import { Box, Paper, Container, Typography, Button } from '@mui/material';
+import { 
+    Box, Paper, Container, 
+    Typography, Button, CircularProgress, styled
+} from '@mui/material';
 import { GutterBottom } from '../Components/GutterDivider'
 import { createTheme, ThemeProvider } from '@mui/material'
 import AppFormPopup from '../Components/AppFormPopup'
@@ -53,7 +56,6 @@ const formTheme = createTheme({
                 type: "submit",
                 fullWidth: true,
                 size: "large",
-                height: "40px"
             },
         },
 
@@ -71,6 +73,9 @@ const formTheme = createTheme({
     }
 });
 
+const Loading = styled(CircularProgress)({
+    color: "grey"
+})
 
 function MainContent(props) {
     const { title, underTitle, children, buttonText, customHandler, bottomPart } = props;
@@ -111,7 +116,7 @@ function MainContent(props) {
                         {children}
 
                         <Button type='submit' sx={{ mt: 3, mb: 2 }} disabled={isClicked} onClick={reqHandler}>
-                            {buttonText}
+                            {isClicked? <Loading /> : buttonText}
                         </Button>
 
                         <Typography variant="body1" align="center">
