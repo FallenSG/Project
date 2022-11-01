@@ -1,10 +1,12 @@
 import { ImageList, ImageListItem, ImageListItemBar, Typography, Link, Grid } from '@mui/material'
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Loading from '../Components/Loading'
 import { Divider } from '../Components/GutterDivider'
 
 function HomeFeed({ bookCatg, catgTitle, routeName = "" }) {
+	const navg = useNavigate();
 	return (
 		<>
 			<Grid
@@ -39,11 +41,13 @@ function HomeFeed({ bookCatg, catgTitle, routeName = "" }) {
 				{bookCatg.map((book) => (
 					<ImageListItem key={book._id}>
 						<img
+							onClick={() => navg(`/book/${book._id}`)}
 							src={book.img}
 							alt='Not Found'
 							loading="lazy"
 						/>
 						<ImageListItemBar
+							onClick={() => navg(`/book/${book._id}`)}
 							sx={{ width: '10vw' }}
 							title={book.title}
 							position="below"

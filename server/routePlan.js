@@ -13,7 +13,9 @@ const Directory = {
     'profile': [],
     'book': ['/book', './book', 'book'],
     'createBook': ['/createBook', './createBook', 'book'],
-    'author': [],
+    'bookModify': ['/bookModify', './bookModify', 'bookModify'],
+    'author': ['/author', ''],
+    'library':['/library', ''],
     'sample': ['/sample', './sample', 'sample']
 }
 
@@ -34,7 +36,7 @@ const Directory = {
 //     'sample': ['/sample', './sample']
 // }
 
-const Direct = (path, redirect='index', failure='signIn', success='index') => {
+const Direct = (path='index', redirect='index', failure='signIn', success='index') => {
     const renderFilePath = renderPath;
     // const renderFilePath = Directory[path][2];    
     const redirectUrl = Directory[redirect][0];

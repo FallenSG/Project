@@ -1,30 +1,25 @@
-import AppFormPopup from '../Components/AppFormPopup'
-import AppForm from '../Components/AppForm'
-import { Box, Button, TextField } from "@mui/material";
-import { useLocation } from 'react-router-dom'
+import { useState } from 'react'
 
-export default function Sample() {
-    const loc = useLocation().pathname;
+export default function Sample(){
+    const [ user, setUser ] = useState('samole')
     return (
-        <AppForm
-            navbar="notAuth"
-            title="forgot your password?"
-            underTitle="Enter your email address below and we'll
-                send you a link to reset your password."
-        >
-            <AppFormPopup />
-            <Box component="form" method="post" action={loc} sx={{ mt: 6 }}>
-                <TextField
-                    autoFocus
-                    label="Email"
-                    name="email"
-                />
-
-                <Button sx={{ mt: 3, mb: 2 }}>
-                    Send Reset Link
-                </Button>
-            </Box>
-
-        </AppForm>
-    )
+        <>
+            <h1>{user}</h1>
+            <button onClick={() => setUser('Changed User0')}>
+                Changed User0
+            </button> 
+            <button onClick={() => setUser('Changed User1')}>
+                Changed User1
+            </button> 
+            <button onClick={() => setUser('Changed User2')}>
+                Changed User2
+            </button> 
+            <button onClick={() => setUser('Changed User3')}>
+                Changed User3
+            </button> 
+            <button onClick={() => setUser('Changed User4')}>
+                Changed User4
+            </button>
+        </>
+    );
 }

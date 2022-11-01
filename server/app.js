@@ -13,7 +13,7 @@ const db = config.DB
 
 const app = express()
 
-// app.set('view engine', 'pug');
+// app.set('view engine', 'pug');   
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 app.set('views', './views');
 app.use(express.static('public'))

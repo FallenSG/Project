@@ -8,6 +8,7 @@ import ForgotPass2 from './pages/ForgotPass2';
 import Sample from './pages/sample';
 import BookID from './pages/BookID';
 import VerifyExpired from './pages/VerifyExpired';
+import BookModify from './pages/bookModify'
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
         <Route exact path="/verify/token-expire" element={<VerifyExpired />} />
         <Route exact path="/dashboard" element={<Dashboard />} />
         <Route exact path="/book/:bookid" element={<BookID />} />
+        <Route exact path="/bookModify/:bookid" element={<BookModify />} />
         <Route exact path="/sample" element={<Sample />} />
       </Routes>
     </Router>

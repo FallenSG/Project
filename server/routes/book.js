@@ -39,9 +39,9 @@ router.get('/', async(req, res) => {
     res.json({ data: bookData })
 });
 
-router.get('/api/:id', auth, async(req, res) => {
+router.get('/api/:id', async(req, res) => {
     Book.find({ _id: req.params.id }, async(err, book) => {
-        if(err) res.status(400).send(err);
+        if(err) return res.status(400).send("No such book exist");
         res.send({ data: book });
     });
 })

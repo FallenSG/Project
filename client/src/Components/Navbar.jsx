@@ -1,6 +1,6 @@
-import { AppBar, Toolbar, styled, InputBase, Paper, Stack, InputAdornment, Link, IconButton, Menu, MenuItem } from '@mui/material'
-import { Explore, AccountCircleSharp, SearchSharp } from '@mui/icons-material'
-import { useState } from 'react';
+import { AppBar, Toolbar, styled, InputBase, Paper, Stack, InputAdornment, Link, IconButton } from '@mui/material'
+import { Explore, SearchSharp } from '@mui/icons-material'
+import Avatar from './Avatar';
 
 const dispStyle = {
   fullScreen: {
@@ -29,75 +29,6 @@ const Center = styled(Paper)(({ theme }) => ({
   justifyContent: "space-between",
 }));
 
-
-function Avatar(){
-  const [authToken, setAuthToken] = useState(null);
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const isMenuOpen = Boolean(anchorEl);
-
-  const profileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget)
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right'
-      }}
-      id='profileMenu'
-      keepMounted={false}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right'
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-      sx={{
-        mt: '45px'
-      }}
-    >
-      <MenuItem>Profile</MenuItem>
-      <MenuItem sx={{ display: dispStyle.mobScreen }}>Library</MenuItem>
-      <MenuItem>Sign Out</MenuItem>
-    </Menu>
-  )
-
-  var element = (
-    <IconButton 
-      onClick={() => {
-        setAuthToken('sampleVal');
-      }}
-    >
-      <AccountCircleSharp fontSize="large" sx={{ color: '#fff' }} />
-    </IconButton>
-  )
-  if(authToken){
-    element = (
-      <IconButton
-        aria-controls='profileMenu'
-        aria-haspopup="true"
-        onClick={profileMenuOpen}
-      >
-        <AccountCircleSharp fontSize="large" sx={{ color: '#fff' }} />
-      </IconButton>
-    )
-  }
-
-  return (
-    <div>
-    {element}
-    {renderMenu}
-    </div>
-  )
-}
-
 function Navbar() {
   return (
     <AppBar position="sticky">
@@ -106,7 +37,8 @@ function Navbar() {
           sx={{
             display: "flex",
             alignItems: "center",
-            flexWrap: "wrap"
+            flexWrap: "wrap",
+						pl: "7%"
           }}
         >
           <Link
@@ -139,6 +71,9 @@ function Navbar() {
        <Stack 
         direction="row" 
         spacing={1}
+				sx={{
+					pr: "7%"
+				}}
       >
         <Link 
           variant="h6"
@@ -150,7 +85,7 @@ function Navbar() {
           Library
         </Link> 
 
-        <Avatar />
+        <Avatar dispStyle={dispStyle}/>
 
        </Stack>
       </StyledToolbar>

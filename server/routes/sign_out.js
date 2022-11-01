@@ -7,10 +7,6 @@ const { renderFilePath, redirectUrl } = Direct();
 
 router.use(auth);
 
-router.get('/', async(req, res) => {
-    res[renderType](renderFilePath);
-});
-
 router.post('/', async(req, res) => {
     req.logout(function (err) {
         if (err) { return next(err); }
