@@ -40,9 +40,12 @@ router.get('/', async(req, res) => {
 });
 
 router.get('/api/:id', async(req, res) => {
-    Book.find({ _id: req.params.id }, async(err, book) => {
-        if(err) return res.status(400).send("No such book exist");
-        res.send({ data: book });
-    });
+    Book.find({ _id: req.params.id })
+        .populate({
+            path: 'author_id',
+            select: { username: 1 }
+        })
+        .then(book => res.send({ data: book[0] }))
+        .catch(err => res.status(400).send("No Such Book Exists"))
 })
 module.exports = router 

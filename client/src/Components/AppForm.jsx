@@ -84,11 +84,11 @@ function MainContent(props) {
 
     const reqHandler = async () => {
         customHandler(() => setIsClicked(true)).then((resp) => {
-            setBanner({code: 'success', msg: resp.data.msg})
+            setBanner({code: 'success', msg: resp.data.data})
             setIsClicked(false);
 
         }).catch((err) => {
-            setBanner({ code: 'error', msg: err.response.data.msg })
+            setBanner({ code: 'error', msg: err.response.data.data })
             setIsClicked(false);
 
         });

@@ -14,31 +14,15 @@ const Directory = {
     'book': ['/book', './book', 'book'],
     'createBook': ['/createBook', './createBook', 'book'],
     'bookModify': ['/bookModify', './bookModify', 'bookModify'],
-    'author': ['/author', ''],
-    'library':['/library', ''],
+    'author': ['/author', './author', renderPath],
+    'library': ['/library', './library', renderPath],
     'sample': ['/sample', './sample', 'sample']
 }
 
-// const Directory = {
-//     //reference_name: [route, routeDefLoc, renderPugFile]
-//     'index': ['/', './index'],
-//     // 'admin': ['/admin', './admin', ''],
-//     'signIn': ['/sign_in', './sign_in'],
-//     'signOut': ['/sign_out', './sign_out'],
-//     'signUp': ['/sign_up', './sign_up'],
-//     'verify': ['/verify', './verify'],
-//     'forgotPass': ['/forgot-password', './forgotPass'],
-//     'dash': ['/dashboard', './dashboard'],
-//     'profile': [],
-//     'book': ['/book', './book'],
-//     'createBook': ['/createBook', './createBook'],
-//     'author': [],
-//     'sample': ['/sample', './sample']
-// }
 
-const Direct = (path='index', redirect='index', failure='signIn', success='index') => {
+const Direct = (path = 'index', redirect = 'index', failure = 'signIn', success = 'index') => {
     const renderFilePath = renderPath;
-    // const renderFilePath = Directory[path][2];    
+    // const renderFilePath = Directory[path][2];
     const redirectUrl = Directory[redirect][0];
     const failureRedirect = Directory[failure][0];
     const successRedirect = Directory[success][0];
@@ -46,4 +30,4 @@ const Direct = (path='index', redirect='index', failure='signIn', success='index
     return { renderFilePath, redirectUrl, failureRedirect, successRedirect };
 }
 
-module.exports = { Directory, Direct, renderType: 'sendFile' }
+module.exports = { Directory, Direct, renderType:"sendFile" }

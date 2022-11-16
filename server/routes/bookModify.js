@@ -4,6 +4,7 @@ const fs = require('fs');
 
 const { Book } = require('../models/book')
 
+const { auth } = require('../middleware/authHandler');
 const { Direct, renderType } = require('../routePlan');
 const { renderFilePath } = Direct(path='bookModify')
 
@@ -20,6 +21,8 @@ const upload = multer({
     }
 });
 
+router.use(auth);
+
 router.get('/:id', async(req, res) => {
     Book.findById({ _id: req.params.id }, async (err, book) => {
         if(err) return res.status(400).send("No such book");
@@ -28,16 +31,17 @@ router.get('/:id', async(req, res) => {
 });
 
 router.post('/:id', upload.single('bookCover'), async (req, res) => {
-    const bo = await Book.findOne({ _id: req.params.id });
     
     const book = await Book.findOneAndUpdate(
         { _id: req.params.id }, 
-        {update: { img: req.file?.path.substr(6) }}
+        { img: req.file? req.file.path.substr(6) : 'bookCover/defCover' }
     );
 
-    // fs.unlink(`public/${book.img}`, (err) => {
-    //     //if any logger
-    // })
+    if(book.img !== 'bookCover/defCover'){
+        fs.unlink(`public/${book.img}`, (err) => {
+            //if any logger
+        })
+    }
     res.send({ msg: "old Book data", book });
 })
 

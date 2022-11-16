@@ -12,8 +12,12 @@ const userSchema = new Schema({
     mobile: {type: Number, unique: true, required: true},
     password: {type: String, required: true},
     verify: { type: Boolean, enum: [false, true], default: false },
-    lib: [{ type: Schema.Types.ObjectId, ref: 'Book' }],
-    book_id: [{ type: Schema.Types.ObjectId, ref: 'Book' }]
+    book_id: [{ type: Schema.Types.ObjectId, ref: 'Book' }],
+    lib: [
+        { type: Schema.Types.ObjectId, ref: 'Book' }, //book_id
+        { type: Date, required: true }, //date added
+        { type: Date, required: true } //recently read
+    ]
 });
 
 const JoiValidUser = Joi.object({

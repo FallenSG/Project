@@ -4,7 +4,7 @@ const passport = require('passport');
 const { Direct, renderType } = require('../routePlan');
 const { 
     renderFilePath, failureRedirect, successRedirect 
-} = Direct(failure='signIn', success='dash')
+} = Direct(path="signIn", failure='signIn', success='dash')
 
 const { isAuthReq } = require('../middleware/authHandler');
 
@@ -17,10 +17,10 @@ router.get('/', async(req, res) => {
 router.post('/', async(req, res, next) => {
     passport.authenticate('local', function(err, user, info){
         if(err){
-            return res.status(401).json(err);
+            return res.status(401).send({ data: err });
         }
         if(!user){
-            return res.status(401).json(info);
+            return res.status(401).send({ data: info.message });
         }
         req.logIn(user, function (err) {
             if (err) { return next(err); }

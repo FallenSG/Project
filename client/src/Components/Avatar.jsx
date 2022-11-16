@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Avatar({ dispStyle }) {
     const nav = useNavigate();
-    const [ user, setUser ] = useState({username: "Fallen"});
+    const [ user, setUser ] = useState({});
     const [anchorEl, setAnchorEl] = useState(null);
 
     const isMenuOpen = Boolean(anchorEl);
@@ -29,6 +29,7 @@ export default function Avatar({ dispStyle }) {
     };
 
     const handleSignOut = () => {
+        setAnchorEl(null);
         axios.post('/sign_out');
         setUser({});
     }
@@ -98,10 +99,12 @@ export default function Avatar({ dispStyle }) {
                 }}
             >
                 <MenuItem onClick={handleProfile}>
-                    <ListItemIcon> 
-                        <AvatarBlock fontSize="small">{user.username[0]}</AvatarBlock> 
-                    </ListItemIcon>
-                    {user.username}
+                        <ListItemIcon> 
+                            <AvatarBlock fontSize="small">{
+                                Object.keys(user).length ? user.username[0] : ""
+                            }</AvatarBlock> 
+                        </ListItemIcon>
+                        {user.username}
                 </MenuItem>
                 
                 <MenuItem sx={{ display: dispStyle.mobScreen }} onClick={handleLib}>

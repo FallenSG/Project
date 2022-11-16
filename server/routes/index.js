@@ -10,7 +10,7 @@ router.get('/user', async(req, res) => {
     let statusCode = 200;
     if(!req.user) statusCode = 404;
     const user = req.user
-    ['mobile', 'password', 'verify']
+    // ['mobile', 'password', 'verify']
     res.json({ statusCode, data: req.user });
 });
 

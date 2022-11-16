@@ -31,7 +31,7 @@ const Center = styled(Paper)(({ theme }) => ({
 
 function Navbar() {
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" sx={{ width: "100vw" }}>
         <StyledToolbar>
         <Stack direction="row" spacing={2}
           sx={{

@@ -36,17 +36,16 @@ function checkISBN(isbn) {
 //else book creation process is executed 
 module.exports = async function (req, res) {
     let book = {
-        img: req.file?.path.substr(6),
+        img: req.file ? req.file.path.substr(6) : 'bookCover/defCover',
         title: req.body.title,
         isbn: req.body.isbn,
-        author_name: req.user.username,  
+        genre: [ req.body.genre ],
+        author_id: req.user._id,
         summary: "Summary need to be updated plz check after sometime",
         pub_date: new Date()
     }
 
     try {
-        JoiValidBook.validate(book);
-
         const ExistBook = await Book.findOne({
             $or: [
                 { title: book.title },
@@ -55,13 +54,14 @@ module.exports = async function (req, res) {
         });
 
         if (ExistBook)
-            throw new Error("Book Title already exists!!");
+            throw new Error("Book with same Title/ISBN already exists!!");
 
         if (!checkISBN(book.isbn))
-            throw new Error("Plz Enter valid isbn number!!!");
+            throw new Error("Please Enter valid ISBN Number!!")
 
-        book = await (new Book(book)).save();
-
+        JoiValidBook.validate(book);
+        book = await (new Book(book)).save()
+        
         await User.findOneAndUpdate(
             { _id: req.user._id },
             { $push: { book_id: book._id } });
@@ -69,7 +69,7 @@ module.exports = async function (req, res) {
         res.send({ msg: "Congrats your book has been published on our website!!! " });
 
     } catch (err) {
-        if(book.img){
+        if (book.img !== 'bookCover/defCover') {
             fs.unlink(`public/${book.img}`, (err) => {
                 // if(err) logger
             })

@@ -5,7 +5,7 @@ const createBook = require('../controller/createBook');
 const { auth } = require('../middleware/authHandler');
 
 const { Direct, renderType } = require('../routePlan');
-const { renderFilePath } = Direct();
+const { renderFilePath } = Direct(path="createBook");
 
 const upload = multer({
     dest: 'public/bookCover/',

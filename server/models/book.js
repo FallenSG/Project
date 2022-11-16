@@ -8,9 +8,9 @@ const { wilsonScore, baysonAvg } = require('../controller/bookRanker')
 const BookSchema = new Schema(
     {
         title: { type: String, required: true },
-        author_name: { type: String, required: true },
+        author_id: { type: Schema.Types.ObjectId, ref: 'User' },
         summary: { type: String, required: true },
-        isbn: { type: String, required: true },
+        isbn: { type: String },
         genre: [{ type: String, required: true }],
         doc: {},
         img: { type: String },
@@ -25,7 +25,7 @@ const BookSchema = new Schema(
 
 const JoiValidBook = Joi.object({
     title: Joi.string().min(3).max(50).required(),
-    author_name: Joi.string().required(),
+    // author_name: Joi.string().required(),
     summary: Joi.string().required(),
     isbn: Joi.string().min(10).max(13),
     genre: Joi.array().items(Joi.string()),
