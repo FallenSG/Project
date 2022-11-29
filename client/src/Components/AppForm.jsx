@@ -80,15 +80,15 @@ const Loading = styled(CircularProgress)({
 function MainContent(props) {
     const { title, underTitle, children, buttonText, customHandler, bottomPart } = props;
     const [isClicked, setIsClicked] = useState(false);
-    const [banner, setBanner] = useState({code: null, msg: null})
+    const [banner, setBanner] = useState({code: null, msg: null, shown: false})
 
     const reqHandler = async () => {
         customHandler(() => setIsClicked(true)).then((resp) => {
-            setBanner({code: 'success', msg: resp.data.data})
+            setBanner({code: 'success', msg: resp.data.data, shown: true})
             setIsClicked(false);
 
         }).catch((err) => {
-            setBanner({ code: 'error', msg: err.response.data.data })
+            setBanner({ code: 'error', msg: err.response.data.data, shown: true })
             setIsClicked(false);
 
         });
@@ -97,7 +97,7 @@ function MainContent(props) {
     return (
         <ThemeProvider theme={formTheme}>
             <Container maxWidth="sm">
-                <AppFormPopup statusCode={banner.code} msg={banner.msg} />
+                <AppFormPopup banner={banner} />
                 <Box sx={{ mt: 7, mb: 12 }}>
                     <Paper
                         background="light"

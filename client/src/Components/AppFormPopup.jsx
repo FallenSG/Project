@@ -50,7 +50,8 @@ function MainContent(props){
     )
 }
 
-export default function AppFormPopup({statusCode, msg}) {
+export default function AppFormPopup({banner}) {
+    const { statusCode, msg, shown } = banner;
     if(statusCode === null || msg === null) return;
 
     return (

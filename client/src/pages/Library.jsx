@@ -1,14 +1,13 @@
 import { ImageList, ImageListItem, ImageListItemBar, Grid, Typography, Divider, Link } from '@mui/material'
 import { Brush } from '@mui/icons-material';
-import { useState, useEffect } from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios';
 
-import PageLayout from '../Components/PageLayout';
-import Loading from '../Components/Loading';
+import { PageLayout, Context} from '../Components/PageLayout';
 
-function BookList({ lib }){
+function BookList(){
     const navg = useNavigate()
+    const lib = useContext(Context)[0];
 
     return (
         <ImageList
@@ -59,22 +58,12 @@ function Title(){
 }
 
 export default function Library() {
-    const [lib, setLib] = useState([]);
-
-    const fetchData = async () => {
-        const resp = await axios.get('/library/api')
-        setLib(resp.data.data);
-    }
-
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    var element;
-    if (!Object.keys(lib).length) element = <Loading />;
-    else element = <BookList lib={lib} />;
-
     return (
-        <PageLayout nav='normal' element={<Title />} gridElem={element} />
+        <PageLayout 
+            url="/library/api" 
+            elem={<Title />} 
+            gridElem={<BookList />}
+            failureMsg= "Your Library is Empty"
+        />
     )
 }

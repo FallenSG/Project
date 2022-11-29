@@ -1,13 +1,14 @@
-import { ImageList, ImageListItem, ImageListItemBar, Typography, Link, Grid, Divider } from '@mui/material'
-import { useState, useEffect } from 'react'
+import { ImageList, ImageListItem, ImageListItemBar, 
+    Typography, Link, Grid, Divider } from '@mui/material'
+import {  useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 
-import Loading from '../Components/Loading'
-import PageLayout from '../Components/PageLayout'
+import { PageLayout, Context } from '../Components/PageLayout'
 
-function Feed({ bookCatg, catgTitle, routeName = "" }) {
+function Feed({ catg, catgTitle, routeName = "" }) {
     const navg = useNavigate();
+    const bookCatg = useContext(Context)[0][catg];
+
     return (
         <>
             <Grid
@@ -36,7 +37,7 @@ function Feed({ bookCatg, catgTitle, routeName = "" }) {
 
             <ImageList
                 sx={{ height: 'inherit', pt: '10px' }}
-                cols={8}
+                cols={4}
                 spacing={1}
             >
                 {bookCatg.map((book) => (
@@ -61,31 +62,22 @@ function Feed({ bookCatg, catgTitle, routeName = "" }) {
 }
 
 export default function Home(){
-    const [bookData, setBookData] = useState({});
-
-    const fetchData = async () => {
-        const resp = await axios.get('/book');
-        setBookData(resp.data.data[0]);
-    }
-    
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    var element;
-    if (!Object.keys(bookData).length) element = <Loading />;
-    else element = <>
+    var element = <>
         <Feed catgTitle={'New Arrival'}
-            bookCatg={bookData['newArrival']} routeName={'newest'} />
+            catg={'newArrival'} routeName={'newest'} />
         <Feed catgTitle={'Popular Books'}
-            bookCatg={bookData['popRating']} routeName={'popular'} />
+            catg={'popRating'} routeName={'popular'} />
         <Feed catgTitle={'Hot Rated'}
-            bookCatg={bookData['hotRating']} routeName={'hot'} />
+            catg={'hotRating'} routeName={'hot'} />
         <Feed catgTitle={'Rank'}
-            bookCatg={bookData['ranking']} routeName={'ranking'} />
+            catg={'ranking'} routeName={'ranking'} />
     </>;
     
     return (
-        <PageLayout nav="normal" gridElem={element} />
+        <PageLayout 
+            url="/book"
+            gridElem={element} 
+            failureMsg="Error"
+        />
     )
 }   

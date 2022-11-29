@@ -24,7 +24,7 @@ router.post('/', async(req, res, next) => {
         }
         req.logIn(user, function (err) {
             if (err) { return next(err); }
-            return res.redirect(successRedirect);
+            return res.send({ data: successRedirect });
         });
     })(req, res, next);
 });

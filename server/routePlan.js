@@ -11,9 +11,10 @@ const Directory = {
     'forgotPass': ['/forgot-password', './forgotPass', 'forgotPass'],
     'dash': ['/dashboard', './dashboard', 'dashboard'],
     'profile': [],
+    'genre': ['/genre', './genre', renderPath],
     'book': ['/book', './book', 'book'],
     'createBook': ['/createBook', './createBook', 'book'],
-    'bookModify': ['/bookModify', './bookModify', 'bookModify'],
+    'bookModify': ['/modifyBook', './bookModify', 'bookModify'],
     'author': ['/author', './author', renderPath],
     'library': ['/library', './library', renderPath],
     'sample': ['/sample', './sample', 'sample']

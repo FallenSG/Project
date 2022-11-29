@@ -41,7 +41,7 @@ app.use('/', require('./routes/index'));
 mongoose
     .connect(db, { useNewUrlParser: true })
     .then(() => console.log("Connected to MongoDB..."))
-    .catch((err) => console.log("Couldn't connect to MongoDB"));
+    .catch((err) => console.log("Couldn't connect to MongoDB"));    
 
 
 app.listen(port, host, (err) => {

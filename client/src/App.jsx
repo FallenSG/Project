@@ -6,9 +6,11 @@ import Dashboard from './pages/Dashboard';
 import ForgotPass from './pages/ForgotPass';
 import ForgotPass2 from './pages/ForgotPass2';
 import Sample from './pages/sample';
+import Genre from './pages/Genre';
 import BookID from './pages/BookID';
+import CreateBook from './pages/CreateBook';
+import ModifyBook from './pages/ModifyBook'
 import VerifyExpired from './pages/VerifyExpired';
-import BookModify from './pages/bookModify'
 import Library from './pages/Library'
 
 export default function App() {
@@ -22,8 +24,10 @@ export default function App() {
         <Route exact path="/forgot-password/:token" element={<ForgotPass2 />} />
         <Route exact path="/verify/token-expire" element={<VerifyExpired />} />
         <Route exact path="/dashboard" element={<Dashboard />} />
+        <Route exact path="/createBook" element={<CreateBook />} />
+        <Route exact path="/genre/:genreid" element={<Genre />} />
         <Route exact path="/book/:bookid" element={<BookID />} />
-        <Route exact path="/bookModify/:bookid" element={<BookModify />} />
+        <Route exact path="/modifyBook/:bookid" element={<ModifyBook />} />
         <Route exact path="/library" element={<Library />} />
         <Route exact path="/sample" element={<Sample />} />
       </Routes>

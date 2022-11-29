@@ -21,7 +21,7 @@ const upload = multer({
     }
 });
 
-router.use(auth);
+// router.use(auth);
 
 router.get('/:id', async(req, res) => {
     Book.findById({ _id: req.params.id }, async (err, book) => {
@@ -31,18 +31,21 @@ router.get('/:id', async(req, res) => {
 });
 
 router.post('/:id', upload.single('bookCover'), async (req, res) => {
-    
-    const book = await Book.findOneAndUpdate(
-        { _id: req.params.id }, 
-        { img: req.file? req.file.path.substr(6) : 'bookCover/defCover' }
-    );
-
-    if(book.img !== 'bookCover/defCover'){
-        fs.unlink(`public/${book.img}`, (err) => {
-            //if any logger
-        })
-    }
-    res.send({ msg: "old Book data", book });
+    try{
+        const book = await Book.findOneAndUpdate(
+            { _id: req.params.id }, 
+            { img: req.file? req.file.path.substr(6) : 'bookCover/defCover' }
+            );
+            
+            if(book.img !== 'bookCover/defCover'){
+                fs.unlink(`public/${book.img}`, (err) => {
+                    //if any logger
+                })
+            }
+            res.status(200).send({ msg: "old Book data", book });
+        } catch(err) {
+            res.status(400).send({ message: "Error" })
+        }
 })
 
 module.exports = router;

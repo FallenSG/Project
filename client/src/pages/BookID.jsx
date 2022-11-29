@@ -1,17 +1,14 @@
 import {
     Paper, Box, Grid,
     Stack, Typography,
-    Rating, Link, Button, Tabs, Tab
+    Rating, Link, Button, Tabs, Tab,
+    ImageList, ImageListItem, ImageListItemBar
 } from '@mui/material'
 import { Flag, Home, Add, FavoriteBorder} from '@mui/icons-material'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useState, useEffect, useContext, createContext } from 'react'
-import axios from 'axios'
+import { useContext, useState } from 'react'
 
-import PageLayout from '../Components/PageLayout';
-import Loading from '../Components/PageLayout';
-
-const Context = createContext({});
+import { PageLayout, Context} from '../Components/PageLayout';
 
 function BookInfo() {
     const feed = useContext(Context);
@@ -24,14 +21,15 @@ function BookInfo() {
 
     return ( 
         <Grid container sx={{ backgroundColor: "#f5f6fc", justifyContent: "center" }}>
-            <Grid item xs={10}>
+            <Grid item xs={10}> {/* path  */}
                 <Stack direction="row" sx={{ alignItems: "center", p: "24px 0 0 0", display: { xs: "none", sm: 'block' }, fontFamily: "Nunito Sans,SF Pro Text,SF Pro Icons,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;" }}>
                     <Home sx={{ fontSize: '16px' }} onClick={() => navg('/')} />/
-                    <Link href='/book'>{feed.genre[0]}</Link>/
+                    <Link href='/book' underline='hover'>{feed.genre[0]}</Link>/
                     {feed.title}
                 </Stack>
             </Grid>
-            <Grid item xs={3} sx={{ pt: 2 }}>
+
+            <Grid item xs={3} sx={{ pt: 2 }}> {/* Book Cover */}
                 <Box
                     component="img"
                     sx={{
@@ -41,26 +39,32 @@ function BookInfo() {
                     src={feed.img}
                 />
             </Grid>
-            <Grid item xs={7} sx={{ pt: 4 }}>
-                <Typography variant="h4" sx={{ pr: "15%" }}>
-                    {feed.title}
-                </Typography> <br />
-                <Typography sx={{ color: "#83848f", pl: 1 }}>
-                    Author: <Link href={`/author/${feed.author_id._id}`} underline="hover">{feed.author_id.username}</Link>
-                </Typography>
-                <Grid container direction="row" spacing={space} sx={{ alignItems: "center", pt: 2 }}>
-                    <Grid item> <Rating value={rating} precision={0.01} size="large" readOnly />  </Grid>
-                    <Grid item> <Typography sx={{ fontSize: '24px' }}> {rating} </Typography> </Grid>
-                    <Grid item> <Typography> ({feed.ratingCount} ratings) </Typography> </Grid>
+            
+            <Grid item xs={7} container sx={{ pt: 4 }}>
+                <Grid item xs={12} sx={{ height: "204px" }}>
+                    <Typography variant="h4" sx={{ pr: "15%" }}>
+                        {feed.title}
+                    </Typography> <br />
+                    <Typography sx={{ color: "#83848f", pl: 1 }}>
+                        Author: <Link href={`/author/${feed.author_id._id}`} underline="hover">{feed.author_id.username}</Link>
+                    </Typography>
+                    <Grid container direction="row" spacing={space} sx={{ alignItems: "center", pt: 2 }}>
+                        <Grid item> <Rating value={rating} precision={0.01} size="large" readOnly />  </Grid>
+                        <Grid item> <Typography sx={{ fontSize: '24px' }}> {rating} </Typography> </Grid>
+                        <Grid item> <Typography> ({feed.ratingCount} ratings) </Typography> </Grid>
+                    </Grid>
                 </Grid>
-                <Stack direction="row" sx={{ pt: '20%' }} spacing={2}>
-                    <Button type="submit" variant="contained" size="large" sx={{ borderRadius: "24px" }}>Read</Button>
-                    <Button type="submit" variant="contained" size="large" startIcon={<Add />} sx={{ borderRadius: "24px" }}> Add to Library</Button>
-                </Stack>
-                <Stack direction="row" sx={{ alignItems: "center", pt: '4%' }} spacing={0.5}>
-                    <Flag size="small" color="#83848f" sx={{ fontSize: '16px' }} />
-                    <Link underline="none" color="#83848f" sx={{ fontSize: '14px' }}>Report Story</Link>
-                </Stack>
+                
+                <Grid item xs={12} sx={{ height: "204px" }}>
+                    <Stack direction="row" sx={{ pt: '12%' }} spacing={2}>
+                        <Button type="submit" variant="contained" size="large" sx={{ borderRadius: "24px" }}>Read</Button>
+                        <Button type="submit" variant="contained" size="large" startIcon={<Add />} sx={{ borderRadius: "24px" }}> Add to Library</Button>
+                    </Stack>
+                    <Stack direction="row" sx={{ alignItems: "center", pt: '4%' }} spacing={0.5}>
+                        <Flag size="small" color="#83848f" sx={{ fontSize: '16px' }} />
+                        <Link underline="none" color="#83848f" sx={{ fontSize: '14px' }}>Report Story</Link>
+                    </Stack>
+                </Grid>
             </Grid>
         </Grid>
     );
@@ -87,16 +91,47 @@ function Genre() {
     )
 }
 
+function Recd(){
+    const { recd } = useContext(Context);
+    const navg = useNavigate();
+    return (
+        <>
+            <Typography variant="h5" sx={{ margin: "48px 0 16px" }}>You May Also Like</Typography>
+            <ImageList
+                sx={{ height: 'inherit', pt: '10px' }}
+                cols={8}
+                spacing={1}
+            >
+                {recd.map((book) => (
+                    <ImageListItem key={book._id}>
+                        <img
+                            onClick={() => navg(`/book/${book._id}`)}
+                            src={book.img}
+                            alt='Not Found'
+                            loading="lazy"
+                        />
+                        <ImageListItemBar
+                            onClick={() => navg(`/book/${book._id}`)}
+                            sx={{ width: '10vw' }}
+                            title={book.title}
+                            position="below"
+                        />
+                    </ImageListItem>
+                ))}
+            </ImageList>
+        </>
+    )
+}
+
 function About() {
-    const { summary, rec } = useContext(Context);
+    const { summary } = useContext(Context);
     return (
         <Stack>
             <Typography variant="h5" sx={{ marginBottom: '16px' }}>Synopsis</Typography>
             <Typography variant="body1">{summary}</Typography>
             <Typography variant="h5" sx={{ margin: "48px 0 16px" }}>Tags</Typography>
             <Genre />
-            <Typography variant="h5" sx={{ margin: "48px 0 16px" }}>You May Also Like</Typography>
-            <Typography>{rec}</Typography>
+            <Recd />
         </Stack>
     )
 }
@@ -166,45 +201,14 @@ function TabSection() {
 }
 
 export default function BookID(){
-    const location = useLocation();
-    const [Book, setBook] = useState({});
-
-    const fetchData = async () => {
-        let bookId = location.pathname.split('/')[2]
-        const resp = await axios.get(`/book/api/${bookId}`)
-        setBook(resp.data.data);
-    }
-    useEffect(() => {
-        fetchData();
-    }, [])
-
-    // const Book = {
-    //     "_id": "62ee828adabfe76df8e50628",
-    //     "title": "harry potter and the sorcerer's stone",
-    //     "author_name": "fallen",
-    //     "summary": "Summary need to be updated plz check after sometime",
-    //     "isbn": "9780001912366",
-    //     "genre": ['fantasy', 'classics'],
-    //     "img": "/bookCover/d58d85af9c3d7e995cd9155fc9f6a162",
-    //     "review_id": [],
-    //     "pub_date": "2022-08-06T15:02:33.862Z",
-    //     "totalRating": 350,
-    //     "ratingCount": 120,
-    //     "hotRank": 0,
-    //     "popRank": 0,
-    //     "__v": 0
-    // }
-
-    var element=<></>, gridElem;
-    if (!Object.keys(Book).length) gridElem = <Loading />;
-    else {
-        element = <BookInfo />
-        gridElem = <TabSection />
-    }
-
+    const bookId = useLocation().pathname.split('/')[2];
+   
     return (
-        <Context.Provider value={Book}>
-            <PageLayout nav='normal' element={element} gridElem={gridElem} />
-        </Context.Provider>
+       <PageLayout
+            url={`/book/api/${bookId}`}
+            elem={<BookInfo />} 
+            gridElem={<TabSection />} 
+            failureMsg="No Such Book Exists"
+        />
     )
 }
