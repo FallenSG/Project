@@ -1,11 +1,17 @@
 const router = require('express').Router();
 const { User } = require('../models/user')
+const ObjectId = require('mongoose').Types.ObjectId;
 
 router.get('/:id', async (req, res) => {
-    User.find({ _id: req.params.id }, async(err, author) => {
-        if(err || !Object.keys(author[0].book_id).length) return res.status(404).send("No Such author");
-        res.send({ data: author });
-    })
+    const id = new ObjectId(req.params.id);
+    User.aggregate([
+        { $match: { _id: id } },
+        { $match: { book_id: { $exists: true, $ne: [] } } },
+        { $project: { username: 1, book_id: 1 } }
+    ])
+        .then( (data) => res.send({data}) )
+        .catch( err => res.status(400).send(err) );
+
 })
 
 module.exports = router;

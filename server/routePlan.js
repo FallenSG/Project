@@ -4,6 +4,7 @@ const renderPath = path.join(__dirname, '../client/build/index.html')
 const Directory = {
     //reference_name: [route, routeDefLoc, renderPugFile]
     'index': ['/', './index', 'index'],
+    'search': ['/search', './search', renderPath],
     'signIn': ['/sign_in', './sign_in', 'sign_in'],
     'signOut': ['/sign_out', './sign_out', 'sign_out'],
     'signUp': ['/sign_up', './sign_up', 'sign_up'],

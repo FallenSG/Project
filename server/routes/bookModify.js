@@ -26,7 +26,7 @@ const upload = multer({
 router.get('/:id', async(req, res) => {
     Book.findById({ _id: req.params.id }, async (err, book) => {
         if(err) return res.status(400).send("No such book");
-        res[renderType](renderFilePath, { path: `/bookModify/${req.params.id}` });
+        res[renderType](renderFilePath, { path: `/modifyBook/${req.params.id}` });
     })
 });
 

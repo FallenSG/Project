@@ -64,7 +64,7 @@ router.get('/api/:id', async(req, res) => {
                         "count": { $size: { $setIntersection: ["$$genre", "$genre"] } }
                     }},
                     { $sort: { "count": -1 } },
-                    { $limit: 8 },
+                    { $limit: 6 },
                     { $project: { _id: 1, title: 1, img: 1 } },
                     { $match: { _id: { $ne: id } } }
                 ],

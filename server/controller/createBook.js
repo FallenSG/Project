@@ -36,7 +36,7 @@ function checkISBN(isbn) {
 //else book creation process is executed 
 module.exports = async function (req, res) {
     let book = {
-        img: req.file ? req.file.path.substr(6) : 'bookCover/defCover',
+        img: req.file ? req.file.path.substr(6) : '/bookCover/defCover',
         title: req.body.title,
         isbn: req.body.isbn,
         genre: [ req.body.genre ],
@@ -69,7 +69,7 @@ module.exports = async function (req, res) {
         res.send({ msg: "Congrats your book has been published on our website!!! " });
 
     } catch (err) {
-        if (book.img !== 'bookCover/defCover') {
+        if (book.img !== '/bookCover/defCover') {
             fs.unlink(`public/${book.img}`, (err) => {
                 // if(err) logger
             })

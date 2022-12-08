@@ -99,7 +99,7 @@ function Recd(){
             <Typography variant="h5" sx={{ margin: "48px 0 16px" }}>You May Also Like</Typography>
             <ImageList
                 sx={{ height: 'inherit', pt: '10px' }}
-                cols={8}
+                cols={6}
                 spacing={1}
             >
                 {recd.map((book) => (
@@ -107,6 +107,7 @@ function Recd(){
                         <img
                             onClick={() => navg(`/book/${book._id}`)}
                             src={book.img}
+                            style={{ aspectRatio: "0.8", resize: "auto", objectFit: "scale-down" }}
                             alt='Not Found'
                             loading="lazy"
                         />

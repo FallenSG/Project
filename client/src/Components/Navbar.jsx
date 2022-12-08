@@ -1,5 +1,7 @@
-import { AppBar, Toolbar, styled, InputBase, Paper, Stack, InputAdornment, Link, IconButton } from '@mui/material'
-import { Explore, SearchSharp } from '@mui/icons-material'
+import { AppBar, Toolbar, styled, Paper, Stack, Link, IconButton } from '@mui/material'
+import { Explore } from '@mui/icons-material'
+
+import SearchBar from './SearchBar';
 import Avatar from './Avatar';
 
 const dispStyle = {
@@ -21,7 +23,7 @@ const StyledToolbar = styled(Toolbar)( ({ theme }) => ({
 }));
 
 const Center = styled(Paper)(({ theme }) => ({
-  backgroundColor: "#00000054",
+  // backgroundColor: "#00000054",
   padding: "0 10px",
   borderRadius: '1200px',
   width: "35%",
@@ -56,17 +58,7 @@ function Navbar() {
           </IconButton>
         </Stack>
 
-        <Center>
-          <InputBase sx={{ color: "#fff", width: '100%', }}
-            startAdornment={
-              <InputAdornment position="start">
-                <SearchSharp sx={{ color: "#fff" }} />
-              </InputAdornment>
-            }
-
-            placeholder="Search..."
-          />
-        </Center>
+        <Center> <SearchBar /> </Center>
        
        <Stack 
         direction="row" 

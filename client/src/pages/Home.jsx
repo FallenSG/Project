@@ -36,7 +36,7 @@ function Feed({ catg, catgTitle, routeName = "" }) {
             <Divider />
 
             <ImageList
-                sx={{ height: 'inherit', pt: '10px' }}
+                sx={{ pt: '10px' }}
                 cols={4}
                 spacing={1}
             >
@@ -45,12 +45,13 @@ function Feed({ catg, catgTitle, routeName = "" }) {
                         <img
                             onClick={() => navg(`/book/${book._id}`)}
                             src={book.img}
+                            style={{ aspectRatio: "0.8", resize: "auto", objectFit: "scale-down" }}
                             alt='Not Found'
                             loading="lazy"
                         />
                         <ImageListItemBar
                             onClick={() => navg(`/book/${book._id}`)}
-                            sx={{ width: '10vw' }}
+                            sx={{ width: '20vw' }}
                             title={book.title}
                             position="below"
                         />

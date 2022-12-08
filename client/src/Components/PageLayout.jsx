@@ -10,6 +10,7 @@ export const Context = createContext({});
 
 export function PageLayout({ url, nav='normal', elem, gridElem, failureMsg }){
     const NavType = {
+        'none': <></>,
         'normal': <Navbar />,
         'form': <AppFormNav />
     };
@@ -47,7 +48,7 @@ export function PageLayout({ url, nav='normal', elem, gridElem, failureMsg }){
     return (
         <Context.Provider value={info?.data}>
             <Grid container sx={{ justifyContent: 'center' }}>
-                <Grid item> { NavType[nav] } </Grid>
+                <Grid item xs={12}> { NavType[nav] } </Grid>
                 <Grid item xs={12}> { element } </Grid>
                 <Grid item xs={10}>
                     <Typography sx={{ justifyContent: "center", alignItems: "center" }}> {message} </Typography>
