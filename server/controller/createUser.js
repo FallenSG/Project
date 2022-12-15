@@ -32,6 +32,6 @@ module.exports = async function(req, res){
         
     } catch(err) {
         // res.render('error', { message: err.message })
-        res.send({msg: err.message})
+        res.status(403).send({msg: err.message})
     }
 }

@@ -35,7 +35,7 @@ router.get('/', async(req, res) => {
             }
         }
     ])
-        .then((data) => res.status(200).send({ data }))
+        .then((data) => res.status(200).send(data))
         .catch(err => res.status(400).send(err));
 });
 
@@ -77,7 +77,7 @@ router.get('/api/:id', async(req, res) => {
         
     ])
         .then((book) => {
-            if(book.length) res.status(200).send({ data: book[0] });
+            if(book.length) res.status(200).send(book[0]);
             else res.status(204).append('message', "No Such Book Exists").end();
         })
         .catch(err => res.status(400).send({ message: "No Such Book Exists" }))

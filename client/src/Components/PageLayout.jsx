@@ -8,20 +8,21 @@ import Loading from './Loading'
 
 export const Context = createContext({});
 
-export function PageLayout({ url, nav='normal', elem, gridElem, failureMsg }){
-    const NavType = {
-        'none': <></>,
-        'normal': <Navbar />,
-        'form': <AppFormNav />
-    };
+const NavType = {
+    'none': <></>,
+    'normal': <Navbar />,
+    'form': <AppFormNav />
+};
 
+
+export function PageLayout({ url, nav='normal', elem, gridElem, failureMsg }){
     const [info, setInfo] = useState({});
 
     const fetchData = async() => {
         axios.get(url)
             .then((resp) => {
                 if(resp.status === 200)
-                    setInfo({status: 200, data: resp.data.data});
+                    setInfo({status: 200, data: resp.data});
                 else if(resp.status === 204) 
                     setInfo({ status: 204, data: resp.message });
             })
@@ -56,5 +57,15 @@ export function PageLayout({ url, nav='normal', elem, gridElem, failureMsg }){
                 <Grid item xs={ 10 }> { gridElement } </Grid>
             </Grid>
         </Context.Provider>
+    )
+}
+
+export function PageLayoutOverload({ nav = 'normal', elem, gridElem }){
+    return (
+        <Grid container sx={{ justifyContent: 'center' }}>
+            <Grid item xs={12}> {NavType[nav]} </Grid>
+            <Grid item xs={12}> {elem} </Grid>
+            <Grid item xs={10}> {gridElem} </Grid>
+        </Grid>
     )
 }

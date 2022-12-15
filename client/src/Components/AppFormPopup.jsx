@@ -51,10 +51,11 @@ function MainContent(props){
 }
 
 export default function AppFormPopup({banner}) {
-    const { statusCode, msg, shown } = banner;
-    if(statusCode === null || msg === null) return;
+    const { code, msg, shown } = banner;
+    if(code === null || msg === null) return;
 
     return (
-        <MainContent bannerType={statusCode} msg={msg} />
+        <MainContent bannerType={code} msg={msg} />
     )
 }   
+

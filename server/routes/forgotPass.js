@@ -49,12 +49,14 @@ router.get('/:token', tokenVerifier, async(req, res) => {
 });
 
 router.post('/:token', tokenVerifier, async (req, res) => {
-    await User.findOneAndUpdate({ email: req.email }, {
+    User.findOneAndUpdate({ email: req.email }, {
         $set: { password: req.body.pass }
-    })
-
-    forgotPass.deleteOne({ token: req.params.token }, (err, data) => { });
-    res.status(200).json({msg: "Password Updated.."})
+    }).then(data => {
+        forgotPass.deleteOne(
+            { token: req.params.token }
+        ).then(data => res.status(200).json({ msg: "Password Updated.." }))
+        .catch(err => { throw new Error({ from: "Deleting forgot pass token", err }) });
+    }).catch(err => console.log(err)); //logger
 })
 
 

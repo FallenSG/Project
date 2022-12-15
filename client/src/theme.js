@@ -7,6 +7,9 @@ export const LightTheme = createTheme({
         },
         navbar: {
             main: "#28282a"
+        },
+        highlight: {
+            main: "#f5f6fc"
         }
     }
 });

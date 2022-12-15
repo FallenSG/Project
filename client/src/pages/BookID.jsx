@@ -1,5 +1,5 @@
 import {
-    Paper, Box, Grid,
+    Box, Grid,
     Stack, Typography,
     Rating, Link, Button, Tabs, Tab,
     ImageList, ImageListItem, ImageListItemBar

@@ -17,14 +17,14 @@ router.get('/', async(req, res) => {
 router.post('/', async(req, res, next) => {
     passport.authenticate('local', function(err, user, info){
         if(err){
-            return res.status(401).send({ data: err });
+            return res.status(401).send(err);
         }
         if(!user){
-            return res.status(401).send({ data: info.message });
+            return res.status(401).send(info.message );
         }
         req.logIn(user, function (err) {
             if (err) { return next(err); }
-            return res.send({ data: successRedirect });
+            return res.send(successRedirect);
         });
     })(req, res, next);
 });

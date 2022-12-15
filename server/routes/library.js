@@ -6,7 +6,7 @@ const { auth } = require('../middleware/authHandler');
 router.use(auth);
 
 router.get('/api', async(req, res) => {
-    User.find({ _id: req.user.id }) //req.user.id
+    User.find({ _id: req.user.id })
         .populate({
             path: 'lib',
             select: { _id: 1, title: 1, img: 1 }
@@ -15,7 +15,7 @@ router.get('/api', async(req, res) => {
             var data = library[0].lib;
             if(!data.length) 
                 res.status(204).append('message', "Library is Empty").end();
-            else res.status(200).send({ data })
+            else res.status(200).send(data)
         })
         .catch((err) => { 
             // console.log(err) logger
