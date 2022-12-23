@@ -13,6 +13,7 @@ const Directory = {
     'dash': ['/dashboard', './dashboard', 'dashboard'],
     'profile': [],
     'genre': ['/genre', './genre', renderPath],
+    'ranking': ['/ranking', './ranking', renderPath],
     'book': ['/book', './book', 'book'],
     'createBook': ['/createBook', './createBook', 'book'],
     'bookModify': ['/modifyBook', './bookModify', 'bookModify'],

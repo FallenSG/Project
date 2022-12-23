@@ -1,9 +1,15 @@
 const router = require('express').Router();
 const { User } = require('../models/user');
 
+const { Direct, renderType } = require('../routePlan');
+const { renderFilePath } = Direct(path = "library");
 const { auth } = require('../middleware/authHandler');
 
 router.use(auth);
+
+router.get('/', async(req, res) => {
+    res[renderType](renderFilePath);
+});
 
 router.get('/api', async(req, res) => {
     User.find({ _id: req.user.id })

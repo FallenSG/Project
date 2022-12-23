@@ -23,10 +23,10 @@ function Feed({ catg, catgTitle, routeName = "" }) {
 
                 <Grid item>
                     <Link
-                        href={`/book/${routeName}`}
+                        href={`/ranking/${routeName}`}
                         variant="body1"
-                        underline="none"
-                        component="button"
+                        underline="hover"
+                        // component="button"
                     >
                         More..
                     </Link>
@@ -71,7 +71,7 @@ export default function Home(){
         <Feed catgTitle={'Hot Rated'}
             catg={'hotRating'} routeName={'hot'} />
         <Feed catgTitle={'Rank'}
-            catg={'ranking'} routeName={'ranking'} />
+            catg={'all'} routeName={'all'} />
     </>;
     
     return (

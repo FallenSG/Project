@@ -2,14 +2,32 @@ const router = require('express').Router();
 const { User } = require('../models/user')
 const ObjectId = require('mongoose').Types.ObjectId;
 
-router.get('/:id', async (req, res) => {
+const { Direct, renderType } = require('../routePlan');
+const { renderFilePath } = Direct(path = "author");
+
+router.get('/:id', async(req, res) => {
+    res[renderType](renderFilePath);
+});
+
+router.get('/api/:id', async (req, res) => {
     const id = new ObjectId(req.params.id);
     User.aggregate([
         { $match: { _id: id } },
         { $match: { book_id: { $exists: true, $ne: [] } } },
-        { $project: { username: 1, book_id: 1 } }
+        { $project: { username: 1, book_id: 1 } },
+        {
+            $lookup: {
+                "from": "books",
+                "let": { 'bid': "$book_id" },
+                "pipeline": [
+                    { "$match": { "$expr": { "$in": ["$_id", "$$bid"] } } },
+                    { "$project": { _id: 1, img: 1, title: 1, summary: 1, totalRating: 1, ratingCount: 1 } }
+                ],
+                as: "book_id"
+            }
+        }
     ])
-        .then( (data) => res.send({data}) )
+        .then( (author) => res.status(200).send(author[0]) )
         .catch( err => res.status(400).send(err) );
 
 })

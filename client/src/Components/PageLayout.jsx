@@ -49,7 +49,7 @@ export function PageLayout({ url, nav='normal', elem, gridElem, failureMsg }){
     return (
         <Context.Provider value={info?.data}>
             <Grid container sx={{ justifyContent: 'center' }}>
-                <Grid item xs={12}> { NavType[nav] } </Grid>
+                {NavType[nav]}
                 <Grid item xs={12}> { element } </Grid>
                 <Grid item xs={10}>
                     <Typography sx={{ justifyContent: "center", alignItems: "center" }}> {message} </Typography>

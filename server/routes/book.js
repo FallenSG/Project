@@ -21,7 +21,7 @@ router.get('/', async(req, res) => {
                     { $project: project }
                 ],
 
-                ranking: [
+                all: [
                     { $sort: { totalRating: -1 } },
                     { $limit: limit },
                     { $project: project }

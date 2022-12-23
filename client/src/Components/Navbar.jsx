@@ -33,53 +33,53 @@ const Center = styled(Paper)(({ theme }) => ({
 
 function Navbar() {
   return (
-    <AppBar position="sticky" sx={{ width: "100vw" }}>
+    <AppBar position="sticky">
         <StyledToolbar>
-        <Stack direction="row" spacing={2}
+          <Stack direction="row" spacing={2}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              pl: "7%"
+            }}
+          >
+            <Link
+              variant="h6"
+              underline="none"
+              color="inherit"
+              href="/"
+              sx={{ fontSize: 24 }}
+            > 
+              {'Project'}
+            </Link>
+
+            <IconButton>
+              <Explore fontSize="large" sx={{ color: "white" }}/>
+            </IconButton>
+          </Stack>
+
+          <Center> <SearchBar /> </Center>
+        
+        <Stack 
+          direction="row" 
+          spacing={1}
           sx={{
-            display: "flex",
-            alignItems: "center",
-            flexWrap: "wrap",
-						pl: "7%"
+            pr: "7%"
           }}
         >
-          <Link
+          <Link 
             variant="h6"
             underline="none"
-            color="inherit"
-            href="/"
-            sx={{ fontSize: 24 }}
-          > 
-            {'Project'}
-          </Link>
+            color="primary"
+            sx={{ padding: 1, display: dispStyle.fullScreen }}
+            href="/library"
+          >
+            Library
+          </Link> 
 
-          <IconButton>
-            <Explore fontSize="large" sx={{ color: "white" }}/>
-          </IconButton>
+          <Avatar dispStyle={dispStyle}/> 
+
         </Stack>
-
-        <Center> <SearchBar /> </Center>
-       
-       <Stack 
-        direction="row" 
-        spacing={1}
-				sx={{
-					pr: "7%"
-				}}
-      >
-        <Link 
-          variant="h6"
-          underline="none"
-          color="primary"
-          sx={{ padding: 1, display: dispStyle.fullScreen }}
-          href="/library"
-        >
-          Library
-        </Link> 
-
-        <Avatar dispStyle={dispStyle}/>
-
-       </Stack>
       </StyledToolbar>
     </AppBar>
   )

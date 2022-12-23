@@ -24,7 +24,7 @@ function BookInfo() {
             <Grid item xs={10}> {/* path  */}
                 <Stack direction="row" sx={{ alignItems: "center", p: "24px 0 0 0", display: { xs: "none", sm: 'block' }, fontFamily: "Nunito Sans,SF Pro Text,SF Pro Icons,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;" }}>
                     <Home sx={{ fontSize: '16px' }} onClick={() => navg('/')} />/
-                    <Link href='/book' underline='hover'>{feed.genre[0]}</Link>/
+                    <Link href={`/genre/${feed.genre[0]}`} underline='hover'>{feed.genre[0]}</Link>/
                     {feed.title}
                 </Stack>
             </Grid>
@@ -60,10 +60,14 @@ function BookInfo() {
                         <Button type="submit" variant="contained" size="large" sx={{ borderRadius: "24px" }}>Read</Button>
                         <Button type="submit" variant="contained" size="large" startIcon={<Add />} sx={{ borderRadius: "24px" }}> Add to Library</Button>
                     </Stack>
-                    <Stack direction="row" sx={{ alignItems: "center", pt: '4%' }} spacing={0.5}>
-                        <Flag size="small" color="#83848f" sx={{ fontSize: '16px' }} />
-                        <Link underline="none" color="#83848f" sx={{ fontSize: '14px' }}>Report Story</Link>
-                    </Stack>
+
+                    <Button
+                        sx={{ fontSize: "14px", mt: "3%", color: "#83848f"}} 
+                        onClick={() => {}}
+                        startIcon={<Flag />}
+                    >
+                        Report Story
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>
@@ -84,7 +88,8 @@ function Genre() {
                         m: '0 8px 8px 8px',
                         borderRadius: '12px',
                         width: "fit-content"
-                    }}># {elem} <FavoriteBorder sx={{ fontSize: "13px" }} /></Link>
+                    }}># {elem} <FavoriteBorder sx={{ fontSize: "13px" }} />
+                </Link>
             ))
         }</Stack>
 

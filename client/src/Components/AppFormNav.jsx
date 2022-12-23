@@ -5,7 +5,8 @@ const StyledToolbar = styled(Toolbar)( ({ theme }) => ({
     [theme.breakpoints.up('sm')]: {
         height: 70,
     },
-    backgroundColor: theme.palette.navbar.main
+    backgroundColor: theme.palette.navbar.main,
+    justifyContent: 'space-between'
 }));
 
 const rightLink = {
@@ -17,7 +18,7 @@ const rightLink = {
 export default function AppFormNav(){
     return (
         <AppBar position="sticky">
-           <StyledToolbar sx={{ justifyContent: 'space-between' }}>
+           <StyledToolbar>
                 <Box sx={{ flex: 1, display: { xs: 'none', sm: 'block' } }} />
                 <Link
                     variant="h6"

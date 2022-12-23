@@ -12,6 +12,8 @@ import CreateBook from './pages/CreateBook';
 import ModifyBook from './pages/ModifyBook'
 import VerifyExpired from './pages/VerifyExpired';
 import Library from './pages/Library'
+import Author from './pages/Author'
+import Ranking from './pages/Ranking'
 
 export default function App() {
   return (
@@ -25,10 +27,12 @@ export default function App() {
         <Route exact path="/verify/token-expire" element={<VerifyExpired />} />
         <Route exact path="/dashboard" element={<Dashboard />} />
         <Route exact path="/createBook" element={<CreateBook />} />
+        <Route exact path="/author/:authorid" element={<Author />} />
         <Route exact path="/genre/:genreid" element={<Genre />} />
         <Route exact path="/book/:bookid" element={<BookID />} />
         <Route exact path="/modifyBook/:bookid" element={<ModifyBook />} />
         <Route exact path="/library" element={<Library />} />
+        <Route exact path="/ranking/:rankType" element={<Ranking />} />
         <Route exact path="/sample" element={<Sample />} />
       </Routes>
     </Router>
