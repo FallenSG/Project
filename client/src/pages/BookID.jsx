@@ -7,15 +7,22 @@ import {
 import { Flag, Home, Add, FavoriteBorder} from '@mui/icons-material'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react'
+import axios from 'axios'
 
 import { PageLayout, Context} from '../Components/PageLayout';
 
 function BookInfo() {
     const feed = useContext(Context);
 
+    const handleAdd = () => {
+        axios.post('/library/addItem', { bookId: feed._id })
+            .then(data => console.log(data, feed._id, feed.title))
+            .catch(err => console.log(err, feed._id, feed.title));
+    }
+
     const space = 1;
     let rating = (feed.totalRating / feed.ratingCount).toFixed(2)
-    rating = rating > 0 ? rating : 0;
+    rating = rating > 0 ? rating : 0;   
 
     const navg = useNavigate();
 
@@ -58,7 +65,14 @@ function BookInfo() {
                 <Grid item xs={12} sx={{ height: "204px" }}>
                     <Stack direction="row" sx={{ pt: '12%' }} spacing={2}>
                         <Button type="submit" variant="contained" size="large" sx={{ borderRadius: "24px" }}>Read</Button>
-                        <Button type="submit" variant="contained" size="large" startIcon={<Add />} sx={{ borderRadius: "24px" }}> Add to Library</Button>
+                        <Button 
+                            sx={{ borderRadius: "24px" }}
+                            onClick={handleAdd}
+                            type="submit" 
+                            variant="contained" 
+                            size="large" 
+                            startIcon={<Add />} 
+                        > Add to Library</Button>
                     </Stack>
 
                     <Button

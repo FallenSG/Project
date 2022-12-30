@@ -14,6 +14,7 @@ import VerifyExpired from './pages/VerifyExpired';
 import Library from './pages/Library'
 import Author from './pages/Author'
 import Ranking from './pages/Ranking'
+import Reset from './pages/Reset'
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
         <Route exact path="/library" element={<Library />} />
         <Route exact path="/ranking/:rankType" element={<Ranking />} />
         <Route exact path="/sample" element={<Sample />} />
+        <Route exact path="/reset-password" element={<Reset />} />
       </Routes>
     </Router>
   );

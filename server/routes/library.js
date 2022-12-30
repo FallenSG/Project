@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const { User } = require('../models/user');
+const { Book } = require('../models/book')
+const ObjectId = require('mongoose').Types.ObjectId;
 
 const { Direct, renderType } = require('../routePlan');
 const { renderFilePath } = Direct(path = "library");
@@ -28,6 +30,32 @@ router.get('/api', async(req, res) => {
             res.send("Oops!! It seems an error happened");
         })
     
+})
+
+router.post('/addItem', async(req, res) => {
+    const bookId = ObjectId(req.body.bookId);
+    Book.findOne({ _id: bookId })
+        .then(book => {
+            if(book === null) 
+                return res.status(204).send("No such Book");
+            const date = new Date();
+            User.findOneAndUpdate({ _id: req.user._id }, {
+                $push: { lib: {
+                    book_id: book._id,
+                    added: date,
+                    read: date
+                } }
+            })
+                .then(data => res.send("Added"))
+                .catch(err => { throw new Error("Couldn't add book to your library") })
+        })
+        .catch(err => {
+            res.status(400).send(err)
+        })
+})
+
+router.post('/removeItem', async(req, res) => {
+
 })
 
 module.exports = router

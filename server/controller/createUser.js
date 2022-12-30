@@ -9,7 +9,6 @@ module.exports = async function(req, res){
     let user = {
         username: req.body.username,
         email: req.body.email,
-        mobile: req.body.mobile,
         password: req.body.password
     }
 
@@ -19,16 +18,15 @@ module.exports = async function(req, res){
         const ExistUser = await User.findOne({
             $or: [
                 { email: req.body.email },
-                { mobile: req.body.mobile }
             ]
         });
 
         if(ExistUser) 
-            throw new Error("Email/Mobile Number already Registered");
+            throw new Error("Email already Registered");
         await (new User(user)).save();
 
         const resp = await mailer(user.username, user.email);
-        res.status(resp.code).send({ msg: resp.msg });
+        res.status(resp.code).send(resp.msg);
         
     } catch(err) {
         // res.render('error', { message: err.message })

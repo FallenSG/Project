@@ -1,5 +1,5 @@
-import { Menu, MenuItem, IconButton, ListItemIcon, Avatar as AvatarBlock } from '@mui/material'
-import { AccountCircleSharp, Logout, LibraryBooks, Create } from '@mui/icons-material'
+import { Menu, MenuItem, IconButton, ListItemIcon, Avatar as AvatarBlock, Divider } from '@mui/material'
+import { AccountCircleSharp, Logout, LibraryBooks, Create, LockReset } from '@mui/icons-material'
 import axios from 'axios'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
@@ -15,13 +15,14 @@ export default function Avatar({ dispStyle }) {
         const eventTarget = event.currentTarget;
         if(Object.keys(user).length) return setAnchorEl(eventTarget);
         
-        const resp = await axios.get('/user');
-        if(resp.data.statusCode === 200){
-            setUser(resp.data.data); 
-            setAnchorEl(eventTarget);
-        } 
-        else nav('/sign_in');
-        // setAnchorEl(eventTarget);
+        axios.get('/user')
+            .then(resp => {
+                if(resp.status === 200){
+                    setUser(resp.data);
+                    setAnchorEl(eventTarget);
+                }
+            })
+            .catch(err => nav('/sign_in'));
     };
 
     const handleMenuClose = () => {
@@ -38,12 +39,16 @@ export default function Avatar({ dispStyle }) {
         nav('/profile');
     }
 
-    const handleAuth = () => {
-        nav('/author');
+    const handleCreate = () => {
+        nav('/createBook');
     }
 
     const handleLib = () => {
         nav('/library');
+    }
+
+    const handleReset = () => {
+        nav('/reset-password');
     }
 
     return (
@@ -70,7 +75,7 @@ export default function Avatar({ dispStyle }) {
                 }}
                 open={isMenuOpen}
                 onClose={handleMenuClose}
-                sx={{ mt: '45px' }}
+                sx={{ mt: '45px', width: "25vw" }}
                 PaperProps={{
                     elevation: 0,
                     sx: {
@@ -101,20 +106,27 @@ export default function Avatar({ dispStyle }) {
                 <MenuItem onClick={handleProfile}>
                         <ListItemIcon> 
                             <AvatarBlock fontSize="small">{
-                                Object.keys(user).length ? user.username[0] : ""
+                                Object.keys(user).length ? user.username[0].toUpperCase() : ""
                             }</AvatarBlock> 
                         </ListItemIcon>
                         {user.username}
                 </MenuItem>
+
+                <Divider />
                 
                 <MenuItem sx={{ display: dispStyle.mobScreen }} onClick={handleLib}>
                     <ListItemIcon> <LibraryBooks fontSize="small" /> </ListItemIcon>
                     Library
                 </MenuItem>
                     
-                <MenuItem onClick={handleAuth}>
+                <MenuItem onClick={handleCreate}>
                     <ListItemIcon> <Create fontSize="small" /> </ListItemIcon>
-                    Create
+                    Publish Your Work
+                </MenuItem>
+
+                <MenuItem onClick={handleReset}>
+                    <ListItemIcon> <LockReset fontSize="small" /> </ListItemIcon>
+                    Reset Password
                 </MenuItem>
 
                 <MenuItem onClick={handleSignOut}>

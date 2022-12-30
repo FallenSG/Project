@@ -1,23 +1,28 @@
 import { useState } from 'react'
-import { Grid, Paper } from '@mui/material'
+import { Grid, Paper, TextField, Button, Box } from '@mui/material'
+import axios from 'axios'
+
+import AppForm from '../Components/AppForm'
 
 export default function Sample(){
-    const [ user, setUser ] = useState('samole')
+
+    const handleSubmit = (e) => {
+        axios.post('/sample', { email: "something", password: "something" })
+            .then(resp => console.log(resp.data))
+            .catch(err => console.log(err))
+    }
+
     return (
-        <Grid container spacing={2}>
-            <Grid item xs={6} sx={{ height: "403px", backgroundColor: "Red" }}>
-                Left side
-            </Grid>
-
-            <Grid item container xs={6} spacing={2}>
-                <Grid item xs={12} sx={{ height: "201px", backgroundColor: "lightblue" }}>
-                    Right Top
-                </Grid>
-
-                <Grid item xs={12} sx={{ height: "202px", backgroundColor: "green" }}>
-                    Right Bottom
-                </Grid>
-            </Grid>
-        </Grid>
-    );
+        <AppForm 
+            navbar="auth"
+            title="Sample form"
+            customHandler={handleSubmit}
+            buttonText="Submit"
+        >
+            <Box sx={{ mt:3 }}>
+                <TextField required type="email" label="email" /> <br/>
+                <TextField required type="password" label="Enter Password" /> <br/>
+            </Box>
+        </AppForm>
+    )
 }

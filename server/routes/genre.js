@@ -10,7 +10,7 @@ router.get('/:id', async(req, res) => {
 
 router.get('/api/:id', async(req, res) => {
     const page = parseInt(req.query.page) || 0;
-    const limit = 15;
+    const limit = 16;
     
     Book.aggregate([
         { $match: { genre: req.params.id } },

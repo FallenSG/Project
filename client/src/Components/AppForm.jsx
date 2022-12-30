@@ -9,6 +9,7 @@ import { GutterBottom } from '../Components/GutterDivider'
 import { createTheme, ThemeProvider } from '@mui/material'
 import AppFormPopup from '../Components/AppFormPopup'
 import { useState } from 'react';
+import axios from 'axios';
 
 const formTheme = createTheme({
     palette: {
@@ -78,20 +79,22 @@ const Loading = styled(CircularProgress)({
 })
 
 function MainContent(props) {
-    const { title, underTitle, children, buttonText, customHandler, bottomPart } = props;
+    const { url, getParams, title, underTitle, children, buttonText, bottomPart } = props;
     const [isClicked, setIsClicked] = useState(false);
     const [banner, setBanner] = useState({code: null, msg: null, shown: false})
 
-    const reqHandler = async () => {
-        customHandler(() => setIsClicked(true)).then((resp) => {
-            setBanner({code: 'success', msg: resp.data, shown: true})
-            setIsClicked(false);
-
-        }).catch((err) => {
-            setBanner({ code: 'error', msg: err.response.data, shown: true })
-            setIsClicked(false);
-
-        });
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+        setIsClicked(true);
+        axios.post(url, getParams())
+            .then((resp) => {
+                setBanner({ code: 'success', msg: resp.data, shown: true })
+                setIsClicked(false);
+            })
+            .catch(err => {
+                setBanner({ code: 'error', msg: err.response.data, shown: true })
+                setIsClicked(false);
+            })
     }
 
     return (
@@ -113,11 +116,13 @@ function MainContent(props) {
                             {underTitle}
                         </Typography>
 
-                        {children}
+                        <form onSubmit={handleSubmit}>
+                            {children}
 
-                        <Button type='submit' sx={{ mt: 3, mb: 2 }} disabled={isClicked} onClick={reqHandler}>
-                            {isClicked? <Loading /> : buttonText}
-                        </Button>
+                            <Button type='submit' sx={{ mt: 3, mb: 2 }} disabled={isClicked}>
+                                {isClicked? <Loading /> : buttonText}
+                            </Button>
+                        </form>
 
                         <Typography variant="body1" align="center">
                             {bottomPart}

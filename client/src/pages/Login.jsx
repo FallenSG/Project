@@ -1,22 +1,18 @@
-import AppForm from '../Components/AppForm'
 import { Box, TextField, Link } from "@mui/material";
 import { useLocation } from 'react-router-dom';
 import { useRef } from 'react';
-import axios from 'axios'
 
+import AppForm from '../Components/AppForm'
+import PasswordField from '../Components/PasswordField';
 
 function Login() {
   const loc = useLocation().pathname;
   const mailRef = useRef(null), passRef = useRef(null);
 
-  const reqHandler = async (callback) => {
-    const email = mailRef.current.value,
-      password = passRef.current.value;
-
-    if (email && password) {
-      await callback();
-      const resp = await axios.post(loc, { email, password })
-      return resp;
+  const getParams = () => {
+    return {
+      email: mailRef.current.value,
+      password: passRef.current.value
     }
   }
 
@@ -26,7 +22,8 @@ function Login() {
       title="Sign In"
       underTitle={<>Not a member yet? < Link href="/sign_up">Sign Up Now</Link></>}
       buttonText="Log In"
-      customHandler={reqHandler}
+      url={loc}
+      getParams={getParams}
       bottomPart={<Link href="/forgot-password" underline="always">
         Forgot password?
       </Link>}
@@ -34,14 +31,14 @@ function Login() {
       <Box sx={{ mt: 4 }}>
         <TextField
           autoComplete="email"
+          type="email"
           autoFocus
           label="Email"
           inputRef={mailRef}
         />
-        <TextField
-          autoComplete="current-password"
-          label="Password"
-          type="password"
+
+        <PasswordField 
+          label="Enter Password"
           inputRef={passRef}
         />
       </Box>

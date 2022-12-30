@@ -7,11 +7,14 @@ router.get('/', async(req, res) => {
 });
 
 router.get('/user', async(req, res) => {
-    let statusCode = 200;
-    if(!req.user) statusCode = 404;
-    const user = req.user
-    // ['mobile', 'password', 'verify']
-    res.json({ statusCode, data: req.user });
+    let statusCode = 404;
+    var user = {}
+    if(req.user) {
+        statusCode = 200;
+        user['username'] = req.user['username'];
+        user['email'] = req.user['email']
+    }
+    res.status(statusCode).send(user);
 });
 
 //setting up routes.

@@ -19,6 +19,7 @@ const Directory = {
     'bookModify': ['/modifyBook', './bookModify', 'bookModify'],
     'author': ['/author', './author', renderPath],
     'library': ['/library', './library', renderPath],
+    'reset': ['/reset-password', './reset', renderPath],
     'sample': ['/sample', './sample', 'sample']
 }
 

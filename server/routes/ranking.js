@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const { Book } = require('../models/book');
-const ObjectId = require('mongoose').Types.ObjectId;
 
 const { Direct, renderType } = require('../routePlan')
 const { renderFilePath } = Direct(path="ranking");
@@ -21,7 +20,7 @@ router.get('/api/:id', async(req, res) => {
     sort[rankingType[req.params.id]] = -1;
 
     const page = parseInt(req.query.page) || 0;
-    const limit = 15;
+    const limit = 16;
 
     Book.aggregate([
         { $sort: sort },

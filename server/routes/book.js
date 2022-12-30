@@ -72,7 +72,7 @@ router.get('/api/:id', async(req, res) => {
             }
         },
         {
-            $project: { _id: 0, isbn: 0, hotRank: 0, popRank: 0 }
+            $project: { isbn: 0, hotRank: 0, popRank: 0 }
         }
         
     ])

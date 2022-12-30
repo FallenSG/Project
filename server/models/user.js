@@ -9,21 +9,19 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
     username: {type: String, required: true, maxlength: 100},
     email: {type: String, unique: true, lowercase: true, required: true},
-    mobile: {type: Number, unique: true, required: true},
     password: {type: String, required: true},
     verify: { type: Boolean, enum: [false, true], default: false },
     book_id: [{ type: Schema.Types.ObjectId, ref: 'Book' }],
-    lib: [
-        { type: Schema.Types.ObjectId, ref: 'Book' }, //book_id
-        { type: Date, required: true }, //date added
-        { type: Date, required: true } //recently read
-    ]
+    lib: [{ 
+        bookId: { type: Schema.Types.ObjectId, ref: 'Book' }, //book_id
+        added: { type: Date, required: true }, //date added
+        read: { type: Date, required: true } //recently read
+    }]
 });
 
 const JoiValidUser = Joi.object({
     username: Joi.string().min(3).max(50).required(),
     email: Joi.string().email().min(5).max(50).required(),
-    mobile: Joi.string().regex(/^[0-9]{10}$/).required().messages({ 'string.pattern.base': `Phone number must have 10 digits.` }),
     password: Joi.string().min(5).max(255).required()
 });
 

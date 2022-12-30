@@ -23,7 +23,7 @@ const respType = {
         const html = `<h1>Email Confirmation</h1>
         <h2>Hello ${username}</h2>
         <p>Thank you for subscribing. Please confirm your email by clicking on the following link</p>
-        <a href=http://${config.HOST}:${config.PORT}/verify/${token}> Click here</a>
+        <a href=http://${config.DOMAIN}/verify/${token}> Click here</a>
         </div>`
 
 
@@ -47,7 +47,7 @@ const respType = {
         const html = `<h1>Email Confirmation</h1>
         <h2>Hello ${username}</h2>
         <p>It Seems you have forgotten your password to reset it please click on the following link.</p>
-        <a href=http://${config.HOST}:${config.PORT}/forgot-password/${token}> Click here</a>
+        <a href=http://${config.DOMAIN}/forgot-password/${token}> Click here</a>
         </div>`
 
         return {
