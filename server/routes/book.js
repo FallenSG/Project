@@ -2,6 +2,9 @@ const router = require('express').Router();
 const { Book } = require('../models/book')
 const ObjectId = require('mongoose').Types.ObjectId;
 
+const { Direct, renderType } = require('../routePlan');
+const { renderFilePath } = Direct(path = "book");
+
 const limit =  8;
 const project = { title: 1, img: 1 };
 
@@ -38,6 +41,10 @@ router.get('/', async(req, res) => {
         .then((data) => res.status(200).send(data))
         .catch(err => res.status(400).send(err));
 });
+
+router.get('/:id', async(req, res) => {
+    res[renderType](renderFilePath);
+})
 
 router.get('/api/:id', async(req, res) => {
     const id = new ObjectId(req.params.id)

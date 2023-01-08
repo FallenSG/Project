@@ -15,7 +15,7 @@ const BookSchema = new Schema(
         doc: {},
         img: { type: String },
         review_id: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
-        pub_date: { type: Date, required: true },
+        pub_date: { type: Number, required: true },
         totalRating: { type: Number, default: 0},
         ratingCount: { type: Number, default: 0 },
         hotRank: { type: Number, default: 0 },

@@ -42,7 +42,7 @@ module.exports = async function (req, res) {
         genre: [ req.body.genre ],
         author_id: req.user._id,
         summary: "Summary need to be updated plz check after sometime",
-        pub_date: new Date()
+        pub_date: new Date().getTime() / 1000
     }
 
     try {
@@ -56,7 +56,7 @@ module.exports = async function (req, res) {
         if (ExistBook)
             throw new Error("Book with same Title/ISBN already exists!!");
 
-        if (!checkISBN(book.isbn))
+        if (book.isbn && !checkISBN(book.isbn))
             throw new Error("Please Enter valid ISBN Number!!")
 
         JoiValidBook.validate(book);

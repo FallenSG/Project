@@ -39,16 +39,15 @@ function BookInfo() {
             <Grid item xs={3} sx={{ pt: 2 }}> {/* Book Cover */}
                 <Box
                     component="img"
-                    sx={{
-                        height: 408,
-                        width: 300,
+                    sx={{ height: "30vw",
+                        aspectRatio: "0.8", resize: "auto", objectFit: "scale-down"
                     }}
-                    src={feed.img}
+                    src="/bookCover/d73121ac45881355f5a7969f98bf89f9"//{feed.img}
                 />
             </Grid>
             
             <Grid item xs={7} container sx={{ pt: 4 }}>
-                <Grid item xs={12} sx={{ height: "204px" }}>
+                <Grid item xs={12} sx={{ height: "15vw" }}>
                     <Typography variant="h4" sx={{ pr: "15%" }}>
                         {feed.title}
                     </Typography> <br />
@@ -62,7 +61,7 @@ function BookInfo() {
                     </Grid>
                 </Grid>
                 
-                <Grid item xs={12} sx={{ height: "204px" }}>
+                <Grid item xs={12} sx={{ height: "15vw" }}>
                     <Stack direction="row" sx={{ pt: '12%' }} spacing={2}>
                         <Button type="submit" variant="contained" size="large" sx={{ borderRadius: "24px" }}>Read</Button>
                         <Button 

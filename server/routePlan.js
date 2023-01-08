@@ -10,8 +10,6 @@ const Directory = {
     'signUp': ['/sign_up', './sign_up', 'sign_up'],
     'verify': ['/verify', './verify', renderPath],
     'forgotPass': ['/forgot-password', './forgotPass', 'forgotPass'],
-    'dash': ['/dashboard', './dashboard', 'dashboard'],
-    'profile': [],
     'genre': ['/genre', './genre', renderPath],
     'ranking': ['/ranking', './ranking', renderPath],
     'book': ['/book', './book', 'book'],

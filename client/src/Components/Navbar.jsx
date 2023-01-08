@@ -35,11 +35,10 @@ function Navbar() {
   return (
     <AppBar position="sticky">
         <StyledToolbar>
-          <Stack direction="row" spacing={2}
+          <Stack direction="row" spacing={1}
             sx={{
               display: "flex",
               alignItems: "center",
-              flexWrap: "wrap",
               pl: "7%"
             }}
           >
@@ -63,9 +62,7 @@ function Navbar() {
         <Stack 
           direction="row" 
           spacing={1}
-          sx={{
-            pr: "7%"
-          }}
+          sx={{ pr: "7%" }}
         >
           <Link 
             variant="h6"

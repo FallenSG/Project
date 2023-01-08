@@ -28,19 +28,19 @@ router.get('/', async(req, res) => {
 router.post('/', async(req, res) => {
     try{
         forgotPass.findOne({ email: req.body.email }, async(err, data) => {
-            if(data) res.status(403).send({msg: "Reset request already exist. Try creating new one after 2 hrs..!!"});
+            if(data) res.status(403).send("Reset request already exist. Try creating new one after 2 hrs..!!");
             else{
                 User.findOne({ email: req.body.email }, async(err, user) => {
                     if (user) {
                         const resp = await mailer(user.username, user.email, 'Reset')
-                        res.status(resp.code).send({ msg: resp.msg });
+                        res.status(resp.code).send(resp.msg );
                     }
-                    else res.status(401).send({msg: "Un-registered email id"})
+                    else res.status(401).send("Un-registered email id")
                 }).lean();
             }
         })
     } catch(err) {
-        res.status(503).send({msg: "An Error occured. Please try again after sometime!!"})
+        res.status(503).send("An Error occured. Please try again after sometime!!")
     }
 });
 
@@ -54,7 +54,7 @@ router.post('/:token', tokenVerifier, async (req, res) => {
     }).then(data => {
         forgotPass.deleteOne(
             { token: req.params.token }
-        ).then(data => res.status(200).json({ msg: "Password Updated.." }))
+        ).then(data => res.status(200).send("Password Updated.." ))
         .catch(err => { throw new Error({ from: "Deleting forgot pass token", err }) });
     }).catch(err => console.log(err)); //logger
 })

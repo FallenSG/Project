@@ -7,33 +7,32 @@ import { PageLayout, Context} from '../Components/PageLayout';
 
 function BookList(){
     const navg = useNavigate()
-    const lib = useContext(Context)[0];
+    const lib = useContext(Context);
 
     return (
-        // <ImageList
-        //     sx={{ height: 'inherit', pt: '10px' }}
-        //     cols={6}
-        //     spacing={1}
-        // >
-        //     {lib.map((book) => (
-        //         <ImageListItem key={book._id} sx={{ height: "230px", width: "170px" }}>
-        //             <img
-        //                 onClick={() => navg(`/book/${book._id}`)}
-        //                 src="/bookCover/d58d85af9c3d7e995cd9155fc9f6a162"
-        //                 sx={{ overflow: 'hidden', borderRadius: '5px' }}
-        //                 alt='Not Found'
-        //                 loading="lazy"
-        //             />
-        //             <ImageListItemBar
-        //                 onClick={() => navg(`/book/${book._id}`)}
-        //                 sx={{ width: '13vw' }}
-        //                 title={book.title}
-        //                 position="below"
-        //             />
-        //         </ImageListItem>
-        //     ))}
-        // </ImageList>
-        Library
+        <ImageList
+            sx={{ height: 'inherit', pt: '10px' }}
+            cols={5}
+            spacing={5}
+        >
+            {lib.map((book) => (
+                <ImageListItem key={book._id}>
+                    <img
+                        onClick={() => navg(`/book/${book._id}`)}
+                        src={book.img}
+                        sx={{ overflow: 'hidden', borderRadius: '5px' }}
+                        alt='Not Found'
+                        loading="lazy"
+                    />
+                    <ImageListItemBar
+                        onClick={() => navg(`/book/${book._id}`)}
+                        sx={{ width: '15vw' }}
+                        title={book.title}
+                        position="below"
+                    />
+                </ImageListItem>
+            ))}
+        </ImageList>
     )
 }
 

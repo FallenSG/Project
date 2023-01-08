@@ -14,8 +14,8 @@ const userSchema = new Schema({
     book_id: [{ type: Schema.Types.ObjectId, ref: 'Book' }],
     lib: [{ 
         bookId: { type: Schema.Types.ObjectId, ref: 'Book' }, //book_id
-        added: { type: Date, required: true }, //date added
-        read: { type: Date, required: true } //recently read
+        added: { type: Number, required: true }, //date added
+        read: { type: Number, required: true } //recently read
     }]
 });
 

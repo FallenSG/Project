@@ -14,11 +14,25 @@ router.get('/', async(req, res) => {
 });
 
 router.get('/api', async(req, res) => {
-    User.find({ _id: req.user.id })
-        .populate({
-            path: 'lib',
-            select: { _id: 1, title: 1, img: 1 }
-        }).lean()
+    User.aggregate([
+        { $match: { _id: req.user._id } },
+        { $unwind: "$lib" },
+        {
+            $lookup: {
+                from: "books",
+                localField: "lib._id",
+                foreignField: "_id",
+                as: "out"
+            }
+        },
+        {
+            $addFields: {
+                "lib.title": { $arrayElemAt: ["$out.title", 0] },
+                "lib.img": { $arrayElemAt: ["$out.img", 0] }
+            }
+        },
+        { $group: { _id: "$_id", lib: { $push: "$lib" } } }
+    ])
         .then((library) => {
             var data = library[0].lib;
             if(!data.length) 
@@ -34,24 +48,32 @@ router.get('/api', async(req, res) => {
 
 router.post('/addItem', async(req, res) => {
     const bookId = ObjectId(req.body.bookId);
-    Book.findOne({ _id: bookId })
-        .then(book => {
-            if(book === null) 
-                return res.status(204).send("No such Book");
-            const date = new Date();
-            User.findOneAndUpdate({ _id: req.user._id }, {
-                $push: { lib: {
-                    book_id: book._id,
-                    added: date,
-                    read: date
-                } }
-            })
-                .then(data => res.send("Added"))
-                .catch(err => { throw new Error("Couldn't add book to your library") })
+
+    User.find({ _id: req.user._id, "lib._id": bookId })
+        .then(data => {
+            if(data.length) return res.status(409).send("Book Already in Library") 
+            else{
+                Book.findOne({ _id: bookId })
+                    .then(book => {
+                        if (book === null)
+                            return res.status(204).send("No such Book");
+                        const date = new Date().getTime();
+                        User.findOneAndUpdate({ _id: req.user._id }, {
+                            $push: {
+                                lib: {
+                                    _id: book._id,
+                                    added: date,
+                                    read: date
+                                }
+                            }
+                        })
+                            .then(data => res.send("Added"))
+                            .catch(err => { throw new Error("Couldn't add book to your library") })
+                    })
+                    .catch(err => { throw new Error(err) })
+            }
         })
-        .catch(err => {
-            res.status(400).send(err)
-        })
+        .catch(err => { res.send(err) });
 })
 
 router.post('/removeItem', async(req, res) => {

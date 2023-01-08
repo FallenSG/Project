@@ -12,6 +12,13 @@ export function BookTab({ info, inRef }) {
 
     const navg = useNavigate();
 
+    const handleAdd = () => {
+        axios.post('/library/addItem', { bookId: info._id })
+            .then(data => console.log(data, info._id, info.title))
+            .catch(err => console.log(err, info._id, info.title));
+    }
+
+
     return (
         <Grid item container ref={inRef} key={info._id} xs={6}
             sx={{
@@ -61,7 +68,7 @@ export function BookTab({ info, inRef }) {
 
                         <Button
                             startIcon={<AddCircleOutlined />}
-                            onClick={() => { }}
+                            onClick={handleAdd}
                         >
                             Add
                         </Button>

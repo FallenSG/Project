@@ -4,7 +4,7 @@ const passport = require('passport');
 const { Direct, renderType } = require('../routePlan');
 const { 
     renderFilePath, failureRedirect, successRedirect 
-} = Direct(path="signIn", failure='signIn', success='dash')
+} = Direct(path="signIn", failure='signIn', success='index')
 
 const { isAuthReq } = require('../middleware/authHandler');
 

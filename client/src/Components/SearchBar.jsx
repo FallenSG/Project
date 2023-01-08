@@ -1,22 +1,17 @@
 import { Autocomplete, TextField } from '@mui/material';
-import { SearchSharp } from '@mui/icons-material';
 import axios from 'axios'
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function SearchBar(){
-    const [Query, setQuery] = useState("");
     const [QueryResp, setQueryResp] = useState([]);
     const nav = useNavigate();
 
-    useEffect(() => {
-        const controller = new AbortController();
-        const signal = controller.signal;
-        
-        if(Query !== ""){
-            axios.get("/search", 
-                { params: { q: Query } }, 
-                { signal }
+    const handleSearch = (event) => {
+        const query = event.target.value;
+        if(query){
+            axios.get("/search",
+                { params: { q: query } }
             ).then(resp => {
                 var book = [], author = [];
                 if (resp.data.books)
@@ -28,11 +23,6 @@ export default function SearchBar(){
             })
             .catch(err => console.log(err));
         }
-        return () => controller.abort();
-    }, [Query]);
-
-    const handleSearch = (event) => {
-        setQuery(event.target.value);
     };
 
     return (
@@ -40,7 +30,7 @@ export default function SearchBar(){
             sx={{ width: "100%", color: "#fff" }}
             id="searchBar"
             freeSolo
-            getOptionLabel={(option) => option.title}
+            getOptionLabel={(option) => option.title ? option.title: "" }
             options={QueryResp}
             onChange={(event, value, reason) => {
                 nav(value.url);

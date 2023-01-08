@@ -63,19 +63,9 @@ export default function Avatar({ dispStyle }) {
 
             <Menu
                 anchorEl={anchorEl}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right'
-                }}
                 id='profileMenu'
-                keepMounted={false}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right'
-                }}
                 open={isMenuOpen}
                 onClose={handleMenuClose}
-                sx={{ mt: '45px', width: "25vw" }}
                 PaperProps={{
                     elevation: 0,
                     sx: {
@@ -102,6 +92,8 @@ export default function Avatar({ dispStyle }) {
                         },
                     },
                 }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 <MenuItem onClick={handleProfile}>
                         <ListItemIcon> 

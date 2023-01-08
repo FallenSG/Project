@@ -31,7 +31,7 @@ router.get('/:id', async(req, res) => {
 });
 
 router.post('/:id', upload.single('bookCover'), async (req, res) => {
-    try{
+    try {
         const book = await Book.findOneAndUpdate(
             { _id: req.params.id }, 
             { img: req.file? req.file.path.substr(6) : 'bookCover/defCover' }
