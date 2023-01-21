@@ -1,91 +1,16 @@
 import {
-    Box, Grid,
+    Box, 
+    Link, Tabs, Tab,
     Stack, Typography,
-    Rating, Link, Button, Tabs, Tab,
     ImageList, ImageListItem, ImageListItemBar
 } from '@mui/material'
-import { Flag, Home, Add, FavoriteBorder} from '@mui/icons-material'
+import { FavoriteBorder} from '@mui/icons-material'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react'
-import axios from 'axios'
 
 import { PageLayout, Context} from '../Components/PageLayout';
+import BookInfo from '../Components/BookIDComp'
 
-function BookInfo() {
-    const feed = useContext(Context);
-
-    const handleAdd = () => {
-        axios.post('/library/addItem', { bookId: feed._id })
-            .then(data => console.log(data, feed._id, feed.title))
-            .catch(err => console.log(err, feed._id, feed.title));
-    }
-
-    const space = 1;
-    let rating = (feed.totalRating / feed.ratingCount).toFixed(2)
-    rating = rating > 0 ? rating : 0;   
-
-    const navg = useNavigate();
-
-    return ( 
-        <Grid container sx={{ backgroundColor: "#f5f6fc", justifyContent: "center" }}>
-            <Grid item xs={10}> {/* path  */}
-                <Stack direction="row" sx={{ alignItems: "center", p: "24px 0 0 0", display: { xs: "none", sm: 'block' }, fontFamily: "Nunito Sans,SF Pro Text,SF Pro Icons,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;" }}>
-                    <Home sx={{ fontSize: '16px' }} onClick={() => navg('/')} />/
-                    <Link href={`/genre/${feed.genre[0]}`} underline='hover'>{feed.genre[0]}</Link>/
-                    {feed.title}
-                </Stack>
-            </Grid>
-
-            <Grid item xs={3} sx={{ pt: 2 }}> {/* Book Cover */}
-                <Box
-                    component="img"
-                    sx={{ height: "30vw",
-                        aspectRatio: "0.8", resize: "auto", objectFit: "scale-down"
-                    }}
-                    src="/bookCover/d73121ac45881355f5a7969f98bf89f9"//{feed.img}
-                />
-            </Grid>
-            
-            <Grid item xs={7} container sx={{ pt: 4 }}>
-                <Grid item xs={12} sx={{ height: "15vw" }}>
-                    <Typography variant="h4" sx={{ pr: "15%" }}>
-                        {feed.title}
-                    </Typography> <br />
-                    <Typography sx={{ color: "#83848f", pl: 1 }}>
-                        Author: <Link href={`/author/${feed.author_id._id}`} underline="hover">{feed.author_id.username}</Link>
-                    </Typography>
-                    <Grid container direction="row" spacing={space} sx={{ alignItems: "center", pt: 2 }}>
-                        <Grid item> <Rating value={rating} precision={0.01} size="large" readOnly />  </Grid>
-                        <Grid item> <Typography sx={{ fontSize: '24px' }}> {rating} </Typography> </Grid>
-                        <Grid item> <Typography> ({feed.ratingCount} ratings) </Typography> </Grid>
-                    </Grid>
-                </Grid>
-                
-                <Grid item xs={12} sx={{ height: "15vw" }}>
-                    <Stack direction="row" sx={{ pt: '12%' }} spacing={2}>
-                        <Button type="submit" variant="contained" size="large" sx={{ borderRadius: "24px" }}>Read</Button>
-                        <Button 
-                            sx={{ borderRadius: "24px" }}
-                            onClick={handleAdd}
-                            type="submit" 
-                            variant="contained" 
-                            size="large" 
-                            startIcon={<Add />} 
-                        > Add to Library</Button>
-                    </Stack>
-
-                    <Button
-                        sx={{ fontSize: "14px", mt: "3%", color: "#83848f"}} 
-                        onClick={() => {}}
-                        startIcon={<Flag />}
-                    >
-                        Report Story
-                    </Button>
-                </Grid>
-            </Grid>
-        </Grid>
-    );
-}
 
 function Genre() {
     const { genre } = useContext(Context);
@@ -196,6 +121,10 @@ function TabSection() {
         setValue(newValue);
     };
 
+    const dispStyle = {
+        fontSize: { xs: "20px", sm: "26px" }
+    }
+
     return (
         <Box sx={{ width: "100%", marginTop: "48px" }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -204,8 +133,8 @@ function TabSection() {
                     onChange={handleChange} 
                     aria-label="basic tabs example"
                 >
-                    <Tab label="About" sx={{ fontSize: "26px" }} {...allyProps(0)} />
-                    <Tab label="Table Of Content" sx={{ fontSize: "26px" }} {...allyProps(1)} />
+                    <Tab label="About" sx={{ ...dispStyle }} {...allyProps(0)} />
+                    <Tab label="Table Of Content" sx={{ ...dispStyle }} {...allyProps(1)} />
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>

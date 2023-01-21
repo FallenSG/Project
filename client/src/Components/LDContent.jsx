@@ -2,11 +2,18 @@ import axios from 'axios'
 import Loading from '../Components/Loading'
 import { useNavigate } from "react-router-dom";
 import { Star, AddCircleOutlined } from '@mui/icons-material'
-import { Grid, Link, Typography, Button, Stack } from '@mui/material'  
+import { Grid, Link, Typography, Button, Stack, Snackbar, Alert } from '@mui/material'  
 import { useState, useEffect, useRef, useCallback } from 'react';
 
+const dispStyle = {
+    fontSize: { xs: "16px", mt: "20px" },
+    fontWeight: "700",
+    color: "black",
+    cursor: "pointer"
+}
 
-export function BookTab({ info, inRef }) {
+
+export function BookTab({ info, inRef, setSnackCont }) {
     let rating = (info.totalRating / info.ratingCount).toFixed(2)
     rating = rating > 0 ? rating : 0;
 
@@ -14,66 +21,68 @@ export function BookTab({ info, inRef }) {
 
     const handleAdd = () => {
         axios.post('/library/addItem', { bookId: info._id })
-            .then(data => console.log(data, info._id, info.title))
-            .catch(err => console.log(err, info._id, info.title));
+            .then(data => {
+                if (data.statusCode === 200)
+                    setSnackCont({ open: true, msg: "Added...", severity: "success" })
+            })
+            .catch(err => setSnackCont({ open: true, msg: err.response.data, severity: "error" }));
     }
 
 
     return (
-        <Grid item container ref={inRef} key={info._id} xs={6}
-            sx={{
-                height: "30vh",
-            }}
+        <Grid
+            item container
+            ref={inRef} key={info._id} xs={6}
+            direction="row"
+            justifyContent="space-around"
+            alignItems="center"
+            sx={{ flexWrap: { xs: "wrap", sm: "nowrap" } }}
         >
-            <Grid item xs={4}>
-                <img
-                    onClick={() => navg(`/book/${info._id}`)}
-                    src={info.img}
-                    style={{ aspectRatio: "0.8", resize: "auto", objectFit: "scale-down", height: "30vh", cursor: "pointer" }}
-                    alt='Not Found'
-                    loading="lazy"
-                />
-            </Grid>
+            <img
+                onClick={() => navg(`/book/${info._id}`)}
+                src={info.img}
+                style={{
+                    height: "30vh",
+                    aspectRatio: "0.8",
+                    resize: "auto",
+                    objectFit: "scale-down",
+                    cursor: "pointer"
+                }}
+                alt='Not Found'
+                loading="lazy"
+            />
             <Grid item xs={8}>
-                <Stack sx={{ justifyContent: "none" }}>
-                    <Link
-                        href={`/book/${info._id}`}
-                        underline="hover"
-                        sx={{
-                            fontSize: "20px",
-                            fontWeight: "700",
-                            color: "black",
-                            cursor: "pointer"
-                        }}
-                    >
-                        {info.title}
-                    </Link> <br />
+            <Stack sx={{ justifyContent: "none" }}>
+                <Link
+                    href={`/book/${info._id}`}
+                    underline="hover"
+                    sx={{ ...dispStyle }}
+                > {info.title} </Link> <br />
 
-                    <Typography
-                        noWrap
-                        variant="subtitle2"
-                        sx={{ color: "darkslategrey" }}
-                    >
-                        {info.summary}
-                    </Typography> <br />
+                <Typography 
+                    sx={{ 
+                        display: { xs: "none", sm: "flex" },
+                        color: "darkslategrey" 
+                    }}
+                    variant="subtitle2"
+                    noWrap
+                > {info.summary} </Typography>
 
-                    <Stack direction="row" spacing={3}>
-                        <Button
-                            sx={{ width: "fit-content" }}
-                            startIcon={<Star />}
-                            disabled
-                        >
-                            {rating}
-                        </Button>
+                <Stack direction="row" spacing={0.25}>
+                    <Button
+                        sx={{ width: "fit-content" }}
+                        startIcon={<Star />}
+                        size="small"
+                        disabled
+                    > {rating} </Button>
 
-                        <Button
-                            startIcon={<AddCircleOutlined />}
-                            onClick={handleAdd}
-                        >
-                            Add
-                        </Button>
-                    </Stack>
+                    <Button
+                        startIcon={<AddCircleOutlined />}
+                        onClick={handleAdd}
+                        size="small"
+                    > Add </Button>
                 </Stack>
+            </Stack>
             </Grid>
         </Grid>
     )
@@ -85,6 +94,7 @@ export function Booklist({ url }){
     const [loading, setLoading] = useState(true);
     const [hasMore, setHasMore] = useState(false);
     const [content, setContent] = useState([]);
+    const [snackCont, setSnackCont] = useState({ open: false, msg: "Nothing to see here!!", severity: "warning" });
 
     useEffect(() => {
         setLoading(true);
@@ -111,16 +121,38 @@ export function Booklist({ url }){
         if (node) observer.current.observe(node)
     }, [loading]);
 
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackCont({ open: false, msg: "Closed Now!", severity: "error" });
+    }
+
     return (
-        <Grid container spacing={5}>
-            {content.map((book, i) => {
-                if (content.length - 5 === i) {
-                    return <BookTab inRef={lastBookElementRef} info={book} />
-                } else {
-                    return <BookTab info={book} />
-                }
-            })}
-            {loading && <Loading />}
-        </Grid>
+        <>
+            <Grid container spacing={3}>
+                {content.map((book, i) => {
+                    if (content.length - 5 === i) {
+                        return <BookTab inRef={lastBookElementRef} info={book} setSnackCont={setSnackCont} />
+                    } else {
+                        return <BookTab info={book} setSnackCont={setSnackCont} />
+                    }
+                })}
+                {loading && <Loading />}
+            </Grid>
+
+            <Snackbar 
+                open={snackCont.open}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                autoHideDuration={3000}
+                onClose={handleClose}
+                message={snackCont.msg}
+                sx={{ width: {sm: "45vw" } }}
+            >
+                <Alert onClose={handleClose} severity={snackCont.severity} sx={{ width: '100%' }}>
+                    {snackCont.msg}
+                </Alert>
+            </Snackbar>
+        </>
     )
 }

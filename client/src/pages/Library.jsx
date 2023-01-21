@@ -13,13 +13,13 @@ function BookList(){
         <ImageList
             sx={{ height: 'inherit', pt: '10px' }}
             cols={5}
-            spacing={5}
+            spacing={10}
         >
             {lib.map((book) => (
                 <ImageListItem key={book._id}>
                     <img
                         onClick={() => navg(`/book/${book._id}`)}
-                        src={book.img}
+                        src={"/bookCover/d73121ac45881355f5a7969f98bf89f9"}//book.img
                         sx={{ overflow: 'hidden', borderRadius: '5px' }}
                         alt='Not Found'
                         loading="lazy"
