@@ -1,8 +1,9 @@
-import { Grid, Typography } from '@mui/material'
+import { Grid, Typography, Paper } from '@mui/material'
 import { useState, useEffect, createContext } from 'react'
 import axios from 'axios'
 
 import Navbar from './Navbar'
+import PubNavbar from './PubNavbar'
 import AppFormNav from './AppFormNav'
 import Loading from './Loading'
 
@@ -11,11 +12,12 @@ export const Context = createContext({});
 const NavType = {
     'none': <></>,
     'normal': <Navbar />,
+    'publish': <PubNavbar />,
     'form': <AppFormNav />
 };
 
 
-export function PageLayout({ url, nav='normal', elem, gridElem, failureMsg }){
+export function PageLayout({ url, nav='normal', elem, gridElem, failureMsg, columns = 12, gridXs = 10 }){
     const [info, setInfo] = useState({});
 
     const fetchData = async() => {
@@ -48,24 +50,41 @@ export function PageLayout({ url, nav='normal', elem, gridElem, failureMsg }){
 
     return (
         <Context.Provider value={info?.data}>
-            <Grid container sx={{ justifyContent: 'center' }}>
+            <Grid container sx={{ justifyContent: 'center' }} columns={columns}>
                 {NavType[nav]}
-                <Grid item xs={12}> { element } </Grid>
-                <Grid item xs={10}>
+                <Grid item xs={columns}> { element } </Grid>
+                <Grid item xs={gridXs}>
                     <Typography sx={{ justifyContent: "center", alignItems: "center" }}> {message} </Typography>
                 </Grid>
-                <Grid item xs={ 10 }> { gridElement } </Grid>
+                <Grid item xs={gridXs}> { gridElement } </Grid>
             </Grid>
         </Context.Provider>
     )
 }
 
-export function PageLayoutOverload({ nav = 'normal', elem, gridElem }){
+export function PageLayoutOverload({ nav = 'normal', elem, gridElem, columns = 12, gridXs = 10 }){
     return (
-        <Grid container sx={{ justifyContent: 'center' }}>
-            <Grid item xs={12}> {NavType[nav]} </Grid>
-            <Grid item xs={12}> {elem} </Grid>
-            <Grid item xs={10}> {gridElem} </Grid>
+        <Grid container columns={columns} sx={{ justifyContent: 'center' }}>
+            <Grid item xs={columns}> {NavType[nav]} </Grid>
+            <Grid item xs={columns}> {elem} </Grid>
+            <Grid item xs={gridXs}> {gridElem} </Grid>
         </Grid>
+    )
+}
+
+export function PageLayoutPublish({ url, nav="publish", gridElem, failureMsg, columns=12, gridXs=11 }){
+    return (
+        <PageLayout 
+            url={url}
+            nav={nav}
+            gridElem={
+                <Paper sx={{ mt: "2%", backgroundColor: "#f6f7fc" }}>
+                    {gridElem}
+                </Paper>
+            }
+            failureMsg={failureMsg}
+            columns={columns}
+            gridXs={gridXs}
+        />
     )
 }

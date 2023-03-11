@@ -37,22 +37,26 @@ function checkISBN(isbn) {
 module.exports = async function (req, res) {
     let book = {
         img: req.file ? req.file.path.substr(6) : '/bookCover/defCover',
-        title: req.body.title,
+        title: req.body.title.toLowerCase(),
         isbn: req.body.isbn,
         genre: [ req.body.genre ],
         author_id: req.user._id,
-        summary: "Summary need to be updated plz check after sometime",
+        summary: req.body.summary !== "" ? req.body.summary : "Summary need to be updated please check after sometime",
         pub_date: new Date().getTime() / 1000
     }
 
     try {
-        const ExistBook = await Book.findOne({
-            $or: [
-                { title: book.title },
-                { isbn: book.isbn }
-            ]
-        });
-
+        var ExistBook;
+        if(book.isbn){
+            ExistBook = await Book.findOne({
+                $or: [
+                    { title: book.title },
+                    { isbn: book.isbn }
+                ]
+            });
+        }
+        else ExistBook = await Book.findOne({ title: book.title })
+        
         if (ExistBook)
             throw new Error("Book with same Title/ISBN already exists!!");
 
@@ -64,9 +68,10 @@ module.exports = async function (req, res) {
         
         await User.findOneAndUpdate(
             { _id: req.user._id },
-            { $push: { book_id: book._id } });
+            { $push: { book_id: book._id } 
+        });
 
-        res.send({ msg: "Congrats your book has been published on our website!!! " });
+        res.send("Congrats your book has been published on our website!!!");
 
     } catch (err) {
         if (book.img !== '/bookCover/defCover') {
@@ -74,6 +79,6 @@ module.exports = async function (req, res) {
                 // if(err) logger
             })
         }
-        res.render('error', { message: err.message })
+        res.send(err.message)
     }
 };

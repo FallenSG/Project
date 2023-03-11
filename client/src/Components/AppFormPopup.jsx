@@ -30,7 +30,8 @@ function MainContent(props){
             setProgress((oldProgress) => {
                 if(oldProgress === 100){
                     setIsShown(false);
-                    if (bannerType === "success") navg(-1);
+                    // if (bannerType === "success") 
+                    //     navg(-1);
                 }
                 return Math.min(oldProgress + 5, 100);
             });

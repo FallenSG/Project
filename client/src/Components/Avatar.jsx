@@ -35,12 +35,8 @@ export default function Avatar({ dispStyle }) {
         setUser({});
     }
 
-    const handleProfile = () => {
-        nav('/profile');
-    }
-
-    const handleCreate = () => {
-        nav('/createBook');
+    const handlePublish = () => {
+        nav('/publish/list');
     }
 
     const handleLib = () => {
@@ -95,13 +91,13 @@ export default function Avatar({ dispStyle }) {
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem onClick={handleProfile}>
-                        <ListItemIcon> 
-                            <AvatarBlock fontSize="small">{
-                                Object.keys(user).length ? user.username[0].toUpperCase() : ""
-                            }</AvatarBlock> 
-                        </ListItemIcon>
-                        {user.username}
+                <MenuItem>
+                    <ListItemIcon> 
+                        <AvatarBlock fontSize="small">{
+                            Object.keys(user).length ? user.username[0].toUpperCase() : ""
+                        }</AvatarBlock> 
+                    </ListItemIcon>
+                    {user.username}
                 </MenuItem>
 
                 <Divider />
@@ -111,7 +107,7 @@ export default function Avatar({ dispStyle }) {
                     Library
                 </MenuItem>
                     
-                <MenuItem onClick={handleCreate}>
+                <MenuItem onClick={handlePublish}>
                     <ListItemIcon> <Create fontSize="small" /> </ListItemIcon>
                     Publish Your Work
                 </MenuItem>

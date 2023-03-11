@@ -1,27 +1,30 @@
 import AppForm from '../Components/AppForm'
-import { Box, TextField, Button, TextareaAutosize } from "@mui/material";
+import { Box, TextField, Button } from "@mui/material";
 import { useLocation } from 'react-router-dom';
 import { useRef } from 'react';
-import axios from 'axios';
 
 export default function CreateBook(){
+    const loc = useLocation().pathname;
+
     const img = useRef(null),
         title = useRef(null),
         isbn = useRef(null),
         genre = useRef(null),
         summary = useRef(null);
 
-    const reqHandler = async(callback) => {
-        const value1 = img.current.value,
-            value2 = title.current.value,
-            value3 = isbn.current.value,
-            value4 = genre.current.value,
-            value5 = summary.current.value;
+    const getParams = () => {
+        console.log(
+            img.current.value,
+            title.current.value
+        )
 
-            if(value2 && value4){
-                await callback();
-                // const resp = await 
-            }
+        return {
+            img: img.current.value,
+            title: title.current.value,
+            isbn: isbn.current.value,
+            genre: genre.current.value,
+            summary: summary.current.value
+        }
     }
 
     return (
@@ -29,6 +32,8 @@ export default function CreateBook(){
             navbar="auth"
             title="Publish Your Work"
             buttonText="Publish"
+            url={loc}
+            getParams={getParams}
         >
             <Box sx={{ mt: 4 }}>
                 <Button
@@ -37,6 +42,7 @@ export default function CreateBook(){
                 >
                     Upload Book Cover
                     <input
+                        ref={img}
                         type="file"
                         hidden
                     />

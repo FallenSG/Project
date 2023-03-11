@@ -3,7 +3,7 @@ const { User } = require('../models/user')
 const ObjectId = require('mongoose').Types.ObjectId;
 
 const { Direct, renderType } = require('../routePlan');
-const { renderFilePath } = Direct(path = "author");
+const { renderFilePath, redirectUrl } = Direct(path = "author", failure="index");
 
 router.get('/:id', async(req, res) => {
     res[renderType](renderFilePath);
@@ -27,7 +27,11 @@ router.get('/api/:id', async (req, res) => {
             }
         }
     ])
-        .then( (author) => res.status(200).send(author[0]) )
+        .then((author) => {
+            if(author[0])
+                return res.status(200).send(author[0]) 
+            res.redirect(redirectUrl);
+        })
         .catch( err => res.status(400).send(err) );
 
 })

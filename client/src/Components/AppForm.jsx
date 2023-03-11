@@ -112,7 +112,7 @@ function MainContent(props) {
 
                         <GutterBottom />
 
-                        <Typography variant="body2" align="center">
+                        <Typography variant="body2" align="center" sx={{ textTransform: "capitalize", fontVariantCaps: "small-caps", fontSize: "18px" }}>
                             {underTitle}
                         </Typography>
 

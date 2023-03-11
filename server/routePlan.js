@@ -18,7 +18,8 @@ const Directory = {
     'author': ['/author', './author', renderPath],
     'library': ['/library', './library', renderPath],
     'reset': ['/reset-password', './reset', renderPath],
-    'sample': ['/sample', './sample', 'sample']
+    'sample': ['/sample', './sample', 'sample'],
+    'publish': ['/publish', './publish', renderPath]
 }
 
 
@@ -32,4 +33,4 @@ const Direct = (path = 'index', redirect = 'index', failure = 'signIn', success 
     return { renderFilePath, redirectUrl, failureRedirect, successRedirect };
 }
 
-module.exports = { Directory, Direct, renderType:"sendFile" }
+module.exports = { Directory, Direct, renderType:"sendFile" } 

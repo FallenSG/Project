@@ -1,12 +1,12 @@
 import {
     Box, Grid,
+    Breadcrumbs,
     Snackbar, Alert,
     Stack, Typography,
     Rating, Link, Button
 } from '@mui/material'
 import { Flag, Add } from '@mui/icons-material';
 import { useContext, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 
 import { Context } from './PageLayout';
@@ -19,11 +19,12 @@ const dispStyle = {
 function Path(){
     const feed = useContext(Context);
     return (
-        <Stack direction="row" sx={{ alignItems: "center", p: "24px 0 0 9%", display: { xs: "none", sm: 'block' }, fontFamily: "Nunito Sans,SF Pro Text,SF Pro Icons,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;" }}>
-            <Link href="/" underline="hover">Home</Link> / 
-            <Link href={`/genre/${feed.genre[0]}`} underline='hover'>{feed.genre[0]}</Link> / 
-            {feed.title}
-        </Stack>
+        <Breadcrumbs sx={{ p: "24px 0 0 9%", display: { xs: "none", sm: 'block' }, fontVariantCaps: "petite-caps" }}>
+            <Link href="/" underline="hover" color="inherit">Home</Link> / 
+            <Link href={`/genre/${feed.genre[0]}`} underline='hover' color="inherit">{feed.genre[0]}</Link> / 
+            <Typography color="black">{feed.title}</Typography>
+        </Breadcrumbs>
+
     )
 }
 
@@ -57,7 +58,7 @@ function Info(){
             justifyContent="space-between"
             alignItems="flex-start"
             spacing={3}
-            sx={{ pl: "2%" }}
+            sx={{ pl: "2%", fontVariantCaps: "petite-caps" }}
         >
             <Stack direction="column" justifyContent="space-evenly" spacing={0.5}>
                 <Typography variant="h4" sx={{ pr: { xs: "0%", sm: "15%" } }}>
@@ -80,7 +81,6 @@ function Info(){
                         sx={{ borderRadius: "24px", ...dispStyle }}
                         onClick={() => {}}
                         variant="contained"
-                        size="small"
                     >Read</Button>
 
                     <Button
@@ -88,7 +88,6 @@ function Info(){
                         sx={{ borderRadius: "24px", ...dispStyle }}
                         onClick={handleAdd}
                         variant="contained"
-                        size="large"
                         startIcon={<Add />}
                     >Add to Library</Button>
                 </Stack>

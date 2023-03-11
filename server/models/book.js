@@ -12,7 +12,14 @@ const BookSchema = new Schema(
         summary: { type: String, required: true },
         isbn: { type: String },
         genre: [{ type: String, required: true }],
-        doc: {},
+        chapter: [{
+            path: { type: String },
+            date: { type: Number, required: true }
+        }],
+        draft: [{
+            path: { type: String },
+            date: { type: Number, required: true }
+        }],
         img: { type: String },
         review_id: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
         pub_date: { type: Number, required: true },
@@ -25,11 +32,9 @@ const BookSchema = new Schema(
 
 const JoiValidBook = Joi.object({
     title: Joi.string().min(3).max(50).required(),
-    // author_name: Joi.string().required(),
     summary: Joi.string().required(),
     isbn: Joi.string().min(10).max(13),
     genre: Joi.array().items(Joi.string()),
-    // doc: 
     img: Joi.string(),
     pub_date: Joi.date().required(),
 });

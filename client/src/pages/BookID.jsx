@@ -1,10 +1,10 @@
 import {
-    Box, 
+    Box, Chip,
     Link, Tabs, Tab,
-    Stack, Typography,
+    Stack, Typography, IconButton,
     ImageList, ImageListItem, ImageListItemBar
 } from '@mui/material'
-import { FavoriteBorder} from '@mui/icons-material'
+import { ArrowDropDown, FavoriteBorder, ArrowDropUp } from '@mui/icons-material'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react'
 
@@ -15,19 +15,16 @@ import BookInfo from '../Components/BookIDComp'
 function Genre() {
     const { genre } = useContext(Context);
     return (
-        <Stack direction="row">{ 
+        <Stack direction="row" sx={{ flexWrap: "wrap" }}>{ 
             genre.map((elem) => (
-                <Link key={elem} href={`/genre/${elem}`} underline="hover"
-                    sx={{
-                        backgroundColor: 'rgb(235 21 81 / 12%)',
-                        color: "#eb1551",
-                        fontSize: "20px",
-                        p: '1px 8px',
-                        m: '0 8px 8px 8px',
-                        borderRadius: '12px',
-                        width: "fit-content"
-                    }}># {elem} <FavoriteBorder sx={{ fontSize: "13px" }} />
-                </Link>
+                <Chip 
+                    sx={{ backgroundColor: "rgb(235 21 81 / 12%)", color: "#eb1551", fontSize: "20px", fontVariantCaps: "small-caps", margin: "5px" }}
+                    label={`#${elem}`} 
+                    component="a" 
+                    href={`/genre/${elem}`} 
+                    clickable 
+                    size="medium"
+                />
             ))
         }</Stack>
 
@@ -69,10 +66,40 @@ function Recd(){
 
 function About() {
     const { summary } = useContext(Context);
+    const [readMore, setReadMore] = useState(false);
+    
+    const text = summary.split(" ");
+    const length = text.length
+
     return (
         <Stack>
             <Typography variant="h5" sx={{ marginBottom: '16px' }}>Synopsis</Typography>
-            <Typography variant="body1">{summary}</Typography>
+            
+            <Typography 
+                variant="body1" 
+                sx={{
+                    m: "10px 10px 0 10px",
+                    letterSpacing: "0.5px",
+                    color: "rgb(18 18 23 / 90%)"
+                }}
+            >
+                {!readMore ? text.splice(0,40).join(" ") : summary}
+            </Typography>
+
+            <div style={{ display: "flex", direction: "column", justifyContent: "space-between" }}>
+                <span />
+                
+                { length > 20 ? 
+                    ( <IconButton 
+                        sx={{ right: "0", width: "fit-content", p: 0 }}
+                        onClick={ () => setReadMore(!readMore) }
+                    >
+                        { !readMore ? <ArrowDropDown /> : <ArrowDropUp /> }
+                    </IconButton>) : <span />
+                    }
+            </div>
+            
+
             <Typography variant="h5" sx={{ margin: "48px 0 16px" }}>Tags</Typography>
             <Genre />
             <Recd />
@@ -153,7 +180,7 @@ export default function BookID(){
    
     return (
        <PageLayout
-            url={`/book/api/${bookId}`}
+            url={`/book/api/${bookId}?recd=1`}
             elem={<BookInfo />} 
             gridElem={<TabSection />} 
             failureMsg="No Such Book Exists"

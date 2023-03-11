@@ -50,7 +50,7 @@ function Navbar() {
                 underline="none"
                 color="inherit"
                 href="/"
-                sx={{ fontSize: 24 }}
+                sx={{ fontSize: 24, outline: "none" }}
               > 
                 {'Project'}
               </Link>
@@ -85,7 +85,7 @@ function Navbar() {
               variant="h6"
               underline="none"
               color="primary"
-              sx={{ padding: 1, display: dispStyle.fullScreen }}
+              sx={{ padding: 1, display: dispStyle.fullScreen, outline: "none" }}
               href="/library"
             >
               Library

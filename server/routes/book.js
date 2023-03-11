@@ -48,6 +48,8 @@ router.get('/:id', async(req, res) => {
 
 router.get('/api/:id', async(req, res) => {
     const id = new ObjectId(req.params.id)
+    const recd = req.query.recd === '1';
+
     Book.aggregate([
         { $match: { _id: id } },
         {
@@ -67,9 +69,12 @@ router.get('/api/:id', async(req, res) => {
                 from: "books",
                 let: { genre: "$genre" },
                 pipeline: [
-                    { $addFields: {
-                        "count": { $size: { $setIntersection: ["$$genre", "$genre"] } }
-                    }},
+                    { $match: { $expr: { $eq: [recd, true] } } },
+                    {
+                        $addFields: {
+                            "count": { $size: { $setIntersection: ["$$genre", "$genre"] } }
+                        }
+                    },
                     { $sort: { "count": -1 } },
                     { $limit: 6 },
                     { $project: { _id: 1, title: 1, img: 1 } },
@@ -87,6 +92,6 @@ router.get('/api/:id', async(req, res) => {
             if(book.length) res.status(200).send(book[0]);
             else res.status(204).append('message', "No Such Book Exists").end();
         })
-        .catch(err => res.status(400).send({ message: "No Such Book Exists" }))
+        .catch(err => res.status(400).send("Try Again After Sometime!!" ))
 })
 module.exports = router 
