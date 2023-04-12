@@ -3,8 +3,6 @@ const Joi = require('joi');
 
 const Schema = mongoose.Schema;
 
-const { wilsonScore, baysonAvg } = require('../controller/bookRanker')
-
 const BookSchema = new Schema(
     {
         title: { type: String, required: true },
@@ -12,13 +10,13 @@ const BookSchema = new Schema(
         summary: { type: String, required: true },
         isbn: { type: String },
         genre: [{ type: String, required: true }],
-        chapter: [{
-            path: { type: String },
-            date: { type: Number, required: true }
+        publish: [{
+            path: { type: String, required: true },
+            name: { type: String, required: true }
         }],
         draft: [{
-            path: { type: String },
-            date: { type: Number, required: true }
+            path: { type: String, required: true },
+            name: { type: String, required: true }
         }],
         img: { type: String },
         review_id: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
@@ -39,16 +37,6 @@ const JoiValidBook = Joi.object({
     pub_date: Joi.date().required(),
 });
 
-BookSchema.methods.rateBook = async (rating) => {
-    var book = this;
-    book['totalRating'] += rating;
-    book['ratingCount']++;
-
-    book['hotRank'] = wilsonScore(book['totalRanking'], book['pub_date'])
-    book['popRank'] = baysonAvg(book['totalRating'], book['ratingCount'])
-
-    await book.save();
-}
 
 const Book = mongoose.model('Book', BookSchema);
 

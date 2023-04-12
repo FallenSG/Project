@@ -36,7 +36,7 @@ function Info(){
     rating = rating > 0 ? rating : 0;
 
     const handleAdd = () => {
-        axios.post('/library/addItem', { bookId: feed._id })
+        axios.post('/library/addItem', { id: feed._id })
             .then(data => {
                 if (data.statusCode === 200)
                     setSnackCont({ open: true, msg: "Added...", severity: "success" })

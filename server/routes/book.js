@@ -4,6 +4,7 @@ const ObjectId = require('mongoose').Types.ObjectId;
 
 const { Direct, renderType } = require('../routePlan');
 const { renderFilePath } = Direct(path = "book");
+const idCheck = require('../middleware/idCheck');
 
 const limit =  8;
 const project = { title: 1, img: 1 };
@@ -46,7 +47,7 @@ router.get('/:id', async(req, res) => {
     res[renderType](renderFilePath);
 })
 
-router.get('/api/:id', async(req, res) => {
+router.get('/api/:id', idCheck, async(req, res) => {
     const id = new ObjectId(req.params.id)
     const recd = req.query.recd === '1';
 
@@ -84,7 +85,7 @@ router.get('/api/:id', async(req, res) => {
             }
         },
         {
-            $project: { isbn: 0, hotRank: 0, popRank: 0 }
+            $project: { isbn: 0, hotRank: 0, popRank: 0, review_id: 0, draft: 0, pub_date: 0, isbn: 0 }
         }
         
     ])

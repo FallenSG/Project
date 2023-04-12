@@ -6,6 +6,7 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const { Direct, renderType } = require('../routePlan');
 const { renderFilePath } = Direct(path = "library");
 const { auth } = require('../middleware/authHandler');
+const idCheck = require('../middleware/idCheck')
 
 router.use(auth);
 
@@ -46,8 +47,8 @@ router.get('/api', async(req, res) => {
     
 })
 
-router.post('/addItem', async(req, res) => {
-    const bookId = ObjectId(req.body.bookId);
+router.post('/addItem', idCheck, async(req, res) => {
+    const bookId = ObjectId(req.body.id);
 
     User.find({ _id: req.user._id, "lib._id": bookId })
         .then(data => {
@@ -55,8 +56,8 @@ router.post('/addItem', async(req, res) => {
             else{
                 Book.findOne({ _id: bookId })
                     .then(book => {
-                        if (book === null)
-                            return res.status(204).send("No such Book");
+                        if (!book)
+                            return res.status(409).send("No such Book");
                         const date = new Date().getTime();
                         User.findOneAndUpdate({ _id: req.user._id }, {
                             $push: {
@@ -67,13 +68,13 @@ router.post('/addItem', async(req, res) => {
                                 }
                             }
                         })
-                            .then(data => res.send("Added"))
+                            .then(data => res.status(200).send("Added"))
                             .catch(err => { throw new Error("Couldn't add book to your library") })
                     })
                     .catch(err => { throw new Error(err) })
             }
         })
-        .catch(err => { res.send(err) });
+        .catch(err => { res.status(409).send(err) });
 })
 
 router.post('/removeItem', async(req, res) => {

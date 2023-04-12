@@ -1,15 +1,15 @@
 import {
     Box, Chip,
-    Link, Tabs, Tab,
-    Stack, Typography, IconButton,
+    Tabs, Tab, Stack, Typography, IconButton,
     ImageList, ImageListItem, ImageListItemBar
 } from '@mui/material'
-import { ArrowDropDown, FavoriteBorder, ArrowDropUp } from '@mui/icons-material'
+import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react'
 
 import { PageLayout, Context} from '../Components/PageLayout';
 import BookInfo from '../Components/BookIDComp'
+import Review from '../Components/Review'
 
 
 function Genre() {
@@ -103,6 +103,7 @@ function About() {
             <Typography variant="h5" sx={{ margin: "48px 0 16px" }}>Tags</Typography>
             <Genre />
             <Recd />
+            <Review />
         </Stack>
     )
 }
@@ -179,7 +180,7 @@ export default function BookID(){
     const bookId = useLocation().pathname.split('/')[2];
    
     return (
-       <PageLayout
+        <PageLayout
             url={`/book/api/${bookId}?recd=1`}
             elem={<BookInfo />} 
             gridElem={<TabSection />} 

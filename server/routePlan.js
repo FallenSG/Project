@@ -13,13 +13,12 @@ const Directory = {
     'genre': ['/genre', './genre', renderPath],
     'ranking': ['/ranking', './ranking', renderPath],
     'book': ['/book', './book', 'book'],
-    'createBook': ['/createBook', './createBook', 'book'],
-    'bookModify': ['/modifyBook', './bookModify', 'bookModify'],
     'author': ['/author', './author', renderPath],
     'library': ['/library', './library', renderPath],
     'reset': ['/reset-password', './reset', renderPath],
     'sample': ['/sample', './sample', 'sample'],
-    'publish': ['/publish', './publish', renderPath]
+    'publish': ['/publish', './publish', renderPath],
+    'review': ['/review', './review', renderPath]
 }
 
 

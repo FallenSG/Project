@@ -1,5 +1,7 @@
-import { ImageList, ImageListItem, ImageListItemBar, Grid, Typography, Divider, Link } from '@mui/material'
-import { Brush } from '@mui/icons-material';
+import { ImageList, ImageListItem, ImageListItemBar, 
+    Grid, Typography, Divider, Link, Button, IconButton 
+} from '@mui/material'
+import { Brush, Sort } from '@mui/icons-material';
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -45,10 +47,19 @@ function Title(){
                 <Grid item xs={10} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <Typography variant="h4" sx={{ p: "40px 0 40px 0", fontSize: '40px' }}>Library</Typography>
                     <>
-                        <Link underline="hover" variant="h6" sx={{ pr: "3%", justifyContent: "center", alignItems: "center" }}>
+                        {/* <Link underline="hover" variant="h6" sx={{ pr: "3%", justifyContent: "center", alignItems: "center" }}>
                             <Brush size="small"/>
                             Edit
-                        </Link>
+                        </Link> */}
+                        <Button
+                            startIcon={<Brush size="small" />}
+                        >
+                            Edit
+                        </Button>
+
+                        <IconButton>
+                            <Sort />
+                        </IconButton>
                     </>
                 </Grid>
             </Grid>

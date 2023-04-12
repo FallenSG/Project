@@ -6,7 +6,8 @@ import { ReceiptLongOutlined } from '@mui/icons-material'
 import { useContext, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { Context, PageLayoutPublish } from '../Components/PageLayout'
+import { Context, PageLayout } from '../Components/PageLayout'
+import Path from '../Components/PubPath'
 
 
 function TabOut({ feed }){
@@ -143,7 +144,7 @@ function TabSection() {
                 <TabOut feed={feed.draft}/>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <TabOut feed={feed.chapter}/>
+                <TabOut feed={feed.publish}/>
             </TabPanel>
         </Box>
     )
@@ -158,15 +159,17 @@ function Comp(){
     }
 
     return (
+        <Paper sx={{ mt: "1%", backgroundColor: "#f6f7fc" }}>
         <Grid
             container
             direction="column"
             justifyContent="flex-start"
             flexWrap="nowrap"
             alignItems="stretch"
-            sx={{ p: "0 0 0 1.5%",  fontVariantCaps: "petite-caps", textTransform: "lowercase"}}
+            sx={{ p: "0 0 0 1.5%", fontVariantCaps: "petite-caps", textTransform: "lowercase" }}
             spacing={2}
         >
+            <Grid item xs={12}> <Path /> </Grid>
             <Grid item xs={12} sx={{ display: "flex" }}>
                 <img
                     style={{
@@ -202,6 +205,7 @@ function Comp(){
             <Grid item> <TabSection /> </Grid>
             
         </Grid>
+        </Paper>
     )
 }
 
@@ -209,9 +213,11 @@ export default function PublishView(){
     const bookId = useLocation().pathname.split('/')[3];
 
     return (
-        <PageLayoutPublish 
+        <PageLayout
+            nav="publish" 
             url={`/publish/api/${bookId}`}
             gridElem={<Comp />}
+            gridXs={11}
             failureMsg="No Such Book Exists"
         />
     )

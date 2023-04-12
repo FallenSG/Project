@@ -34,7 +34,7 @@ function checkISBN(isbn) {
 //then validate/sanitize it against schema
 //if error arises or book already exists a msg is passed on
 //else book creation process is executed 
-module.exports = async function (req, res) {
+async function createBook(req, res) {
     let book = {
         img: req.file ? req.file.path.substr(6) : '/bookCover/defCover',
         title: req.body.title.toLowerCase(),
@@ -61,7 +61,7 @@ module.exports = async function (req, res) {
             throw new Error("Book with same Title/ISBN already exists!!");
 
         if (book.isbn && !checkISBN(book.isbn))
-            throw new Error("Please Enter valid ISBN Number!!")
+            throw new Error("Please Enter Valid ISBN Number")
 
         JoiValidBook.validate(book);
         book = await (new Book(book)).save()
@@ -79,6 +79,48 @@ module.exports = async function (req, res) {
                 // if(err) logger
             })
         }
-        res.send(err.message)
+        res.status(403).send(err.message)
     }
 };
+
+async function modifyBook(req, res){
+    let book = {}
+
+    if (req.file) book.img = req.file.path.substr(6);
+    if (req.body.title) book.title = req.body.title;
+    if (req.body.isbn) book.isbn = req.body.isbn;
+    if (req.body.genre) book.genre = req.body.genre.split(',').map((val) => val.toLowerCase());
+    if (req.body.summary) book.summary = req.body.summary;
+
+    try {
+        var ExistBook;
+        if (book.isbn)
+            ExistBook = await Book.findOne({ isbn: book.isbn });
+
+        if (book.title)
+            ExistBook = await Book.findOne({ title: book.title });
+
+        if (ExistBook)
+            throw new Error("Book with Same Title/ISBN Already Exists!!");
+        
+        if(book.isbn && !checkISBN(book.isbn))
+            throw new Error("Please Enter Valid ISBN Number")
+
+        Book.findOneAndUpdate(
+            { _id: req.params.id },
+            { $set: book }
+        )
+            .then(UpdBook => res.send("Book Updated") )
+            .catch(err =>  res.status(403).send("Error Happened While Updating Book") )
+
+    } catch (err) {
+        if (book.img !== '/bookCover/defCover') {
+            fs.unlink(`public/${book.img}`, (err) => {
+                // if(err) logger
+            })
+        }
+        res.status(403).send(err.message)
+    }
+}
+
+module.exports = { createBook, modifyBook }

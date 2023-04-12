@@ -19,7 +19,7 @@ module.exports = (passport) => {
                     if (!isValid) {
                         return done(null, false, {message: "Wrong Credentials"})
                     }
-                    return done(null, user)
+                    return done(null, { id: user._id, username: user.username })
                 })
             }
         })

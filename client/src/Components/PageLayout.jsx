@@ -17,7 +17,7 @@ const NavType = {
 };
 
 
-export function PageLayout({ url, nav='normal', elem, gridElem, failureMsg, columns = 12, gridXs = 10 }){
+export function PageLayout({ url, nav='normal', elem, gridElem, failureMsg, loading=true, columns = 12, gridXs = 10 }){
     const [info, setInfo] = useState({});
 
     const fetchData = async() => {
@@ -38,7 +38,7 @@ export function PageLayout({ url, nav='normal', elem, gridElem, failureMsg, colu
         fetchData();
     }, []);
 
-    var gridElement = <Loading />, element, message;
+    var gridElement = loading ? <Loading /> : "", element, message;
     if(info.status === 200){
         gridElement = gridElem;
         element = elem;

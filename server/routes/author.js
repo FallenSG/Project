@@ -4,12 +4,13 @@ const ObjectId = require('mongoose').Types.ObjectId;
 
 const { Direct, renderType } = require('../routePlan');
 const { renderFilePath, redirectUrl } = Direct(path = "author", failure="index");
+const idCheck = require('../middleware/idCheck');
 
 router.get('/:id', async(req, res) => {
     res[renderType](renderFilePath);
 });
 
-router.get('/api/:id', async (req, res) => {
+router.get('/api/:id', idCheck, async (req, res) => {
     const id = new ObjectId(req.params.id);
     User.aggregate([
         { $match: { _id: id } },
@@ -30,7 +31,7 @@ router.get('/api/:id', async (req, res) => {
         .then((author) => {
             if(author[0])
                 return res.status(200).send(author[0]) 
-            res.redirect(redirectUrl);
+            return res.redirect(redirectUrl);
         })
         .catch( err => res.status(400).send(err) );
 

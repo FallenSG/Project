@@ -1,14 +1,16 @@
 const router = require('express').Router();
 const ObjectId = require('mongoose').Types.ObjectId;
 const multer = require('multer');
-const fs = require('fs');
 
-const { Book } = require('../models/book')
 const { User } = require('../models/user');
 
 const { Direct, renderType } = require('../routePlan');
 const { renderFilePath } = Direct(path="pubish");
 const { auth } = require('../middleware/authHandler');
+
+const { createBook, modifyBook } = require('../controller/createBook');
+const idCheck = require('../middleware/idCheck');
+const { ChapCreate, OpenChap } = require('../controller/chapHandler');
 
 const upload = multer({
     dest: 'public/bookCover/',
@@ -23,7 +25,7 @@ const upload = multer({
     }
 });
 
-router.use(auth);
+// router.use(auth);
 
 router.get('/', async(req, res) => {
     res[renderType](renderFilePath);
@@ -49,15 +51,15 @@ router.get('/api', async(req, res) => {
     ])
         .then((data) => res.send(data[0]))
         .catch((err) => console.log(err)) //logger
-    // res.send([
+    // res.send({ book_id : [
     //     { "_id": "63d2648d373f7fea3fa9d387", "title": "Sample", "img": "/bookCover/defCover", "totalRating": 0, "ratingCount": 0, "chapCount": 0 },
     //     { "_id": "63d35c783fd90caed291b9d9", "title": "Sample2kj vkjfjjsfkjd jkfgjkjfgjgfjgfkgkjrj djfs js f[e jj jgfjj fpke fpperpfd ep jrp trj jkrprk prtp pprfkfjlggf;'", "img": "/bookCover/defCover", "totalRating": 0, "ratingCount": 0, "chapCount": 0 },
     //     { "_id": "63d35cc990ba93cfd1031f57", "title": "Sample3", "img": "/bookCover/defCover", "totalRating": 0, "ratingCount": 0, "chapCount": 0 },
     //     { "_id": "63d35d0490ba93cfd1031f66", "title": "Sample5", "img": "/bookCover/defCover", "totalRating": 0, "ratingCount": 0, "chapCount": 0 }
-    // ])
+    // ]})
 })
 
-router.get('/api/:id', async(req, res) => {
+router.get('/api/:id', idCheck, async(req, res) => {
     const bookId = new ObjectId(req.params.id);
 
     User.aggregate([
@@ -69,7 +71,7 @@ router.get('/api/:id', async(req, res) => {
                 from: "books",
                 pipeline: [
                     { $match: { _id: bookId } },
-                    { $project: { title: 1, genre: 1, img: 1, chapter: 1, draft: 1 } }
+                    { $project: { title: 1, genre: 1, img: 1, publish: 1, draft: 1 } }
                 ],
                 as: "book_id"
             }
@@ -92,7 +94,7 @@ router.get('/api/:id', async(req, res) => {
     //             "Fantasy"
     //         ],
     //         "img": "/bookCover/defCover",
-    //         "chapter": [],
+    //         "publish": [],
     //         "draft": [
     //             {path: "/sampleId_chpter4", date: 1677323603870},
     //             {path: "/sampleId_chpter3", date: 1676323593860},
@@ -103,43 +105,12 @@ router.get('/api/:id', async(req, res) => {
     // })
 })
 
-router.post('/modify/:id', upload.single('bookCover') , async (req, res) => {
-    let book = {}
+router.post('/create', upload.single('bookCover'), createBook);
 
-    if(req.file) book.img = req.file.path.substr(6); 
-    if(req.body.title) book.title = req.body.title;
-    if(req.body.isbn) book.isbn = req.body.isbn;
-    if(req.body.genre) book.genre = req.body.genre.split(',').map((val) => val.toLowerCase());
-    if(req.body.summary) book.summary = req.body.summary;
+router.post('/modify/:id', idCheck, upload.single('bookCover'), modifyBook);
 
-    try{
-        var ExistBook;
-        if(book.isbn)
-            ExistBook = await Book.findOne({ isbn: book.isbn });
-        
-        if(book.title) 
-            ExistBook = await Book.findOne({ title: book.title });
+router.post('/chapter/create/:id', idCheck, ChapCreate)
 
-        if(ExistBook)
-            throw new Error("Book with Same Title/ISBN Already Exists!!");
-        
-        Book.findOneAndUpdate(
-            { _id: req.params.id },
-            { $set: book }
-        )
-            .then((UpdBook) => {
-                res.send(`Book Updated: ${UpdBook}`);
-            })
-            .catch((err) => { throw new Error(`Error happened while Saving \n ${err}`) })
-        
-    } catch(err){
-        if (book.img !== '/bookCover/defCover') {
-            fs.unlink(`public/${book.img}`, (err) => {
-                // if(err) logger
-            })
-        }
-        res.status(403).send(err.message)
-    }
-});
+router.get('/chapter/:id', OpenChap);
 
 module.exports = router;    

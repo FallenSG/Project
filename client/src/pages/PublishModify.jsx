@@ -1,13 +1,11 @@
 import PublishForm from '../Components/PublishForm'
-import { Box, TextField, Button, Paper, Stack,
-    Autocomplete, Chip
-} from "@mui/material";
+import { TextField, Button, Paper } from "@mui/material";
 import { useLocation } from 'react-router-dom';
 import { useRef, useContext, useState } from 'react';
 
 import { PageLayout, Context } from '../Components/PageLayout';
-
-const Genre = ["Urban", "Eastern", "Games", "Fantasy", "Sci-Fi", "Horror", "Sports", "Action", "War", "Realistic", "History", "Mystery", "Drama"];
+import GenreField from '../Components/GenreField'
+import ImgPreview from '../Components/ImgPreview'
 
 function Form() {
     const Book = useContext(Context);
@@ -16,8 +14,7 @@ function Form() {
     const [imgFile, setImgFile] = useState({shown: Book.img, file:""})
     const [genreVal, setGenreVal] = useState("");
 
-    const img_val = useRef(null),
-        title_val = useRef(null),
+    const title_val = useRef(null),
         isbn_val = useRef(null),
         summary_val = useRef(null);
 
@@ -37,7 +34,7 @@ function Form() {
         if(data.genre) formData.append('genre', data.genre);
         if(data.summary) formData.append('summary', data.summary);
 
-        return formData
+        return formData;
     }
 
     return (
@@ -46,34 +43,7 @@ function Form() {
             url={loc}
             getParams={getParams}
         >
-            <Paper sx={{ width: "fit-content", mb: "16px", p: 0 }}>
-                <img 
-                    style={{
-                        height: "35vh",
-                        aspectRatio: "0.8",
-                        resize: "auto",
-                        objectFit: "scale-down"
-                    }}
-                    src={imgFile.shown}
-                />
-            </Paper>
-
-            <Button
-                variant="contained"
-                component="label"
-                sx={{ width: "fit-content" }}
-            >
-                Upload Book Cover
-                <input
-                    name="bookCover"
-                    ref={img_val}
-                    onChange={(e) => { 
-                        setImgFile({ shown: URL.createObjectURL(e.target.files[0]), file: e.target.files[0] })
-                    }}
-                    type="file"
-                    hidden
-                />
-            </Button>
+            <ImgPreview imgFile={imgFile} setImgFile={setImgFile} />
 
             <TextField
                 name="title"
@@ -89,30 +59,7 @@ function Form() {
                 helperText="ISBN"
             />
 
-            <Autocomplete
-                multiple
-                onChange={(e, val) => setGenreVal(val) }
-                options={Genre}
-                defaultValue={Book.genre}
-                filterSelectedOptions
-                freeSolo
-                renderTags={(value, getTagProps) =>
-                    value.map((option, index) => (
-                        <Chip 
-                            variant="outlined" 
-                            label={option} 
-                            {...getTagProps({ index })} 
-                        />
-                    ))
-                }
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        helperText="Genre Tags"
-                        label="Genre"
-                    />
-                )}
-            />
+            <GenreField defaultVal={Book.genre} setGenreVal={setGenreVal}/>
 
             <TextField
                 name="summary"
@@ -131,9 +78,9 @@ export default function PublishModify() {
 
     return (
         <PageLayout
-            nav="publish"
+            nav="none"
             url={`/book/api/${bookId}`}
-            gridElem={<Form />}
+            elem={<Form />}
             failureMsg="Error"
         />
     )

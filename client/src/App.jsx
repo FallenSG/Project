@@ -7,7 +7,6 @@ import ForgotPass2 from './pages/ForgotPass2';
 import Sample from './pages/sample';
 import Genre from './pages/Genre';
 import BookID from './pages/BookID';
-import CreateBook from './pages/CreateBook';
 import VerifyExpired from './pages/VerifyExpired';
 import Library from './pages/Library'
 import Author from './pages/Author'
@@ -15,8 +14,9 @@ import Ranking from './pages/Ranking'
 import Reset from './pages/Reset'
 import PublishList from './pages/PublishList';
 import PublishView from './pages/PublishView';
-import PublishCreate from './pages/PublishCreate';
+import PublishChapCreate from './pages/PublishChapCreate';
 import PublishModify from './pages/PublishModify';
+import PublishCreate from './pages/PublishCreate';
 
 export default function App() {
   return (
@@ -28,7 +28,6 @@ export default function App() {
         <Route exact path="/forgot-password" element={<ForgotPass />} />
         <Route exact path="/forgot-password/:token" element={<ForgotPass2 />} />
         <Route exact path="/verify/token-expire" element={<VerifyExpired />} />
-        <Route exact path="/createBook" element={<CreateBook />} />
         <Route exact path="/author/:authorid" element={<Author />} />
         <Route exact path="/genre/:genreid" element={<Genre />} />
         <Route exact path="/book/:bookid" element={<BookID />} />
@@ -39,7 +38,8 @@ export default function App() {
         <Route exact path="/publish/list" element={<PublishList />} />
         <Route exact path="/publish/view/:bookId" element={<PublishView />} />
         <Route exact path="/publish/modify/:bookId" element={<PublishModify />} />
-        <Route exact path="/publish/create/:bookId" element={<PublishCreate />} />
+        <Route exact path="/publish/create" element={<PublishCreate />} />
+        <Route exact path="/publish/chapter/create/:bookId" element={<PublishChapCreate />} />
       </Routes>
     </Router>
   );

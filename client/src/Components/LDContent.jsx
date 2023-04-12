@@ -20,9 +20,9 @@ export function BookTab({ info, inRef, setSnackCont }) {
     const navg = useNavigate();
 
     const handleAdd = () => {
-        axios.post('/library/addItem', { bookId: info._id })
+        axios.post('/library/addItem', { id: info._id })
             .then(data => {
-                if (data.statusCode === 200)
+                if (data.status === 200)    
                     setSnackCont({ open: true, msg: "Added...", severity: "success" })
             })
             .catch(err => setSnackCont({ open: true, msg: err.response.data, severity: "error" }));

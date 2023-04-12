@@ -105,7 +105,7 @@ function MainContent({ props, setSnackCont }) {
                 <Stack
                     component="form"
                     autoComplete="off"
-                    sx={{ width: { xs: "100%", md: "65%" }, pt: "10px" }} 
+                    sx={{ width: { xs: "100%", md: "65%" }, pt: "10px" }}
                     onSubmit={handleSubmit}
                 >
                     {children}
@@ -120,15 +120,15 @@ function MainContent({ props, setSnackCont }) {
 }
 
 function PublishForm(props) {
-    const [ snackCont, setSnackCont ] = useState({ open: false, msg: "Nothing to see here!!", severity: "warning" })
-    
+    const [snackCont, setSnackCont] = useState({ open: false, msg: "Nothing to see here!!", severity: "warning" })
+
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
         setSnackCont({ open: false, msg: "Closed Now!", severity: "error" });
     }
-    
+
     return (
         <>
             <PubNavbar />
@@ -144,7 +144,7 @@ function PublishForm(props) {
                     {snackCont.msg}
                 </Alert>
             </Snackbar>
-            
+
             <Grid container sx={{ justifyContent: 'center' }}>
                 <Grid item xs={11}>
                     <MainContent props={props} setSnackCont={setSnackCont} />

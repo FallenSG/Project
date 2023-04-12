@@ -1,54 +1,65 @@
-import { useState, useEffect } from 'react'
-import { Paper, Grid, Button, TextField } from '@mui/material'
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import PublishForm from '../Components/PublishForm'
+import { Box, TextField, Button } from "@mui/material";
+import { useLocation } from 'react-router-dom';
+import { useRef, useState } from 'react';
 
-import { PageLayoutOverload } from '../Components/PageLayout'
+import GenreField from '../Components/GenreField'
+import ImgPreview from '../Components/ImgPreview';
 
-function Comp() {
-    const [value, setValue] = useState(''); 
-    const modules = {
-        toolbar: [
-            [{ font: [] }],
-            [{ size: [] }],
-            ['bold', 'italic', 'underline'],
-            [{ script: "sub" }, { script: "super" }],
-            [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
-            ['blockquote', 'code-block'],
-            ["clean"]
-        ]
+export default function CreateBook() {
+    const loc = useLocation().pathname;
+
+    const title = useRef(null),
+        isbn = useRef(null),
+        summary = useRef(null);
+
+    const getParams = () => {
+        const formData = new FormData();
+
+        formData.append('bookCover', imgFile.file);
+        formData.append('title', title.current.value);
+        formData.append('isbn', isbn.current.value);
+        formData.append('genre', genre.current.value);
+        formData.append('summary', summary.current.value);
+
+        return formData;
     }
 
-    return (
-        <Paper sx={{ mt: "5%", backgroundColor: "#f6f7fc" }}>
-            <Grid container spacing={2} columns={14} sx={{ justifyContent: "center" }}>
-                <Grid item xs={12}>
-                    <TextField
-                        fullWidth
-                        variant="standard"
-                        placeholder="Enter Chapter Title..."
-                    />
-                </Grid>
-                <Grid item xs={13}>
-                    <ReactQuill
-                        theme="snow"
-                        modules={modules}
-                        placeholder="Compose an epic...."
-                        value={value}
-                        onChange={setValue} />
-                </Grid>
-            </Grid>
-        </Paper>
-    )
+    const [imgFile, setImgFile] = useState({ shown: '/bookCover/defCover', file: "" });
+    const [ genre, setGenre ] = useState("")
 
-}
-
-export default function PublishCreate() {
     return (
-        <PageLayoutOverload
-            gridElem={<Comp />}
-            columns={16}
-            gridXs={15}
-        />
+        <PublishForm
+            buttonText="Publish"
+            url={loc}
+            getParams={getParams}
+        >   
+            <ImgPreview imgFile={imgFile} setImgFile={setImgFile} />
+
+            <TextField
+                name="title"
+                label="Title"
+                required={true}
+                inputRef={title}
+            />
+
+            <TextField
+                name="isbn"
+                helperText="ISBN"
+                inputRef={isbn}
+            />
+
+            <GenreField setGenreVal={setGenre} Req={true} />
+            
+            <TextField
+                name="summary"
+                multiline
+                rows={4}
+                placeholder="Write your Epic!!"
+                inputRef={summary}
+                helperText="Summary"
+            />
+
+        </PublishForm>
     )
 }

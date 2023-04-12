@@ -1,91 +1,125 @@
 import { AppBar, Toolbar, IconButton, Stack, Button, Link } from "@mui/material"
-import { ArrowBack, Settings, Add } from '@mui/icons-material';
+import { Settings, Add, Bookmark, Check } from '@mui/icons-material';
 import { useLocation } from "react-router-dom";
 import { useContext } from "react";
+import axios from 'axios'
 
 import { Context } from "./PageLayout";
 
-function CreateNav(){
-    return (
-        <>
-            <IconButton>
-                <ArrowBack sx={{ color: "white" }} />
-                Go back
-            </IconButton>   
-
-            <Stack direction="row" spacing={2}>
-                <Button variant="contained">Save Draft</Button>
-                <Button variant="contained">Publish Chapter</Button>
-            </Stack>
-        </>
-    )
+function pathEst(path) {
+    let Break = 3;
+    let arr = path.split('/').filter((x, i) => {
+        if (i > 1 && i < Break) {
+            if (i === 2 && x === 'chapter') Break++;
+            return x;
+        }
+        return ""
+    })
+    return arr.join('/');
 }
 
 function ViewNav(){
-    // const { title, _id } = useContext(Context)?.book_id
-    const title = useContext(Context)?.book_id.title;
-    const _id = useContext(Context)?.book_id._id.$oid;
-    return (
-        <>
-            <Button
-                type="submit"
-                href="/publish/list" 
-                startIcon={ <ArrowBack /> } 
-                sx={{ color: "white", ml: "3%" }}
-            >
-                {title}
-            </Button>
+    const _id = useContext(Context)?.book_id._id;
 
-            <Stack direction="row" spacing={2} sx={{ pr: "3%" }}>
-                <Button 
-                    type="submit"
-                    href={`/publish/modify/${_id}`}
-                    variant="outlined" 
-                    sx={{ backgroundColor: "primary.main" }}
-                >
-                    <Settings sx={{ color: 'white' }} />
-                </Button>
-                
-                <Button variant="contained" startIcon={ <Add /> }>
-                    Create a Chapter
-                </Button>
-            </Stack>
-        </>
+    return (
+        <Stack direction="row" spacing={2} sx={{ pr: "3%" }}>
+            <Button 
+                type="submit"
+                href={`/publish/modify/${_id}`}
+                variant="outlined" 
+                sx={{ backgroundColor: "primary.main" }}
+            >
+                <Settings sx={{ color: 'white' }} />
+            </Button>
+            
+            <Button
+                href={`/publish/chapter/create/${_id}`}
+                variant="contained" 
+                startIcon={ <Add /> }
+            >
+                Create a Chapter
+            </Button>
+        </Stack>
     )
 }
 
 function ListNav(){
     return (
-        <>
-            <Link
-                variant="h6"
-                underline="none"
-                color="inherit"
-                href="/"
-                sx={{ fontSize: 24, pl: "4%", outline: "none" }}
-            >
-                {'Project'}
-            </Link>
-            <Button 
-                sx={{ mr: "3%", textTransform: "uppercase", fontVariantCaps: "tilting-caps", letterSpacing: "1px" }}
-                variant="contained" startIcon={ <Add /> }>
-                Create a Story
-            </Button>
-        </>
+        <Button 
+            href="/publish/create"
+            sx={{ mr: "3%", textTransform: "uppercase", fontVariantCaps: "tilting-caps", letterSpacing: "1px" }}
+            variant="contained" startIcon={ <Add /> }
+        >
+            Create a Story
+        </Button>
     )
 }
 
-export default function PubNavbar() {
-    const path = useLocation().pathname.split('/')[2];
+function ChapCreate({ val, path }){
+    const handleClick = () => {
+        axios.post(path, { ...val })
+            .then(data => {
+                console.log("done");
+            })
+            .catch(err => {});
+    }
+
+    return (
+        <Stack direction="row" spacing={2}>
+            <Button 
+                variant="contained" 
+                onClick={handleClick}
+                startIcon={<Bookmark />}
+            >
+                Save Draft
+            </Button>
+
+            <Button 
+                variant="contained" 
+                onClick={() => console.log(val)} 
+                startIcon={<Check />}
+            >
+                Publish Chapter
+            </Button>
+        </Stack>
+    )
+}
+
+function ChapModify(){
+    return (
+        <Button 
+            variant="contained"
+        >
+            Save Changes
+        </Button>
+    )
+}
+
+export default function PubNavbar({ val }) {
+    const rawPath = useLocation().pathname;
+    const path = pathEst(rawPath);
+
     const navType = {
-        'create': <CreateNav />,
         'view': <ViewNav />,
-        'list': <ListNav />
+        'list': <ListNav />,
+        'chapter/create': <ChapCreate val={val} path={rawPath} />,
+        'chapter/modify': <ChapModify val={val} path={rawPath} />
     }
     return (
         <AppBar position="sticky" sx={{ mb: "2%" }}>
             <Toolbar sx={{ backgroundColor: "navbar.main", justifyContent: "space-between" }}>
-                { navType[path] }
+                <Link
+                    variant="h6"
+                    underline="none"
+                    color="inherit"
+                    href="/"
+                    sx={{ fontSize: 24, pl: "4%", outline: "none" }}
+                >
+                    {'Project'}
+                </Link>
+
+                {navType[path]}
+
             </Toolbar>
         </AppBar>
     )
