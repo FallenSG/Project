@@ -30,7 +30,7 @@ function Booklist() {
 
     return (
         <Grid container spacing={5}>
-            {books.map((book) => <BookTab info={book} />)}
+            {books?.map((book) => <BookTab info={book} />)}
             <Snackbar
                 open={snackCont.open}
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

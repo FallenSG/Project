@@ -12,10 +12,6 @@ async function ChapCreate(req, res){
     try{
         if(appendType !== 'publish' || appendType !== 'draft') 
             throw new Error("Invalid Request");
-
-        const ValidQry = await User.findOne({ _id: req.user._id, book_id: id })
-        
-        if(!ValidQry) throw new Error("Un-authorized access");
         
         let BookExist;
         

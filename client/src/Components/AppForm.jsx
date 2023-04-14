@@ -81,18 +81,18 @@ const Loading = styled(CircularProgress)({
 function MainContent(props) {
     const { url, getParams, title, underTitle, children, buttonText, bottomPart } = props;
     const [isClicked, setIsClicked] = useState(false);
-    const [banner, setBanner] = useState({code: null, msg: null, shown: false})
+    const [banner, setBanner] = useState({severity: 'warning', msg: "Nothing to see here", open: false})
 
     const handleSubmit = async(e) => {
         e.preventDefault();
         setIsClicked(true);
         axios.post(url, getParams())
             .then((resp) => {
-                setBanner({ code: 'success', msg: resp.data, shown: true })
+                setBanner({ severity: 'success', msg: `${resp.data} (You will be redirected in 3 seconds)`, open: true })
                 setIsClicked(false);
             })
             .catch(err => {
-                setBanner({ code: 'error', msg: err.response.data, shown: true })
+                setBanner({ severity: 'error', msg: err.response.data, open: true })
                 setIsClicked(false);
             })
     }
@@ -100,7 +100,7 @@ function MainContent(props) {
     return (
         <ThemeProvider theme={formTheme}>
             <Container maxWidth="sm">
-                <AppFormPopup banner={banner} />
+                <AppFormPopup banner={banner} setBanner={setBanner}/>
                 <Box sx={{ mt: 7, mb: 12 }}>
                     <Paper
                         background="light"

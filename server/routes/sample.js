@@ -23,3 +23,13 @@ module.exports = router;
 //         'Content-type': 'application/json; charset=UTF-8'
 //     }
 // }).then(data => console.log(data)).catch(err => console.log(err));
+
+// fetch('/publish/modify/63d35cc990ba93cfd1031f57', {
+//     method: 'POST',
+//     body: JSON.stringify({
+//         title: "Bad Actor Effect Shown"
+//     }),
+//     headers: {
+//         'Content-type': 'application/json; charset=UTF-8'
+//     }
+// }).then(data => console.log(data)).catch(err => console.log(err));

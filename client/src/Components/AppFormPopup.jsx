@@ -1,65 +1,40 @@
-import { useState, useEffect } from 'react';
-import { LinearProgress as Progress, styled, Alert, Stack } from '@mui/material'
-import { useNavigate } from 'react-router-dom';
-
-const StyledStack = styled(Stack)({
-    marginTop: "28px",
-    paddingTop: "8px",
-});
+import { 
+    styled, Alert, Stack, Snackbar 
+} from '@mui/material'
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const StyledAlert = styled(Alert)({
-    padding: "16px 16px",
+    padding: "8px 8px",
     fontSize: 15,
     fontWeight: 400,
     borderRadius: "4px 4px 0 0"
 })
 
 
-function MainContent(props){
-    const { bannerType, msg } = props;
+export default function AppFormNav(props){
+    const { banner, setBanner } = props;
     const navg = useNavigate();
 
-    const [progress, setProgress] = useState(0);
-    const [isShown, setIsShown] = useState(true);
+    const [query] = useSearchParams();
+    const path = query.get('fromUrl');
 
-    useEffect(() => {
-        setIsShown(true);
-        setProgress(0);
-
-        const timer = setInterval(() => {
-            setProgress((oldProgress) => {
-                if(oldProgress === 100){
-                    setIsShown(false);
-                    // if (bannerType === "success") 
-                    //     navg(-1);
-                }
-                return Math.min(oldProgress + 5, 100);
-            });
-        }, 200);
-
-        return () => {
-            clearInterval(timer);
-        };
-    }, [msg]);
+    const handleClose = () => {
+        if(banner.severity === 'success') navg(path === null ? '/' : path);
+        setBanner({ open: false, severity: "warning", msg: "Nothing here" })
+    }
 
     return (
-        <StyledStack sx={{
-            display: isShown ? 'block': 'none'
-        }}>
-            <StyledAlert variant="filled" severity={bannerType} onClose={() => setIsShown(false)}>
-                {msg}
+        <Snackbar
+            open={banner.open}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            autoHideDuration={3000}
+            onClose={handleClose}
+            message={banner.msg}
+            sx={{ width: { sm: "45vw" } }}
+        >
+            <StyledAlert onClose={handleClose} severity={banner.severity} sx={{ width: '100%' }}>
+                {banner.msg}
             </StyledAlert>
-            <Progress sx={{bgcolor: "inherit"}} variant="determinate" value={progress} color="secondary" />
-        </StyledStack>
+        </Snackbar>
     )
 }
-
-export default function AppFormPopup({banner}) {
-    const { code, msg, shown } = banner;
-    if(code === null || msg === null) return;
-
-    return (
-        <MainContent bannerType={code} msg={msg} />
-    )
-}   
-

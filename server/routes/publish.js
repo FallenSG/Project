@@ -6,9 +6,9 @@ const { User } = require('../models/user');
 
 const { Direct, renderType } = require('../routePlan');
 const { renderFilePath } = Direct(path="pubish");
-const { auth } = require('../middleware/authHandler');
+const { auth, authorAuth } = require('../middleware/authHandler');
 
-const { createBook, modifyBook } = require('../controller/createBook');
+const { createBook, modifyBook } = require('../controller/bookHandler');
 const idCheck = require('../middleware/idCheck');
 const { ChapCreate, OpenChap } = require('../controller/chapHandler');
 
@@ -25,7 +25,7 @@ const upload = multer({
     }
 });
 
-// router.use(auth);
+router.use(auth);
 
 router.get('/', async(req, res) => {
     res[renderType](renderFilePath);
@@ -107,9 +107,9 @@ router.get('/api/:id', idCheck, async(req, res) => {
 
 router.post('/create', upload.single('bookCover'), createBook);
 
-router.post('/modify/:id', idCheck, upload.single('bookCover'), modifyBook);
+router.post('/modify/:id', idCheck, authorAuth, upload.single('bookCover'), modifyBook);
 
-router.post('/chapter/create/:id', idCheck, ChapCreate)
+router.post('/chapter/create/:id',idCheck, authorAuth, ChapCreate)
 
 router.get('/chapter/:id', OpenChap);
 

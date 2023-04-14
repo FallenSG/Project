@@ -27,6 +27,8 @@ export function PageLayout({ url, nav='normal', elem, gridElem, failureMsg, load
                     setInfo({status: 200, data: resp.data});
                 else if(resp.status === 204) 
                     setInfo({ status: 204, data: resp.message });
+                else 
+                    console.log("Other type of request", resp.status);
             })
             .catch((err) => {
                 setInfo({ status: 400, data: err.response.data.data })
