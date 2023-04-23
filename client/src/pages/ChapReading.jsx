@@ -285,7 +285,7 @@ function Comp(){
 
     return (
         <Grid container sx={{ justifyContent: "center", backgroundColor: `${themeSelection[readStyle.theme][1]}`, pb: "3%" }}>
-            <Grid item xs={7} sx={{ border: "#726b57 ridge", borderWidth: "0 1px" }}>
+            <Grid item xs={12} sm={10} md={8} sx={{ border: "#726b57 ridge", borderWidth: "0 1px" }}>
                 <Typography variant="body1" 
                     sx={{ 
                         fontSize: `${readStyle.fontSize}px`, 
