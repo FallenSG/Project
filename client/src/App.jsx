@@ -17,6 +17,7 @@ import PublishView from './pages/PublishView';
 import PublishChapCreate from './pages/PublishChapCreate';
 import PublishModify from './pages/PublishModify';
 import PublishCreate from './pages/PublishCreate';
+import ChapReading from './pages/ChapReading';
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
         <Route exact path="/author/:authorid" element={<Author />} />
         <Route exact path="/genre/:genreid" element={<Genre />} />
         <Route exact path="/book/:bookid" element={<BookID />} />
+        <Route exact path="/chapter/:chapId" element={<ChapReading />} />
         <Route exact path="/library" element={<Library />} />
         <Route exact path="/ranking/:rankType" element={<Ranking />} />
         <Route exact path="/sample" element={<Sample />} />

@@ -19,7 +19,7 @@ module.exports = {
     authorAuth: async function(req, res, next){
         const id = new ObjectId(req.params.id)
         const data = await User.findOne({ _id: req.user._id, book_id: id })
-        
+
         if(data) return next();
         return res.status(403).send("Unauthorized Access");
     }

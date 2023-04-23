@@ -25,7 +25,7 @@ const upload = multer({
     }
 });
 
-router.use(auth);
+// router.use(auth);
 
 router.get('/', async(req, res) => {
     res[renderType](renderFilePath);
@@ -51,12 +51,6 @@ router.get('/api', async(req, res) => {
     ])
         .then((data) => res.send(data[0]))
         .catch((err) => console.log(err)) //logger
-    // res.send({ book_id : [
-    //     { "_id": "63d2648d373f7fea3fa9d387", "title": "Sample", "img": "/bookCover/defCover", "totalRating": 0, "ratingCount": 0, "chapCount": 0 },
-    //     { "_id": "63d35c783fd90caed291b9d9", "title": "Sample2kj vkjfjjsfkjd jkfgjkjfgjgfjgfkgkjrj djfs js f[e jj jgfjj fpke fpperpfd ep jrp trj jkrprk prtp pprfkfjlggf;'", "img": "/bookCover/defCover", "totalRating": 0, "ratingCount": 0, "chapCount": 0 },
-    //     { "_id": "63d35cc990ba93cfd1031f57", "title": "Sample3", "img": "/bookCover/defCover", "totalRating": 0, "ratingCount": 0, "chapCount": 0 },
-    //     { "_id": "63d35d0490ba93cfd1031f66", "title": "Sample5", "img": "/bookCover/defCover", "totalRating": 0, "ratingCount": 0, "chapCount": 0 }
-    // ]})
 })
 
 router.get('/api/:id', idCheck, async(req, res) => {
@@ -80,37 +74,24 @@ router.get('/api/:id', idCheck, async(req, res) => {
     ])
         .then((books) => res.status(200).send(books[0]))
         .catch((err) => res.send("Oops!! It seems an error happened"))
-    // res.send({
-    //     "_id": {
-    //         "$oid": "63b12ba67aa2688cedf11fcc"
-    //     },
-    //     "username": "fallen",
-    //     "book_id": {
-    //         "_id": {
-    //             "$oid": "63d2648d373f7fea3fa9d387"
-    //         },
-    //         "title": "Sample",
-    //         "genre": [
-    //             "Fantasy"
-    //         ],
-    //         "img": "/bookCover/defCover",
-    //         "publish": [],
-    //         "draft": [
-    //             {path: "/sampleId_chpter4", date: 1677323603870},
-    //             {path: "/sampleId_chpter3", date: 1676323593860},
-    //             {path: "/sampleId_chpter2", date: 1675323583856},
-    //             {path: "/sampleId_chpter1", date: 1674323573850}
-    //         ]
-    //     }
-    // })
 })
 
+router.get('/list', async (req, res) => res[renderType](renderFilePath));
+
+router.get('/view/:id', async (req, res) => res[renderType](renderFilePath));
+
 router.post('/create', upload.single('bookCover'), createBook);
+router.get('/create', async(req, res) => res[renderType](renderFilePath));
 
 router.post('/modify/:id', idCheck, authorAuth, upload.single('bookCover'), modifyBook);
+router.get('/modify/:id', async (req, res) => res[renderType](renderFilePath));
 
-router.post('/chapter/create/:id',idCheck, authorAuth, ChapCreate)
+router.post('/chapter/create/:id', idCheck, authorAuth, ChapCreate)
+router.get('/chapter/create/:id', async (req, res) => res[renderType](renderFilePath));
 
-router.get('/chapter/:id', OpenChap);
+router.get('/chapter/api/:id', async(req, res) => {
+    console.log("Arrived here");
+    res.end();
+});
 
 module.exports = router;    

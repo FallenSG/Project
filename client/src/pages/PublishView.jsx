@@ -1,92 +1,13 @@
 import { Paper, Grid, Stack, 
         Typography, Box, Tabs, 
-        Tab, Button, Divider, Link, Chip
+        Tab, Chip
     } from '@mui/material'
-import { ReceiptLongOutlined } from '@mui/icons-material'
 import { useContext, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import { Context, PageLayout } from '../Components/PageLayout'
 import Path from '../Components/PubPath'
-
-
-function TabOut({ feed }){
-    if(!feed.length){
-        return (
-            <Stack 
-                direction="column" 
-                justifyContent="center" 
-                alignItems="center" 
-                spacing={3}
-                sx={{ color: "rgb(18 18 23 / 60%)" }}
-            >
-                <ReceiptLongOutlined sx={{ height: "125px", width: "125px" }} />
-                <Typography>No Chapters Found</Typography>
-                
-                <Button variant="contained">Create Now</Button>
-                <Button variant="outlined">One Click Import</Button>
-            </Stack>
-        )
-    }
-
-    return (
-        <Stack direction="column">
-            { feed.map((book, i) => {
-                console.log(i, book);
-                const chapter = book.path.split('_')[1];
-                const DateOup = new Date(book.date)
-                
-                const date = DateOup.toDateString().split(" ").splice(1).join(" ")
-                const time = DateOup.toTimeString().split(" ")[0].split(":")
-
-                return (
-                    <>
-                        <div 
-                            id={book.path} 
-                            style={{ 
-                                display: "flex", 
-                                justifyContent: "space-between",
-                                alignItems: "baseline",
-                                margin: "7px" 
-                            }}
-                        >
-                            <Link 
-                                underline="hover" 
-                                href={chapter} 
-                                sx={{ 
-                                    color: "rgb(26 26 30 / 78%)",
-                                    fontSize:"21px",
-                                    lineHeight: "22px",
-                                    fontWeight: "550",
-                                    textTransform: "capitalize",
-                                    fontVariantCaps: "petite-caps",
-                                    ml: "5px"
-                                }}
-                            >
-                                {chapter}
-                            </Link>
-
-                            <Typography
-                                sx={{ 
-                                    color: "rgb(18 18 23 / 60%)", 
-                                    letterSpacing: "0.5px",
-                                    textTransform: "lowercase",
-                                    fontSize: {xs: "14px", md: "17px"},
-                                    fontWeight: "600",
-                                    lineHeight: "18px",
-                                    fontVariantCaps: "small-caps",
-                                    mr: "10px"
-                                }}
-                            >{`${time[0]}:${time[1]} ${date}`}
-                            </Typography>
-                        </div>
-                        <Divider />
-                    </>
-                )
-            }) }
-        </Stack>
-    )
-}
+import ChapList from '../Components/ChapList'
 
 function TabSection() {
     const feed = useContext(Context).book_id;
@@ -103,7 +24,7 @@ function TabSection() {
                 {...other}
             >
                 {value === index && (
-                    <Box sx={{ p: 3, overflow: "hidden" }}>
+                    <Box sx={{ p: "12px 24px", overflow: "hidden" }}>
                         {children}
                     </Box>
                 )}
@@ -141,10 +62,10 @@ function TabSection() {
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-                <TabOut feed={feed.draft}/>
+                <ChapList feed={feed.draft} type="author" />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <TabOut feed={feed.publish}/>
+                <ChapList feed={feed.publish} type="author" />
             </TabPanel>
         </Box>
     )

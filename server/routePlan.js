@@ -2,7 +2,7 @@ const path = require('path')
 const renderPath = path.join(__dirname, '../client/build/index.html')
 
 const Directory = {
-    //reference_name: [route, routeDefLoc, renderPugFile]
+    //reference_name: [route, routeDefLoc]
     'index': ['/', './index'],
     'search': ['/search', './search'],
     'signIn': ['/sign_in', './sign_in'],
@@ -18,7 +18,8 @@ const Directory = {
     'reset': ['/reset-password', './reset'],
     'sample': ['/sample', './sample'],
     'publish': ['/publish', './publish'],
-    'review': ['/review', './review']
+    'review': ['/review', './review'],
+    'chapter': ['/chapter', './chapter']
 }
 
 

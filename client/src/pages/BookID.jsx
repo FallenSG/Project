@@ -10,7 +10,7 @@ import { useContext, useState } from 'react'
 import { PageLayout, Context} from '../Components/PageLayout';
 import BookInfo from '../Components/BookIDComp'
 import Review from '../Components/Review'
-
+import ChapList from '../Components/ChapList'
 
 function Genre() {
     const { genre } = useContext(Context);
@@ -73,7 +73,7 @@ function About() {
 
     return (
         <Stack>
-            <Typography variant="h5" sx={{ marginBottom: '16px' }}>Synopsis</Typography>
+            <Typography variant="h5" sx={{ marginBottom: '16px', pt: 1 }}>Synopsis</Typography>
             
             <Typography 
                 variant="body1" 
@@ -108,14 +108,9 @@ function About() {
     )
 }
 
-function TableContent() {
-    // const { chapters } = useContext(Context);
-    return (
-        <p>Chapter List</p>
-    )
-}
 
 function TabSection() {
+    const feed = useContext(Context).publish;
     const TabPanel = (props) => {
         const { children, value, index, ...other } = props;
 
@@ -128,7 +123,7 @@ function TabSection() {
                 {...other}
             >
                 {value === index && (
-                    <Box sx={{ pt: 3, overflow: "hidden" }}>
+                    <Box sx={{ pt: "12px 24px", overflow: "hidden" }}>
                        {children}
                     </Box>
                 )}
@@ -169,7 +164,7 @@ function TabSection() {
                 <About />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <TableContent />
+                <ChapList feed={feed} />
             </TabPanel>
         </Box>
     )

@@ -56,8 +56,9 @@ function ListNav(){
 }
 
 function ChapCreate({ val, path }){
-    const handleClick = () => {
-        axios.post(path, { ...val })
+    const handleClick = (event) => {
+        const query = event.target.id
+        axios.post(`${path}?q=${query}`, { ...val })
             .then(data => {
                 console.log("done");
             })
@@ -66,7 +67,8 @@ function ChapCreate({ val, path }){
 
     return (
         <Stack direction="row" spacing={2}>
-            <Button 
+            <Button
+                id="draft"
                 variant="contained" 
                 onClick={handleClick}
                 startIcon={<Bookmark />}
@@ -75,8 +77,9 @@ function ChapCreate({ val, path }){
             </Button>
 
             <Button 
+                id="publish"
                 variant="contained" 
-                onClick={() => console.log(val)} 
+                onClick={handleClick} 
                 startIcon={<Check />}
             >
                 Publish Chapter

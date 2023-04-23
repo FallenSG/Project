@@ -12,22 +12,22 @@ router.post('/', async(req, res) => {
 })
 module.exports = router;
 
-// fetch('/review/addItem', {
+// fetch('/sign_in', {
 //     method: 'POST',
 //     body: JSON.stringify({
-//         rating: 2,
-//         comment: "sample review",
-//         id: "63d35cc990ba93cfd1031f57"
+//         username: "shivgarg413@gmail.com",
+//         password: "fallen"
 //     }),
 //     headers: {
 //         'Content-type': 'application/json; charset=UTF-8'
 //     }
 // }).then(data => console.log(data)).catch(err => console.log(err));
 
-// fetch('/publish/modify/63d35cc990ba93cfd1031f57', {
+// fetch('/publish/chapter/create/63d2648d373f7fea3fa9d387?q=draft', {
 //     method: 'POST',
 //     body: JSON.stringify({
-//         title: "Bad Actor Effect Shown"
+//         title: "Sample Chapter",
+//         content: <p>What is hope. A question which will change depending upon the person. Even if you are raised toghether definition of hope can change</p>
 //     }),
 //     headers: {
 //         'Content-type': 'application/json; charset=UTF-8'

@@ -10,14 +10,14 @@ const BookSchema = new Schema(
         summary: { type: String, required: true },
         isbn: { type: String },
         genre: [{ type: String, required: true }],
-        publish: [{
-            path: { type: String, required: true },
-            name: { type: String, required: true }
-        }],
-        draft: [{
-            path: { type: String, required: true },
-            name: { type: String, required: true }
-        }],
+        publish: [[
+            { type: String, required: true },
+            { type: String, required: true }
+        ]],
+        draft: [[
+            { type: String, required: true },
+            { type: String, required: true }
+        ]],
         img: { type: String },
         review_id: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
         pub_date: { type: Number, required: true },

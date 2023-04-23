@@ -2,10 +2,12 @@ import { Menu, MenuItem, IconButton, ListItemIcon, Avatar as AvatarBlock, Divide
 import { AccountCircleSharp, Logout, LibraryBooks, Create, LockReset } from '@mui/icons-material'
 import axios from 'axios'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function Avatar({ dispStyle }) {
     const nav = useNavigate();
+    const loc = useLocation().pathname;
+
     const [ user, setUser ] = useState({});
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -22,7 +24,10 @@ export default function Avatar({ dispStyle }) {
                     setAnchorEl(eventTarget);
                 }
             })
-            .catch(err => nav('/sign_in'));
+            .catch(err => {
+                console.log(loc);
+                nav(`/sign_in?fromUrl=${loc}`)
+            });
     };
 
     const handleMenuClose = () => {
