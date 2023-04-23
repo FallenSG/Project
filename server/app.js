@@ -8,7 +8,7 @@ const config = require('dotenv').config().parsed
 
 const secret = config.SECRET
 const host = config.HOST
-const port = config.PORT || 3000;
+const port = config.PORT || 8080;
 const db = config.DB
 
 const app = express()
@@ -37,10 +37,11 @@ app.use(passport.session());
 app.use('/', require('./routes/index'));
 
 //connect to mongodb
+mongoose.set('strictQuery', true);
 mongoose
-    .connect(db, { useNewUrlParser: true })
-    .then(() => console.log("Connected to MongoDB..."))
-    .catch((err) => console.log("Couldn't connect to MongoDB"));    
+.connect(db, { useNewUrlParser: true })
+.then(() => console.log("Connected to MongoDB..."))
+.catch((err) => console.log("Couldn't connect to MongoDB"));    
 
 
 app.listen(port, host, (err) => {
