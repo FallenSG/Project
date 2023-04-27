@@ -57,70 +57,107 @@ function Sidebar({readStyle, handleUpd}){
         alignItems: "center"
     };
 
-    return (
-        <Drawer
-            variant="persistent"
-            anchor='right'
-            open={readStyle.open}
-            onClose={toggleDrawer}
-            onOpen={() => handleUpd('open', true)}
-        >
-            <List sx={{ width: "35vw" }}>
-                <ListItem sx={{ flexDirection: "row", justifyContent: "flex-end" }}>
-                    <Close onClick={() => handleUpd('open', false)} sx={{ cursor: "pointer" }} />
-                </ListItem>
-                <ListItem sx={{ ...style }}>
-                    <Typography variant="h4" sx={{ p: "0 16px" }}>Display Options</Typography>
-                </ListItem>
-                <Divider />
-                <ListItem sx={{ ...style }}>
-                    <Typography variant="body1" sx={{ color: "#83848f" }}>Background</Typography>
-                </ListItem>
-                
-                <ListItem sx={{ 
-                    flexDirection: "row", 
-                    alignItems: "center", 
-                    justifyContent: "space-evenly",
-                    flexWrap: "wrap" 
-                }}>{
-                    themeSelection.map((val, i) => 
-                        <Button onClick={() => handleUpd('theme', i)}>{val[0]}</Button>
-                    )                  
-                }</ListItem>
-                <Divider />
-                <ListItem sx={{ ...style }}>
-                    <Typography variant="body1" sx={{ color: "#83848f" }}>Size</Typography>
-                    
-                    <Slider
-                        aria-label="Font Size"
-                        value={readStyle.fontSize}
-                        getAriaValueText={(value) => value}
-                        onChange={(event, value) => handleUpd('fontSize', value)}
-                        valueLabelDisplay="auto"
-                        step={2}
-                        marks
-                        min={14}
-                        max={36}
-                        sx={{ maxWidth: {xs: "40vw", sm: "20vw"} }}
-                    />
-                </ListItem>
-                <Divider />
-                <ListItem sx={{ ...style }}>
-                    <Typography variant="body1" sx={{ color: "#83848f" }}>Font Family</Typography>
+    const Content = (
+        <List sx={{ 
+            width: { xs: "100%", sm: "45vw", md: "35vw" },
+            height: { xs: "50vh", sm: "100vh" } 
+        }}>
+            <ListItem sx={{ flexDirection: "row", justifyContent: "flex-end" }}>
+                <Close onClick={() => handleUpd('open', false)} sx={{ cursor: "pointer" }} />
+            </ListItem>
+            <ListItem sx={{ ...style }}>
+                <Typography variant="h4" sx={{ p: "0 16px" }}>Display Options</Typography>
+            </ListItem>
+            <Divider />
+            <ListItem sx={{ ...style }}>
+                <Typography variant="body1" sx={{ color: "#83848f" }}>Background</Typography>
+            </ListItem>
 
-                    <FormControl>
-                        <RadioGroup
-                            value={readStyle.fontFamily}
-                            onChange={(event) => handleUpd('fontFamily', event.target.value)}
-                        >{
-                            fontFamilies.map((val) => 
-                                <FormControlLabel value={val} control={<Radio />} label={val}/>
+            <ListItem sx={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-evenly",
+                flexWrap: "wrap"
+            }}>
+                {/* {
+                    themeSelection.map((val, i) =>
+                        <Button onClick={() => handleUpd('theme', i)}>{val[0]}</Button>
+                    )
+                } */}
+                {
+                    themeSelection.map((val, i) => 
+                        <span key={i} id={i} 
+                            style={{ 
+                                width: "45px", 
+                                height: "45px", 
+                                borderRadius: "45px",
+                                backgroundColor: `${val[0]}`
+                            }}>
+                        </span>
+                    )
+                }
+            </ListItem>
+            <Divider />
+            <ListItem sx={{ ...style }}>
+                <Typography variant="body1" sx={{ color: "#83848f" }}>Size</Typography>
+
+                <Slider
+                    aria-label="Font Size"
+                    value={readStyle.fontSize}
+                    getAriaValueText={(value) => value}
+                    onChange={(event, value) => handleUpd('fontSize', value)}
+                    valueLabelDisplay="auto"
+                    step={2}
+                    marks
+                    min={14}
+                    max={36}
+                    sx={{ maxWidth: { xs: "80vw", sm: "40vw", md: "30vw" } }}
+                />
+            </ListItem>
+            <Divider />
+            <ListItem sx={{ ...style }}>
+                <Typography variant="body1" sx={{ color: "#83848f" }}>Font Family</Typography>
+
+                <FormControl>
+                    <RadioGroup
+                        value={readStyle.fontFamily}
+                        onChange={(event) => handleUpd('fontFamily', event.target.value)}
+                    >{
+                            fontFamilies.map((val) =>
+                                <FormControlLabel value={val} control={<Radio />} label={val} />
                             )
                         }</RadioGroup>
-                    </FormControl>
-                </ListItem>
-            </List>
-        </Drawer>
+                </FormControl>
+            </ListItem>
+        </List>
+    );
+
+    return (
+        <>
+            <Drawer
+                key="big-screen"
+                variant="persistent"
+                anchor='right'
+                open={readStyle.open}
+                onClose={toggleDrawer}
+                onOpen={() => handleUpd('open', true)}
+                sx={{ display: { xs: "none", sm: "block" } }}
+            >
+                {Content}
+            </Drawer>
+
+            <Drawer
+                key="small-screen"
+                variant="persistent"
+                anchor="bottom"
+                open={readStyle.open}
+                onClose={toggleDrawer}
+                onOpen={() => handleUpd('open', true)}
+                sx={{ display: { xs: "block", sm: "none" } }}
+            >
+                {Content}
+            </Drawer>
+        </>
     )
 }
 
@@ -306,9 +343,8 @@ function Comp(){
                 sx={{
                     display: "inline-flex",
                     justifyContent: "center",
-                    // flexDirection: { xs: "row", sm: "column" },
                     position: { xs: "sticky", sm: "fixed" },
-                    p: {xs: "1% 0", sm: "0 1%" },
+                    p: {xs: "2% 0", sm: "0 1%" },
                     top: 0,
                     bottom: 0,
                     right: 0,
