@@ -101,7 +101,7 @@ function Sidebar({readStyle, handleUpd}){
                         marks
                         min={14}
                         max={36}
-                        sx={{ maxWidth: "20vw" }}
+                        sx={{ maxWidth: {xs: "40vw", sm: "20vw"} }}
                     />
                 </ListItem>
                 <Divider />
@@ -285,7 +285,12 @@ function Comp(){
 
     return (
         <Grid container sx={{ justifyContent: "center", backgroundColor: `${themeSelection[readStyle.theme][1]}`, pb: "3%" }}>
-            <Grid item xs={12} sm={10} md={8} sx={{ border: "#726b57 ridge", borderWidth: "0 1px" }}>
+            <Grid item 
+                xs={12} sm={10} md={8} 
+                sx={{ 
+                    border: "#726b57 ridge", borderWidth: "0 1px", position: "realtive" 
+                }}
+            >
                 <Typography variant="body1" 
                     sx={{ 
                         fontSize: `${readStyle.fontSize}px`, 
@@ -297,23 +302,24 @@ function Comp(){
                     {text}
                 </Typography>
             </Grid>
-            <Stack spacing={2}
-                sx={{ 
-                    display: "inline-flex", 
-                    justifyContent: "center", 
-                    flexDirection: "column",
-                    position: "fixed",
-                    p: "0 1%",
+            <Stack spacing={2} direction={{ xs:"row", sm: "column" }}
+                sx={{
+                    display: "inline-flex",
+                    justifyContent: "center",
+                    // flexDirection: { xs: "row", sm: "column" },
+                    position: { xs: "sticky", sm: "fixed" },
+                    p: {xs: "1% 0", sm: "0 1%" },
                     top: 0,
+                    bottom: 0,
                     right: 0,
-                    height: "100%",
+                    height: { xs: "inherit", sm: "100%" },
+                    width: { xs: "100%", sm: "2%" },
                     backgroundColor: "#383535"
                 }}>
-                    <Settings onClick={() => handleUpd('open', true)} 
-                        sx={style}/>
-                    <FormatListNumbered onClick={() => {}}
-                        sx={style} />
-                    
+                <Settings onClick={() => handleUpd('open', true)}
+                    sx={style} />
+                <FormatListNumbered onClick={() => { }}
+                    sx={style} />
             </Stack>
             <Sidebar readStyle={readStyle} handleUpd={handleUpd} />
         </Grid>
