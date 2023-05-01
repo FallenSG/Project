@@ -1,5 +1,8 @@
-import { AppBar, Toolbar, styled, InputBase, InputAdornment, Paper, Stack, Link, IconButton } from '@mui/material'
-import { Explore, SearchSharp, LeaderboardSharp } from '@mui/icons-material'
+import { 
+  AppBar, Toolbar, styled, InputBase, 
+  InputAdornment, Paper, Stack, Link, IconButton 
+} from '@mui/material'
+import { Explore, SearchSharp } from '@mui/icons-material'
 import { useState } from 'react'
 
 import Avatar from './Avatar';
@@ -58,10 +61,6 @@ function Navbar() {
               <IconButton>
                 <Explore fontSize="large" sx={{ color: "white" }}/>
               </IconButton>
-
-              {/* <IconButton>
-                <LeaderboardSharp fontSize="large" sx={{ color: "white" }} />
-              </IconButton> */}
             </Stack>
 
           <Center onClick={() => setIsVisible((prev) => !prev)}> 

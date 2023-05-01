@@ -50,6 +50,7 @@ router.get('/:id', async(req, res) => {
 router.get('/api/:id', idCheck, async(req, res) => {
     const id = new ObjectId(req.params.id)
     const recd = req.query.recd === '1';
+    const userId = req.user?._id;
 
     Book.aggregate([
         { $match: { _id: id } },
@@ -82,6 +83,17 @@ router.get('/api/:id', idCheck, async(req, res) => {
                     { $match: { _id: { $ne: id } } }
                 ],
                 as: "recd"
+            }
+        },
+        {
+            $lookup: {
+                from: "users",
+                pipeline: [
+                    { $match: { _id: userId, "lib._id": id } },
+                    { $addFields: { present: true } },
+                    { $project: { present: 1, _id: 0 } },
+                ],
+                as: "inLib"
             }
         },
         {

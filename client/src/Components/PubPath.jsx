@@ -20,10 +20,11 @@ export default function Path() {
     const path = pathEst(useLocation().pathname);
 
     const title = useContext(Context)?.book_id?.title;
-    const _id = useContext(Context)?.book_id?._id;
 
     const title1 = useContext(Context)?.title
     const _id1 = useContext(Context)?._id;
+
+    const bookId = useLocation().pathname.split('/')[4]
 
     return (
         <Breadcrumbs sx={{ pl: "24px", display: { xs: "none", sm: 'block' }, fontVariantCaps: "petite-caps" }}>
@@ -46,12 +47,11 @@ export default function Path() {
                 </Breadcrumbs> : ""
             }
 
-            {path.length > 1 ? 
-                <Link href={`/publish/view/${_id}`}>{title}</Link> : ""
-            }
-
             {path[1] === 'create' ? 
-                <Typography color="black">Chapter Creation</Typography> : ""
+                <Breadcrumbs>
+                    <Link href={`/publish/view/${bookId}`} underline="hover" color="black">Book</Link>
+                    <Typography color="black">Chapter Creation</Typography> : ""
+                </Breadcrumbs> : ""
             }
 
             {path[1] === 'modify' ?

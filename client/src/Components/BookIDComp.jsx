@@ -10,6 +10,7 @@ import { useContext, useState } from 'react'
 import axios from 'axios';
 
 import { Context } from './PageLayout';
+import { useData } from '../customHooks/DataHandler'
 
 const dispStyle = {
     p: { xs: "4px 10px", sm: "8px 22px" }, 
@@ -31,18 +32,25 @@ function Path(){
 function Info(){
     const feed = useContext(Context);
     const [snackCont, setSnackCont] = useState({ open: false, msg: "Nothing to see here!!", severity: "warning" });
+    const AuthData = useData()
 
-    let rating = (feed.totalRating / feed.ratingCount).toFixed(2)
-    rating = rating > 0 ? rating : 0;
 
-    const handleAdd = () => {
-        axios.post('/library/addItem', { id: feed._id })
+    const handleAdd = async () => {
+        axios.post('/library/addItem', { id: feed._id }, { maxRedirects: 10 })
             .then(data => {
                 if (data.statusCode === 200)
                     setSnackCont({ open: true, msg: "Added...", severity: "success" })
             })
             .catch(err => setSnackCont({ open: true, msg: err.response.data, severity: "error" }));
     }
+
+
+    let rating = (feed.totalRating / feed.ratingCount).toFixed(2)
+    rating = rating > 0 ? rating : 0;
+
+    const inLib = feed.inLib.length ? true : false;
+
+    
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -85,11 +93,21 @@ function Info(){
 
                     <Button
                         type="submit"
-                        sx={{ borderRadius: "24px", ...dispStyle }}
-                        onClick={handleAdd}
+                        sx={{ borderRadius: "24px", ...dispStyle, display: inLib ? 'none': "flex" }}
+                        onClick={() => AuthData(handleAdd)}
                         variant="contained"
                         startIcon={<Add />}
                     >Add to Library</Button>
+
+                    <Button
+                        type="submit"
+                        sx={{ borderRadius: "24px", ...dispStyle, display: inLib ? 'flex' : "none" }}
+                        onClick={() => AuthData(handleAdd)}
+                        variant="contained"
+                        startIcon={<Add />}
+                    >In Library</Button>
+
+
                 </Stack>
 
                 <Button

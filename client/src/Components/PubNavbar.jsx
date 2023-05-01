@@ -1,6 +1,6 @@
-import { AppBar, Toolbar, IconButton, Stack, Button, Link } from "@mui/material"
-import { Settings, Add, Bookmark, Check } from '@mui/icons-material';
-import { useLocation } from "react-router-dom";
+import { AppBar, Toolbar, Stack, Button, Link, Typography } from "@mui/material"
+import { Settings, Add, Bookmark, Done } from '@mui/icons-material';
+import { useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import axios from 'axios'
 
@@ -56,11 +56,16 @@ function ListNav(){
 }
 
 function ChapCreate({ val, path }){
+    const bookId = useLocation().pathname.split('/')[4]
+    const navg = useNavigate()
+
     const handleClick = (event) => {
         const query = event.target.id
         axios.post(`${path}?q=${query}`, { ...val })
             .then(data => {
                 console.log("done");
+                navg(`/publish/view/${bookId}`)
+
             })
             .catch(err => {});
     }
@@ -73,16 +78,28 @@ function ChapCreate({ val, path }){
                 onClick={handleClick}
                 startIcon={<Bookmark />}
             >
-                Save Draft
+                <Typography 
+                    id="draft"
+                    variant="button"
+                    sx={{ display: { xs: "none", sm: "block" } }}
+                >
+                    Save Draft
+                </Typography>
             </Button>
 
             <Button 
                 id="publish"
                 variant="contained" 
                 onClick={handleClick} 
-                startIcon={<Check />}
+                startIcon={<Done />}
             >
-                Publish Chapter
+                <Typography
+                    id="publish"
+                    variant="button"
+                    sx={{ display: { xs: "none", sm: "block" } }}
+                >
+                    Publish Chapter
+                </Typography>
             </Button>
         </Stack>
     )

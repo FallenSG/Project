@@ -5,6 +5,7 @@ import axios from 'axios'
 import Navbar from './Navbar'
 import PubNavbar from './PubNavbar'
 import AppFormNav from './AppFormNav'
+import ReadingNav from './ReadingNav'
 import Loading from './Loading'
 
 export const Context = createContext({});
@@ -13,7 +14,8 @@ const NavType = {
     'none': <></>,
     'normal': <Navbar />,
     'publish': <PubNavbar />,
-    'form': <AppFormNav />
+    'form': <AppFormNav />,
+    'read': <ReadingNav />
 };
 
 
@@ -64,13 +66,16 @@ export function PageLayout({ url, nav='normal', elem, gridElem, failureMsg, load
     )
 }
 
-export function PageLayoutOverload({ nav = 'normal', elem, gridElem, columns = 12, gridXs = 10 }){
+export function PageLayoutOverload({ nav = 'normal', elem, gridElem, contextInfo, columns = 12, gridXs = 10 }){
     return (
-        <Grid container columns={columns} sx={{ justifyContent: 'center' }}>
-            <Grid item xs={columns}> {NavType[nav]} </Grid>
-            <Grid item xs={columns}> {elem} </Grid>
-            <Grid item xs={gridXs}> {gridElem} </Grid>
-        </Grid>
+        <Context.Provider value={contextInfo?.data}>
+            <Grid container columns={columns} sx={{ justifyContent: 'center' }}>
+                <Grid item xs={columns}> {NavType[nav]} </Grid>
+                <Grid item xs={columns}> {elem} </Grid>
+                <Grid item xs={gridXs}> {gridElem} </Grid>
+            </Grid>
+        </Context.Provider>
+
     )
 }
 

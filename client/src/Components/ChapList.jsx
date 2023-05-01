@@ -62,6 +62,7 @@ function Comp({ feed }){
                                 href={`/chapter/${chap[1]}`}
                                 sx={{
                                     color: "rgb(26 26 30 / 78%)",
+                                    width: "70%",
                                     fontSize: "21px",
                                     lineHeight: "22px",
                                     fontWeight: "550",
@@ -75,6 +76,7 @@ function Comp({ feed }){
 
                             <Typography
                                 sx={{
+                                    display: { xs: "none", sm: "block" },
                                     color: "rgb(18 18 23 / 60%)",
                                     letterSpacing: "0.5px",
                                     textTransform: "lowercase",
@@ -119,7 +121,16 @@ export default function ChapList({ feed, type="reader" }){
 
     else if(!feed.length && type === "reader"){
         return (
-            <Typography variant="h3">
+            <Typography variant="h3"
+                sx={{  
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    p: "5%",
+                    color: "dimgrey",
+                    fontVariantCaps: "petite-caps"
+                }}
+            >
                 No Chapter Here.
             </Typography>
         )

@@ -21,6 +21,7 @@ function Genre() {
                     sx={{ backgroundColor: "rgb(235 21 81 / 12%)", color: "#eb1551", fontSize: "20px", fontVariantCaps: "small-caps", margin: "5px" }}
                     label={`#${elem}`} 
                     component="a" 
+                    key={elem}
                     href={`/genre/${elem}`} 
                     clickable 
                     size="medium"

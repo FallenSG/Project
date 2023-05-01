@@ -25,7 +25,6 @@ export default function Avatar({ dispStyle }) {
                 }
             })
             .catch(err => {
-                console.log(loc);
                 nav(`/sign_in?fromUrl=${loc}`)
             });
     };
