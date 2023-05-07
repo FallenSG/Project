@@ -25,7 +25,7 @@ const upload = multer({
     }
 });
 
-// router.use(auth);
+router.use(auth);
 
 router.get('/', async(req, res) => {
     res[renderType](renderFilePath);

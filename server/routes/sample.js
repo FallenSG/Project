@@ -12,12 +12,11 @@ router.post('/', async(req, res) => {
 })
 module.exports = router;
 
-// fetch('/sign_in', {
+// fetch('/library/storeProgress?' + new URLSearchParams({
+//         id: "63d2648d373f7fea3fa9d387",
+//         chapId: "63d2648d373f7fea3fa9d387"
+//     }), {
 //     method: 'POST',
-//     body: JSON.stringify({
-//         username: "shivgarg413@gmail.com",
-//         password: "fallen"
-//     }),
 //     headers: {
 //         'Content-type': 'application/json; charset=UTF-8'
 //     }
@@ -31,5 +30,12 @@ module.exports = router;
 //     }),
 //     headers: {
 //         'Content-type': 'application/json; charset=UTF-8'
+//     }
+// }).then(data => console.log(data)).catch(err => console.log(err));
+
+// fetch('/library/read/63d2648d373f7fea3fa9d387', {
+//     method: "GET",
+//     headers: {
+//         "Content-type": "application/json; charset=UTF-8"
 //     }
 // }).then(data => console.log(data)).catch(err => console.log(err));

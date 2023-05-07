@@ -1,20 +1,11 @@
-import { useState, useEffect } from 'react'
 import { Paper, Grid, TextField } from '@mui/material'
-import ReactQuill from 'react-quill';
+import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 
-import { PageLayoutOverload } from '../Components/PageLayout'
 import PubPath from '../Components/PubPath'
-import PubNavbar from '../Components/PubNavbar'
 
-function Comp({ setVal, val }) {
-    const [value, setValue] = useState(''); 
-    const [title, setTitle] = useState('');
 
-    useEffect(() => {
-        setVal({ title: title, content: value })
-    }, [value, title])
-
+export default function Editor({ setVal, val }) {
     const modules = {
         toolbar: [
             ['bold', 'italic', 'underline'],
@@ -34,12 +25,14 @@ function Comp({ setVal, val }) {
 
                 <Grid item xs={12} sx={{ mt: "10px" }}>
                     <TextField
-                        onChange={(event) => setTitle(event.target.value)}
+                        onChange={(event) => setVal(preVal => ({
+                            ...preVal, title: event.target.value
+                        }))}
+                        placeholder={val.title ? val.title : "Enter Chapter Title..."}
                         fullWidth
                         variant="outlined"
                         size="small"
                         autoComplete='false'
-                        placeholder="Enter Chapter Title..."
                     />
                 </Grid>
                 <Grid item xs={13}>
@@ -47,25 +40,14 @@ function Comp({ setVal, val }) {
                         theme="snow"
                         modules={modules}
                         placeholder="Compose an epic...."
-                        value={value}
-                        onChange={setValue} />
+                        value={val.content}
+                        onChange={(newContent) => setVal(preVal => ({
+                            ...preVal, content: newContent
+                        }))} 
+                    />
                 </Grid>
             </Grid>
         </Paper>
     )
 
-}
-
-export default function PublishChapCreate() {
-    const [chapVal, setChapVal] = useState({ title: "", content: "" })
-
-    return (
-        <PageLayoutOverload
-            nav="none"
-            elem={<PubNavbar val={chapVal} />}
-            gridElem={<Comp setVal={setChapVal} val={chapVal} />}
-            columns={16}
-            gridXs={15}
-        />
-    )
 }

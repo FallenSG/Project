@@ -14,7 +14,7 @@ import Ranking from './pages/Ranking'
 import Reset from './pages/Reset'
 import PublishList from './pages/PublishList';
 import PublishView from './pages/PublishView';
-import PublishChapCreate from './pages/PublishChapCreate';
+import { PublishChapCreate, PublishChapEdit } from './pages/PublishChapter'
 import PublishModify from './pages/PublishModify';
 import PublishCreate from './pages/PublishCreate';
 import ChapReading from './pages/ChapReading';
@@ -42,6 +42,7 @@ export default function App() {
         <Route exact path="/publish/modify/:bookId" element={<PublishModify />} />
         <Route exact path="/publish/create" element={<PublishCreate />} />
         <Route exact path="/publish/chapter/create/:bookId" element={<PublishChapCreate />} />
+        <Route exact path="/publish/chapter/edit/:chapId" element={<PublishChapEdit />} />
       </Routes>
     </Router>
   );

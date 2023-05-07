@@ -1,7 +1,5 @@
-import { Paper, Grid, Stack, 
-        Typography, Box, Tabs, 
-        Tab, Chip
-    } from '@mui/material'
+import { Paper, Grid, Stack, Typography, 
+    Box, Tabs, Tab, Chip } from '@mui/material'
 import { useContext, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 

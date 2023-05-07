@@ -55,30 +55,16 @@ function ListNav(){
     )
 }
 
-function ChapCreate({ val, path }){
-    const bookId = useLocation().pathname.split('/')[4]
-    const navg = useNavigate()
-
-    const handleClick = (event) => {
-        const query = event.target.id
-        axios.post(`${path}?q=${query}`, { ...val })
-            .then(data => {
-                console.log("done");
-                navg(`/publish/view/${bookId}`)
-
-            })
-            .catch(err => {});
-    }
-
+function Chapter({handleClick}){
     return (
         <Stack direction="row" spacing={2}>
             <Button
                 id="draft"
-                variant="contained" 
+                variant="contained"
                 onClick={handleClick}
                 startIcon={<Bookmark />}
             >
-                <Typography 
+                <Typography
                     id="draft"
                     variant="button"
                     sx={{ display: { xs: "none", sm: "block" } }}
@@ -87,10 +73,10 @@ function ChapCreate({ val, path }){
                 </Typography>
             </Button>
 
-            <Button 
+            <Button
                 id="publish"
-                variant="contained" 
-                onClick={handleClick} 
+                variant="contained"
+                onClick={handleClick}
                 startIcon={<Done />}
             >
                 <Typography
@@ -105,13 +91,46 @@ function ChapCreate({ val, path }){
     )
 }
 
-function ChapModify(){
+function ChapCreate({ val, path }){
+    const navg = useNavigate()
+
+    const handleClick = (event) => {
+        const query = event.target.id
+        if(!val.title && !val.content) return;
+
+        axios.post(`${path}?q=${query}`, { ...val })
+            .then(resp => {
+                const data = resp.data;
+                if(query === 'draft')
+                    navg(`/publish/chapter/edit/${data.chpId}`, { replace: true })
+                else if(query === 'publish')
+                    navg(`/chapter/${data.chpId}`)
+            })
+            .catch(err => {});
+    }
+
     return (
-        <Button 
-            variant="contained"
-        >
-            Save Changes
-        </Button>
+        <Chapter handleClick={handleClick}/>
+    )
+}
+
+function ChapModify({ val, path }){
+    const navg = useNavigate()
+
+    const handleClick = (event) => {
+        const query = event.target.id
+        if (!val.title && !val.content) return;
+
+        axios.post(`${path}?q=${query}`, { ...val })
+            .then(resp => {
+                const data = resp.data;
+                if (query === 'publish')
+                    navg(`/chapter/${data.chpId}`)
+            })
+            .catch(err => { });
+    }
+    return (
+        <Chapter handleClick={handleClick}/>
     )
 }
 
@@ -123,7 +142,7 @@ export default function PubNavbar({ val }) {
         'view': <ViewNav />,
         'list': <ListNav />,
         'chapter/create': <ChapCreate val={val} path={rawPath} />,
-        'chapter/modify': <ChapModify val={val} path={rawPath} />
+        'chapter/edit': <ChapModify val={val} path={rawPath} />
     }
     return (
         <AppBar position="sticky" sx={{ mb: "2%" }}>

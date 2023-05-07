@@ -3,11 +3,11 @@ import {
     Grid, Typography, Stack, Rating, Button 
 } from '@mui/material'
 import { AddCommentRounded } from '@mui/icons-material'
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { PageLayout, Context } from './PageLayout'
 import ReviewAdd from './ReviewAdd'
+import { useFetch } from '../customHooks/DataHandler'
 
 function ReviewBlock({ review }){
     const { user, rating, comment } = review;
@@ -38,21 +38,20 @@ function ReviewList({ reviews }){
     return (
         <Grid container sx={{ justifyContent: "center" }}>{
             reviews.map((review, i) => {
-                return <ReviewBlock review={review} />
+                return <ReviewBlock review={review} key={i} />
             })
         }</Grid>
     )
 }
 
-function Comp(){
-    const feed = useContext(Context)
+function Comp({ feed }){
     let rating = (feed.totalRating / feed.ratingCount).toFixed(2)
     rating = rating > 0 ? rating : 0;
 
     const [open, setOpen] = useState(false);
 
     return (
-        <Grid container sx={{ mt: 4 }}>
+        <Grid container sx={{ mt: 4, mb: "2%" }}>
             <Divider />
             <Grid item xs={14} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", pb: 2 }}>
                 <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
@@ -89,14 +88,9 @@ function Comp(){
 
 export default function Review(){
     const bookId = useLocation().pathname.split('/')[2];
+    const feed = useFetch(`/review/api/${bookId}`)?.data;
 
-    return (
-        <PageLayout
-            nav="none"
-            url={`/review/api/${bookId}`}
-            elem={<Comp />}
-            failureMsg="No Review For this book"
-            loading={false}
-        />
-    )
+    return <>{
+        feed ? <Comp feed={feed} /> : <></>
+    }</>
 }

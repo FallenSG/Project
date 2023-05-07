@@ -1,12 +1,10 @@
 import {
-    Box, Grid,
-    Breadcrumbs,
-    Snackbar, Alert,
-    Stack, Typography,
-    Rating, Link, Button
+    Box, Grid, Breadcrumbs, Snackbar, Alert,
+    Stack, Typography, Rating, Link, Button
 } from '@mui/material'
-import { Flag, Add } from '@mui/icons-material';
+import { Flag, Add, Check } from '@mui/icons-material';
 import { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { Context } from './PageLayout';
@@ -33,15 +31,33 @@ function Info(){
     const feed = useContext(Context);
     const [snackCont, setSnackCont] = useState({ open: false, msg: "Nothing to see here!!", severity: "warning" });
     const AuthData = useData()
+    const navg = useNavigate();
 
+    const handleRead = async () => {
+        axios.get(`/library/read/${feed._id}`)
+            .then((resp) => {
+                const data = resp.data['read'];
+                if(resp.status === 200 && data.length)
+                    navg(`/chapter/${data[1]}`)
+                else if (resp.status === 200)
+                    setSnackCont({ open: true, msg: "No More Chapter Available", severity: "warning" })
+            })
+            .catch(err => setSnackCont({ open: true, msg: "Error", severity: "error" }));
+    }
 
     const handleAdd = async () => {
-        axios.post('/library/addItem', { id: feed._id }, { maxRedirects: 10 })
+        axios.post('/library/addItem', { id: feed._id })
             .then(data => {
                 if (data.statusCode === 200)
                     setSnackCont({ open: true, msg: "Added...", severity: "success" })
             })
             .catch(err => setSnackCont({ open: true, msg: err.response.data, severity: "error" }));
+    }
+
+    const handleRemove = async() => {
+        axios.post('/library/removeItem', { id: feed._id })
+            .then(data => console.log(data))
+            .catch(err => console.log(err));
     }
 
 
@@ -82,42 +98,32 @@ function Info(){
                 </Stack>
             </Stack>
 
-            <div>
-                <Stack direction="row" spacing={1}>
-                    <Button
-                        type="submit"
-                        sx={{ borderRadius: "24px", ...dispStyle }}
-                        onClick={() => {}}
-                        variant="contained"
-                    >Read</Button>
-
-                    <Button
-                        type="submit"
-                        sx={{ borderRadius: "24px", ...dispStyle, display: inLib ? 'none': "flex" }}
-                        onClick={() => AuthData(handleAdd)}
-                        variant="contained"
-                        startIcon={<Add />}
-                    >Add to Library</Button>
-
-                    <Button
-                        type="submit"
-                        sx={{ borderRadius: "24px", ...dispStyle, display: inLib ? 'flex' : "none" }}
-                        onClick={() => AuthData(handleAdd)}
-                        variant="contained"
-                        startIcon={<Add />}
-                    >In Library</Button>
-
-
-                </Stack>
+            <Stack direction="row" spacing={1}>
+                <Button
+                    type="submit"
+                    sx={{ borderRadius: "24px", ...dispStyle }}
+                    onClick={() => {AuthData(handleRead)}}
+                    variant="contained"
+                >Read</Button>
 
                 <Button
-                    sx={{ fontSize: "14px", mt: "3%", color: "#83848f"}}
-                    onClick={() => {}}
-                    startIcon={<Flag />}
-                >
-                    Report Story
-                </Button>
-            </div>
+                    type="submit"
+                    sx={{ borderRadius: "24px", ...dispStyle, display: inLib ? 'none': "flex" }}
+                    onClick={() => AuthData(handleAdd)}
+                    variant="contained"
+                    startIcon={<Add />}
+                >Add to Library</Button>
+
+                <Button
+                    type="submit"
+                    sx={{ borderRadius: "24px", ...dispStyle, display: inLib ? 'flex' : "none" }}
+                    onClick={() => AuthData(handleRemove)}
+                    variant="contained"
+                    startIcon={<Check />}
+                >In Library</Button>
+
+
+            </Stack>
 
             <Snackbar
                 open={snackCont.open}

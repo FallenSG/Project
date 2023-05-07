@@ -78,7 +78,63 @@ router.post('/addItem', idCheck, async(req, res) => {
 })
 
 router.post('/removeItem', async(req, res) => {
+    const bookId = ObjectId(req.body.id);
 
+    User.updateOne({ _id: req.user._id, "lib._id": bookId }, {
+        $pull: { lib: { _id: bookId } }
+    })
+        .then((data) => {
+            res.status(200).send("Book Removed from Library");
+        })
+        .catch(err => {
+            res.end();
+        })
+})
+
+router.post('/storeProgress', idCheck, async(req, res) => {
+    const bookID = ObjectId(req.body.id);
+    const chap = req.body.chapId
+
+    User.updateOne({ _id: req.user._id, "lib._id": bookID },
+        { $set: { "lib.$.lastRead": chap } }
+    )
+        .then((data) => res.status(200).send("Progress Saved"))
+        .catch(() => res.end())
+})
+
+router.get('/read/:id', idCheck, async(req, res) => {
+    const book = ObjectId(req.params.id);
+
+    try {
+        const date = new Date().getTime();
+
+        let out = await User.aggregate([
+            { $match: { _id: req.user._id } },
+            { $unwind: "$lib" },
+            { $match: { "lib._id": book } },
+            { $project: { _id: 0, lastRead: "$lib.lastRead" } }
+        ])
+
+        const lastRead = out.length ? out[0].lastRead[0] : "0";
+
+        Book.aggregate([
+            { $match: { _id: book } },
+            { $unwind: "$publish" },
+            { $match: { "publish.1": { $gt: lastRead } } },
+            { $limit: 1 },
+            { $project: { _id: 0, read: "$publish" } }
+        ])
+            .then(async (data) => {
+                res.status(200).send(data[0])
+                await User.updateOne({ _id: req.user._id, "lib._id": book },
+                    { $set: { "lib.$.read": date } }
+                )
+            })
+            .catch(err => res.status(400).send("Error"));
+    } catch(err) {
+        //logger
+    }
+    
 })
 
 module.exports = router

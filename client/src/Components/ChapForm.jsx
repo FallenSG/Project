@@ -1,3 +1,5 @@
+//no real use is seen so file will be discarded
+
 import PropTypes from 'prop-types';
 import {
     Paper, Snackbar, Alert, Grid,

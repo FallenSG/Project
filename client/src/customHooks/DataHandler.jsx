@@ -20,7 +20,7 @@ export function useData() {
 }
 
 
-export function useFetch(url){
+export function useFetch(url, delayedOut=true, setData=null){
     const [info, setInfo] = useState({})
 
     useEffect(() => {
@@ -40,8 +40,13 @@ export function useFetch(url){
                 })
         }
         fetchData()
+    }, [url]);
 
-    }, [url])
+    useEffect(() => {
+        if (setData && info.status === 200) {
+            setData(info.data);
+        }
+    }, [info]);
 
-    return info;
+    return delayedOut ? info : {};
 }

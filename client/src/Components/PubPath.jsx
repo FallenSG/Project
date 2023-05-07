@@ -54,8 +54,11 @@ export default function Path() {
                 </Breadcrumbs> : ""
             }
 
-            {path[1] === 'modify' ?
-                <Typography color="black">Chapter Modification</Typography> : ""
+            {path[1] === 'edit' ?
+                <Breadcrumbs>
+                    <Link href={`/publish/view/${bookId}`} underline="hover" color="black">Book</Link>
+                    <Typography color="black">Chapter Edit</Typography> : ""
+                </Breadcrumbs> : ""
             }
 
         </Breadcrumbs>

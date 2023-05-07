@@ -49,6 +49,7 @@ function Comp({ feed }){
                 return (
                     <>
                         <div
+                            key={i}
                             id={chap[1]}
                             style={{
                                 display: "flex",
@@ -114,7 +115,6 @@ export default function ChapList({ feed, type="reader" }){
                 <Typography>No Chapters Found</Typography>
 
                 <Button variant="contained" >Create Now</Button>
-                <Button variant="outlined">One Click Import</Button>
             </Stack>
         )
     }

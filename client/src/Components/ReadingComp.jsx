@@ -1,4 +1,15 @@
+import PropTypes from 'prop-types';
+import {  
+    List, ListItem, ListItemButton, ListItemText, Drawer, 
+    ListSubheader, FormControl, Typography, Slider, Divider, 
+    Radio, RadioGroup, FormControlLabel
+} from '@mui/material'
+import { Close } from '@mui/icons-material'
+import { useLocation, useNavigate } from 'react-router-dom';
 
+import Loading from './Loading';
+
+import { useFetch } from '../customHooks/DataHandler';
 
 const fontFamilies = ['Adamina', 'Abhaya Libre', 'Anaheim', 'Anonymous Pro', 'Barlow Semi'];
 const themeSelection = [
@@ -32,20 +43,55 @@ const themeSelection = [
 
 ]
 
-function ReadingSetting(){
+function StyledDrawer({readStyle, handleUpd, children}){
+    const toggleDrawer = (event) => {
+        if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+
+        handleUpd({open: false});
+    };
+
+    return (
+        <>
+            <Drawer
+                key="big-screen"
+                variant="persistent"
+                anchor='right'
+                open={readStyle.open}
+                onClose={toggleDrawer}
+                sx={{ display: { xs: "none", sm: "block" } }}
+            >   
+                {children}
+            </Drawer>
+
+            <Drawer
+                key="small-screen"
+                variant="persistent"
+                anchor="bottom"
+                open={readStyle.open}
+                onClose={toggleDrawer}
+                sx={{ display: { xs: "block", sm: "none" } }}
+            >
+                {children}
+            </Drawer>
+        </>
+    )   
+}
+
+StyledDrawer.propTypes = {
+    children: PropTypes.node
+}
+
+
+function ReaderSetting({ readStyle, handleUpd }){
     const style = {
         flexDirection: "column",
         alignItems: "center"
     };
 
-    const Content = (
-        <List sx={{
-            width: { xs: "100%", sm: "45vw", md: "35vw" },
-            height: { xs: "50vh", sm: "100vh" }
-        }}>
-            <ListItem sx={{ flexDirection: "row", justifyContent: "flex-end" }}>
-                <Close onClick={() => handleUpd('open', false)} sx={{ cursor: "pointer" }} />
-            </ListItem>
+    return (
+        <>
             <ListItem sx={{ ...style }}>
                 <Typography variant="h4" sx={{ p: "0 16px" }}>Display Options</Typography>
             </ListItem>
@@ -63,7 +109,7 @@ function ReadingSetting(){
                 {
                     themeSelection.map((val, i) =>
                         <span key={i} id={i}
-                            onClick={() => handleUpd('theme', val)}
+                            onClick={() => handleUpd({theme: val})}
                             style={{
                                 width: "45px",
                                 height: "45px",
@@ -86,7 +132,7 @@ function ReadingSetting(){
                     aria-label="Font Size"
                     value={readStyle.fontSize}
                     getAriaValueText={(value) => value}
-                    onChange={(event, value) => handleUpd('fontSize', value)}
+                    onChange={(event, value) => handleUpd({fontSize: value})}
                     valueLabelDisplay="auto"
                     step={2}
                     marks
@@ -102,54 +148,66 @@ function ReadingSetting(){
                 <FormControl>
                     <RadioGroup
                         value={readStyle.fontFamily}
-                        onChange={(event) => handleUpd('fontFamily', event.target.value)}
+                        onChange={(event) => handleUpd({ fontFamily: event.target.value})}
                     >{
-                            fontFamilies.map((val) =>
-                                <FormControlLabel value={val} control={<Radio />} label={val} />
-                            )
-                        }</RadioGroup>
+                        fontFamilies.map((val) =>
+                            <FormControlLabel value={val} control={<Radio />} label={val} />
+                        )
+                    }</RadioGroup>
                 </FormControl>
             </ListItem>
-        </List>
-    );
-
-    return (
-        <>
-            <Drawer
-                key="big-screen"
-                variant="persistent"
-                anchor='right'
-                open={readStyle.open}
-                onClose={toggleDrawer}
-                sx={{ display: { xs: "none", sm: "block" } }}
-            >
-                {Content}
-            </Drawer>
-
-            <Drawer
-                key="small-screen"
-                variant="persistent"
-                anchor="bottom"
-                open={readStyle.open}
-                onClose={toggleDrawer}
-                sx={{ display: { xs: "block", sm: "none" } }}
-            >
-                {Content}
-            </Drawer>
         </>
-    )
+    );
 
 }
 
-export default function Sidebar({ readStyle, handleUpd }) {
-    const toggleDrawer = (event) => {
-        if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-            return;
-        }
+function Chapter({ print, UrlUpd }){
+    const chapId = useLocation().pathname.split('/')[2]
+    const book = chapId.split('_')[0];
+    const navg = useNavigate();
 
-        handleUpd('open', false);
-    };
+    const feed = useFetch(`/chapter/list/${book}`, print);
+    return (    
+        <>{
+            feed?.status === 200 ? 
+                feed.data.publish.map((chapter)  => (
+                    <>
+                    <ListItemButton
+                        key={chapter[1]}
+                        selected={chapter[1] === chapId}
+                        autoFocus={chapter[1] === chapId}
+                        onClick={() => {
+                            navg(`/chapter/${chapter[1]}`, { replace: true })
+                            UrlUpd(`/chapter/api/${chapter[1]}`);
+                        }}
+                    >
+                        <ListItemText>{chapter[0]}</ListItemText>
+                    </ListItemButton>
+                    <Divider />
+                    </>
+                )) : <Loading />
+        }</>
+    )
+}
 
-   
-    
+export default function Sidebar({ readStyle, handleUpd, UrlUpd }) {
+
+    return (
+        <StyledDrawer readStyle={readStyle} handleUpd={handleUpd}>
+            <List sx={{
+                width: { xs: "100%", sm: "45vw", md: "35vw" },
+                height: { xs: "50vh", sm: "100vh" }
+            }}>
+                <ListSubheader sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", pt: "10px" }}>
+                    <Close onClick={() => handleUpd({ open: false })} sx={{ cursor: "pointer" }} />
+                </ListSubheader>
+                
+                {
+                    readStyle.clicked === 'setting' ? 
+                        <ReaderSetting readStyle={readStyle} handleUpd={handleUpd} /> : 
+                        <Chapter print={readStyle.open} UrlUpd={UrlUpd}/>
+                }
+            </List>
+        </StyledDrawer>
+    )
 }
