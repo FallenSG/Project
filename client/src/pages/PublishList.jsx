@@ -24,11 +24,11 @@ function Info({ feed }){
             justifyContent="space-between" 
             alignItems="center"
         >
-            <Grid item xs={2}><Typography variant="h6">{feed.title}</Typography></Grid>
-            <Grid item xs={1}><Typography>{feed.chapCount}</Typography></Grid>
+            <Grid item xs={3}><Typography variant="h6">{feed.title}</Typography></Grid>
             <Grid item xs={1}><Typography>{rating}</Typography></Grid>
             <Grid item xs={1}><Typography>{feed.ratingCount}</Typography></Grid>
-            <Grid item xs={2} sx={{ display: "flex", justifyContent: "space-evenly" }}>            
+            <Grid item xs={4} 
+                sx={{ display: "flex", justifyContent: "space-evenly", flexWrap: "wrap" }}>            
                 <Button
                     type="submit"
                     variant="contained"
@@ -84,13 +84,21 @@ function BookMenu({ anchorEl, setAnchorEl, id }){
     const nav = useNavigate();
     const isMenuOpen = Boolean(anchorEl);
     const [open, setOpen] = useState(false);
+    const [ dialogMsg, setDialogMsg ] = useState({
+        msg: "You cannot recover it once deleted!!\nDo you want to continue??",
+        type: true
+    })
 
     const handleClose = () => {
         setOpen(false);
     }
 
     const handleReq = () => {
-        axios.post(`/publish/delete/${id}`)
+        axios.post(`/publish/delete/${id}`);
+        setDialogMsg({
+            msg: "Your Request has been submitted.\nThe process will take some time. ",
+            type: false
+        })
     }
 
     return (
@@ -140,15 +148,14 @@ function BookMenu({ anchorEl, setAnchorEl, id }){
         >
             <DialogTitle>Are You Sure</DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    If Deleted you cannot recover it!!
-                    Do you want to continue??
-                </DialogContentText>
+                <DialogContentText>{dialogMsg.msg}</DialogContentText>
             </DialogContent>
-            <DialogActions>
+            <DialogActions>{
+                dialogMsg.type ? <> 
                     <Button onClick={handleClose}>Cancel</Button>
                     <Button onClick={handleReq}>Continue</Button>
-            </DialogActions>
+                </> : <Button onClick={handleClose}>Close</Button>
+            }</DialogActions>
         </Dialog>
         </>
 
@@ -169,13 +176,11 @@ function Comp(){
             >
                 <Grid item xs={4} sx={{ display:"flex", justifyContent: "center" }}><Typography>Name</Typography></Grid>
                 <Divider orientation='vertical' flexItem  />
-                <Grid item xs={1}><Typography>Chapter</Typography></Grid>
-                <Divider orientation='vertical' flexItem  />
                 <Grid item xs={1}><Typography>Rating</Typography></Grid>
                 <Divider orientation='vertical' flexItem  />
                 <Grid item xs={1}><Typography>Rating Count</Typography></Grid>
                 <Divider orientation='vertical' flexItem  />
-                <Grid item xs={2} sx={{ display:"flex", justifyContent: "center" }}><Typography>Operations</Typography></Grid>
+                <Grid item xs={3} sx={{ display:"flex", justifyContent: "center" }}><Typography>Operations</Typography></Grid>
             </Grid>
             <Divider />
             {bookList.map((book) => {

@@ -25,8 +25,8 @@ export function PublishChapEdit() {
     const chapId = useLocation().pathname.split('/')[4];
     const [chapVal, setChapVal] = useState({ title: "", content: "" })
 
-    useFetch(`/chapter/api/${chapId}`, false, (result) => {
-        setChapVal({ title: result?.bookInfo?.publish[0], content: result?.chapter })
+    useFetch(`/publish/chapter/api/${chapId}`, false, (result) => {
+        setChapVal({ title: result?.bookInfo[0], content: result?.chapter })
     })
 
     return (

@@ -6,7 +6,7 @@ const { Direct, renderType } = require('../routePlan');
 const { renderFilePath } = Direct(path = "book");
 const idCheck = require('../middleware/idCheck');
 
-const limit =  8;
+const limit =  10;
 const project = { title: 1, img: 1 };
 
 router.get('/', async(req, res) => {

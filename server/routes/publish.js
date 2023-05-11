@@ -8,9 +8,9 @@ const { Direct, renderType } = require('../routePlan');
 const { renderFilePath } = Direct(path="pubish");
 const { auth, authorAuth } = require('../middleware/authHandler');
 
-const { createBook, modifyBook } = require('../controller/bookHandler');
+const { createBook, modifyBook, deleteBook } = require('../controller/bookHandler');
 const idCheck = require('../middleware/idCheck');
-const { ChapCreate, OpenChap } = require('../controller/chapHandler');
+const { ChapCreate, ChapEdit, ChapFetch, ChapDelete } = require('../controller/chapHandler');
 
 const upload = multer({
     dest: 'public/bookCover/',
@@ -83,15 +83,18 @@ router.get('/view/:id', async (req, res) => res[renderType](renderFilePath));
 router.post('/create', upload.single('bookCover'), createBook);
 router.get('/create', async(req, res) => res[renderType](renderFilePath));
 
+router.post('/delete/:id', idCheck, authorAuth, deleteBook);
+
 router.post('/modify/:id', idCheck, authorAuth, upload.single('bookCover'), modifyBook);
 router.get('/modify/:id', async (req, res) => res[renderType](renderFilePath));
 
 router.post('/chapter/create/:id', idCheck, authorAuth, ChapCreate)
 router.get('/chapter/create/:id', async (req, res) => res[renderType](renderFilePath));
 
-router.get('/chapter/api/:id', async(req, res) => {
-    console.log("Arrived here");
-    res.end();
-});
+router.post('/chapter/edit/:id', ChapEdit);
+router.get('/chapter/edit/:id', async (req, res) => res[renderType](renderFilePath));
+
+router.post('/chapter/delete/:id', ChapDelete);
+router.get('/chapter/api/:id', ChapFetch);
 
 module.exports = router;    

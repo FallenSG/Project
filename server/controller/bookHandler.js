@@ -1,7 +1,12 @@
 const fs = require('fs');
+const path = require('path')
+const ObjectId = require('mongoose').Types.ObjectId;
 
 const { Book, JoiValidBook } = require('../models/book');
 const { User } = require('../models/user');
+const { Review } = require('../models/review');
+
+const Path = path.join(__dirname, '..', 'chapter');
 
 //isbn validatipon
 function checkISBN(isbn) {
@@ -123,4 +128,38 @@ async function modifyBook(req, res){
     }
 }
 
-module.exports = { createBook, modifyBook }
+async function deleteBook(req, res){
+    const id = ObjectId(req.params.id)
+    try{
+        const book = await Book.findOneAndDelete({ _id: id })
+
+        //removing id refrence from author's book_id 
+        await User.updateOne({ _id: req.user._id }, { $pull: { book_id: book._id } });
+        
+        //removing id from all users lib
+        await User.updateMany({},
+            { $pull: { lib: { _id: book._id } } },
+            { multi: true }
+        )
+        
+        //deleting reviews posted on book
+        await Review.deleteMany({ _id: { $in: book.review_id } })
+
+        //deleting chapters
+        const chapIds = [...book.publish, ...book.draft].map((subArr) => subArr[1])
+        chapIds.forEach((chapId) => {
+            const filePath = `${Path}}/${chapId}`; 
+            fs.unlinkSync(filePath);
+        });
+
+        if (book.img !== '/bookCover/defCover') {
+            fs.unlinkSync(`public/${book.img}`)
+        }
+
+        res.status(200).send("Request Completed");
+    } catch(err){
+        //console.log(err) very much need a logger here
+    }
+}
+
+module.exports = { createBook, modifyBook, deleteBook }

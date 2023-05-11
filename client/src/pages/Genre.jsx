@@ -7,8 +7,11 @@ import { PageLayoutOverload } from '../Components/PageLayout'
 function HighLight({ genre }){
     return (
         <Grid container sx={{ backgroundColor: "#f5f6fc", justifyContent: "center" }}>
-            <Grid item xs={10}>
-                <Typography variant="h3" sx={{ p:"5px 0" }}> {genre} </Typography>
+            <Grid item xs={12}>
+                <Typography 
+                    variant="h3" 
+                    sx={{ pt:"5px", pl:"8.5%", fontVariantCaps: "all-petite-caps" }}
+                > {`${genre} Collection`} </Typography>
             </Grid>
         </Grid>
     )

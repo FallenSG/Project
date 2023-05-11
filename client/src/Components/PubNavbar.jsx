@@ -118,14 +118,15 @@ function ChapModify({ val, path }){
     const navg = useNavigate()
 
     const handleClick = (event) => {
-        const query = event.target.id
+        const query = event.target.id;
+        const chapId = path.split('/')[4];
+        const bookId = chapId.split('_')[0];
         if (!val.title && !val.content) return;
 
-        axios.post(`${path}?q=${query}`, { ...val })
+        axios.post(`${path}?q=${query}`, { ...val, id: bookId })
             .then(resp => {
-                const data = resp.data;
                 if (query === 'publish')
-                    navg(`/chapter/${data.chpId}`)
+                    navg(`/chapter/${chapId}`)
             })
             .catch(err => { });
     }

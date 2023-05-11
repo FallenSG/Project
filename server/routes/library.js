@@ -125,10 +125,10 @@ router.get('/read/:id', idCheck, async(req, res) => {
             { $project: { _id: 0, read: "$publish" } }
         ])
             .then(async (data) => {
-                res.status(200).send(data[0])
                 await User.updateOne({ _id: req.user._id, "lib._id": book },
-                    { $set: { "lib.$.read": date } }
+                { $set: { "lib.$.read": date } }
                 )
+                res.status(200).send(data[0])
             })
             .catch(err => res.status(400).send("Error"));
     } catch(err) {

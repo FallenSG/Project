@@ -7,7 +7,10 @@ function HighLight({ RankingType }) {
     return (
         <Grid container sx={{ backgroundColor: "#f5f6fc", justifyContent: "center" }}>
             <Grid item xs={10}>
-                <Typography variant="h3" sx={{ p: "5px 0" }}> {RankingType} </Typography>
+                <Typography 
+                    variant="h3" 
+                    sx={{ p: "5px 0", fontVariantCaps: "all-petite-caps" }}
+                > {`${RankingType} Collection`} </Typography>
             </Grid>
         </Grid>
     )

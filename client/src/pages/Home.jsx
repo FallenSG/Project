@@ -26,7 +26,6 @@ function Feed({ catg, catgTitle, routeName = "" }) {
                         href={`/ranking/${routeName}`}
                         variant="body1"
                         underline="hover"
-                        // component="button"
                     >
                         More..
                     </Link>
@@ -37,7 +36,7 @@ function Feed({ catg, catgTitle, routeName = "" }) {
 
             <ImageList
                 sx={{ pt: '10px' }}
-                cols={4}
+                cols={5}
                 spacing={1}
             >
                 {bookCatg.map((book) => (
@@ -45,15 +44,20 @@ function Feed({ catg, catgTitle, routeName = "" }) {
                         <img
                             onClick={() => navg(`/book/${book._id}`)}
                             src={book.img}
-                            style={{ aspectRatio: "0.8", resize: "auto", objectFit: "scale-down" }}
+                            style={{ resize: "auto", objectFit: "scale-down" }}
                             alt='Not Found'
                             loading="lazy"
                         />
                         <ImageListItemBar
                             onClick={() => navg(`/book/${book._id}`)}
-                            sx={{ width: '20vw' }}
-                            title={book.title}
-                            position="below"
+                            title={
+                                <Typography
+                                    variant="subtitle2"
+                                    sx={{ 
+                                        cursor: "pointer" 
+                                    }}
+                                >{book.title}</Typography>
+                            }
                         />
                     </ImageListItem>
                 ))}

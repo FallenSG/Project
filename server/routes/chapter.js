@@ -20,7 +20,7 @@ router.get('/api/:id', async(req, res) => {
     const file = req.params.id;
     fs.readFile(`${Path}/${file}`, { encoding: "utf8" }, async (err, ChapData) => {
         if(err){ 
-            console.log(err); //logger
+            // console.log(err); //logger
             return res.send("Error Fetching Chapter Please try again");
         }
         

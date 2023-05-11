@@ -1,7 +1,7 @@
 import {
-    Stack, Link, Typography, Divider, Button, IconButton
+    Stack, Link, Typography, Divider, IconButton
 } from '@mui/material';
-import { ReceiptLongOutlined, Sort } from '@mui/icons-material'; 
+import { Sort } from '@mui/icons-material'; 
 import { useState } from 'react';
 
 function Comp({ feed }){
@@ -98,41 +98,22 @@ function Comp({ feed }){
     )
 }
 
-export default function ChapList({ feed, type="reader" }){
+export default function ChapList({ feed }){
     if(feed.length)
         return <Comp feed={feed} />
 
-    else if (!feed.length && type === "author") {
-        return (
-            <Stack
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-                spacing={3}
-                sx={{ color: "rgb(18 18 23 / 60%)" }}
-            >
-                <ReceiptLongOutlined sx={{ height: "125px", width: "125px" }} />
-                <Typography>No Chapters Found</Typography>
-
-                <Button variant="contained" >Create Now</Button>
-            </Stack>
-        )
-    }
-
-    else if(!feed.length && type === "reader"){
-        return (
-            <Typography variant="h3"
-                sx={{  
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    p: "5%",
-                    color: "dimgrey",
-                    fontVariantCaps: "petite-caps"
-                }}
-            >
-                No Chapter Here.
-            </Typography>
-        )
-    }
+    return (
+        <Typography variant="h3"
+            sx={{  
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                p: "5%",
+                color: "dimgrey",
+                fontVariantCaps: "petite-caps"
+            }}
+        >
+            No Chapter Here.
+        </Typography>
+    )
 }

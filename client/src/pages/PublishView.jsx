@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom'
 
 import { Context, PageLayout } from '../Components/PageLayout'
 import Path from '../Components/PubPath'
-import ChapList from '../Components/ChapList'
+import ChapList from '../Components/PubChapList'
 
 function TabSection() {
     const feed = useContext(Context).book_id;
@@ -60,10 +60,10 @@ function TabSection() {
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-                <ChapList feed={feed.draft} type="author" />
+                <ChapList feed={feed.draft} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <ChapList feed={feed.publish} type="author" />
+                <ChapList feed={feed.publish} type="publish" />
             </TabPanel>
         </Box>
     )

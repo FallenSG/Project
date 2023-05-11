@@ -1,5 +1,5 @@
 import PublishForm from '../Components/PublishForm'
-import { Box, TextField, Button } from "@mui/material";
+import { TextField } from "@mui/material";
 import { useLocation } from 'react-router-dom';
 import { useRef, useState } from 'react';
 
@@ -19,7 +19,7 @@ export default function CreateBook() {
         formData.append('bookCover', imgFile.file);
         formData.append('title', title.current.value);
         formData.append('isbn', isbn.current.value);
-        formData.append('genre', genre.current.value);
+        formData.append('genre', genre);
         formData.append('summary', summary.current.value);
 
         return formData;
@@ -49,7 +49,7 @@ export default function CreateBook() {
                 inputRef={isbn}
             />
 
-            <GenreField setGenreVal={setGenre} Req={true} />
+            <GenreField setGenreVal={setGenre}/>
             
             <TextField
                 name="summary"

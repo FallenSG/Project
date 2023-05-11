@@ -56,7 +56,7 @@ export default function Path() {
 
             {path[1] === 'edit' ?
                 <Breadcrumbs>
-                    <Link href={`/publish/view/${bookId}`} underline="hover" color="black">Book</Link>
+                    <Link href={`/publish/view/${bookId.split('_')[0]}`} underline="hover" color="black">Book</Link>
                     <Typography color="black">Chapter Edit</Typography> : ""
                 </Breadcrumbs> : ""
             }

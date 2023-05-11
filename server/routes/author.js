@@ -22,7 +22,7 @@ router.get('/api/:id', idCheck, async (req, res) => {
                 "let": { 'bid': "$book_id" },
                 "pipeline": [
                     { "$match": { "$expr": { "$in": ["$_id", "$$bid"] } } },
-                    { "$project": { _id: 1, img: 1, title: 1, summary: 1, totalRating: 1, ratingCount: 1 } }
+                    { "$project": { _id: 1, img: 1, title: 1, summary: 1, totalRating: 1, ratingCount: 1, popRank: 1, hotRank: 1, pub_date: 1 } }
                 ],
                 as: "book_id"
             }
