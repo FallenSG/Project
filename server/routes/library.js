@@ -28,6 +28,7 @@ router.get('/api', async(req, res) => {
         },
         {
             $addFields: {
+
                 "lib.title": { $arrayElemAt: ["$out.title", 0] },
                 "lib.img": { $arrayElemAt: ["$out.img", 0] }
             }
@@ -42,7 +43,7 @@ router.get('/api', async(req, res) => {
         })
         .catch((err) => { 
             // console.log(err) logger
-            res.send("Oops!! It seems an error happened");
+            res.send([]);
         })
     
 })
@@ -77,7 +78,7 @@ router.post('/addItem', idCheck, async(req, res) => {
         .catch(err => { res.status(409).send(err) });
 })
 
-router.post('/removeItem', async(req, res) => {
+router.post('/removeItem', idCheck, async(req, res) => {
     const bookId = ObjectId(req.body.id);
 
     User.updateOne({ _id: req.user._id, "lib._id": bookId }, {
@@ -115,7 +116,7 @@ router.get('/read/:id', idCheck, async(req, res) => {
             { $project: { _id: 0, lastRead: "$lib.lastRead" } }
         ])
 
-        const lastRead = out.length ? out[0].lastRead[0] : "0";
+        const lastRead = out.length ? out[0].lastRead : "0";
 
         Book.aggregate([
             { $match: { _id: book } },

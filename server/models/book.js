@@ -25,7 +25,7 @@ const BookSchema = new Schema(
         ratingCount: { type: Number, default: 0 },
         hotRank: { type: Number, default: 0 },
         popRank: { type: Number, default: 0 }
-    }
+    }   
 );
 
 const JoiValidBook = Joi.object({

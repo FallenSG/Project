@@ -16,7 +16,7 @@ export default function ReadingNav(){
     const data = useContext(Context)?.bookInfo;
 
     return (
-        <AppBar position="sticky">
+        <AppBar position="fixed">
             <StyledToolbar>
                 <Link
                     variant="h6"
@@ -28,8 +28,19 @@ export default function ReadingNav(){
                     {'Project'}
                 </Link>
 
-                <Breadcrumbs sx={{ display: { sm: "block", xs: "none" }, color: "white" }}>
-                    <Link href={`/book/${data?._id}`} underline="hover" color="inherit">{ data?.title }</Link>
+                <Breadcrumbs 
+                    alignItems="flex-end"
+                    sx={{ display: { sm: "block", xs: "none" }, color: "white" }}>
+                    <Link 
+                        href={`/book/${data?._id}`} 
+                        underline="hover" 
+                        color="inherit"
+                        sx= {{ 
+                            fontVariantCaps: "all-petite-caps",
+                            fontSize: "20px",
+                            letterSpacing: "0.7px"
+
+                        }}>{ data?.title }</Link>
                     <Typography color="lightgrey">{data?.publish[0]}</Typography>
                 </Breadcrumbs>
             </StyledToolbar>

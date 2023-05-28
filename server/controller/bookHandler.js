@@ -44,7 +44,7 @@ async function createBook(req, res) {
         img: req.file ? req.file.path.substr(6) : '/bookCover/defCover',
         title: req.body.title.toLowerCase(),
         isbn: req.body.isbn,
-        genre: [ req.body.genre ],
+        genre: req.body.genre.split(','),
         author_id: req.user._id,
         summary: req.body.summary !== "" ? req.body.summary : "Summary need to be updated please check after sometime",
         pub_date: new Date().getTime() / 1000

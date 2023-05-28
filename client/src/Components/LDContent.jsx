@@ -6,10 +6,11 @@ import { Grid, Link, Typography, Button, Stack, Snackbar, Alert } from '@mui/mat
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 const dispStyle = {
-    fontSize: { xs: "16px", mt: "20px" },
-    fontWeight: "700",
+    fontSize: { xs: "16px", md: "20px" },
+    fontWeight: "500",
     color: "black",
-    cursor: "pointer"
+    cursor: "pointer",
+    fontVariantCaps: "all-petite-caps"
 }
 
 

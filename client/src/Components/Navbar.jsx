@@ -7,6 +7,7 @@ import { useState } from 'react'
 
 import Avatar from './Avatar';
 import SearchBar from './SearchBar'
+import ExploreMenu from './ExploreMenu';
 
 const dispStyle = {
   fullScreen: {
@@ -58,9 +59,7 @@ function Navbar() {
                 {'Project'}
               </Link>
 
-              <IconButton>
-                <Explore fontSize="large" sx={{ color: "white" }}/>
-              </IconButton>
+              <ExploreMenu />
             </Stack>
 
           <Center onClick={() => setIsVisible((prev) => !prev)}> 

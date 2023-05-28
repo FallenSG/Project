@@ -2,8 +2,8 @@ const router = require('express').Router()
 
 const { auth } = require('../middleware/authHandler');
 
-const { Direct, renderType } = require('../routePlan');
-const { renderFilePath, redirectUrl } = Direct();
+const { Direct } = require('../routePlan');
+const { redirectUrl } = Direct();
 
 router.use(auth);
 

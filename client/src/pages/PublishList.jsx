@@ -24,7 +24,7 @@ function Info({ feed }){
             justifyContent="space-between" 
             alignItems="center"
         >
-            <Grid item xs={3}><Typography variant="h6">{feed.title}</Typography></Grid>
+            <Grid item xs={3}><Typography variant="h6" sx={{ fontVariantCaps: "all-petite-caps" }}>{feed.title}</Typography></Grid>
             <Grid item xs={1}><Typography>{rating}</Typography></Grid>
             <Grid item xs={1}><Typography>{feed.ratingCount}</Typography></Grid>
             <Grid item xs={4} 
@@ -91,14 +91,19 @@ function BookMenu({ anchorEl, setAnchorEl, id }){
 
     const handleClose = () => {
         setOpen(false);
+        setAnchorEl(null);
     }
 
     const handleReq = () => {
-        axios.post(`/publish/delete/${id}`);
         setDialogMsg({
             msg: "Your Request has been submitted.\nThe process will take some time. ",
             type: false
         })
+        axios.post(`/publish/delete/${id}`)
+            .then((resp) => {
+                if (resp.status === 200)
+                    window.location.reload(false)
+            })
     }
 
     return (
@@ -163,7 +168,7 @@ function BookMenu({ anchorEl, setAnchorEl, id }){
 }
 
 function Comp(){
-    const bookList = useContext(Context).book_id;
+    const bookList = useContext(Context)?.book_id;
 
     return (
         <Paper sx={{ backgroundColor: "#f6f7fc" }}>
@@ -183,13 +188,25 @@ function Comp(){
                 <Grid item xs={3} sx={{ display:"flex", justifyContent: "center" }}><Typography>Operations</Typography></Grid>
             </Grid>
             <Divider />
-            {bookList.map((book) => {
+            {
+            bookList ? bookList.map((book) => {
                 return (<>
                     <BookTab feed={book}/>
                     <Divider />
                 </>)
                     
-            })}
+            }) : 
+                <Typography
+                    sx={{  
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        p: "5%",
+                        color: "dimgrey",
+                        fontVariantCaps: "petite-caps"
+                    }}
+                >Start your journey as author here</Typography>
+        }
         </Paper>
     )
 

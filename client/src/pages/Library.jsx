@@ -25,51 +25,70 @@ function BookList({ sortType }){
         setFeed((prev) => [...prev].sort(compareFnc))
     }, [sortType])
 
-    return (
-        <ImageList
-            sx={{ height: 'inherit', pt: '10px' }}
-            cols={6}
-            spacing={10}
-        >
-            {Feed.map((book) => (
-                <ImageListItem key={book._id}>
-                    <img
-                        onClick={() => navg(`/book/${book._id}`)}
-                        src={book.img}
-                        style={{ resize: "auto", objectFit: "scale-down" }}
-                        alt='Not Found'
-                        loading="lazy"
-                    />
-                    <ImageListItemBar
-                        title={
-                            <Typography
-                                onClick={() => navg(`/book/${book._id}`)}
-                                variant="subtitle2"
-                                sx={{ cursor: "pointer", display: { sm: "block", xs: "none" } }}
-                            >{book.title}</Typography>
-                        }
-                        actionIcon={
-                            <IconButton
-                                id={book._id}
-                                sx={{ color: '#ed424b' }}
-                                aria-label="Remove From Library"
-                                onClick={(event) => {
-                                    const id = event.currentTarget.id
-                                    axios.post(`/library/removeItem`, { id })
-                                        .then((resp) => {
-                                            if(resp.status === 200)
-                                                setFeed((prevFeed) => [...prevFeed].filter(book => book._id !== id))
-                                        })
-                                }}
-                            >
-                                <Delete fontSize="small"/>
-                            </IconButton>
-                        }
-                    />
-                </ImageListItem>
-            ))}
-        </ImageList>
-    )
+    if(Feed.length)
+        return (
+            <ImageList
+                sx={{ height: 'inherit', pt: '10px' }}
+                cols={6}
+                spacing={10}
+            >
+                {Feed.map((book) => (
+                    <ImageListItem key={book._id}>
+                        <img
+                            onClick={() => navg(`/book/${book._id}`)}
+                            src={book.img}
+                            style={{ resize: "auto", objectFit: "scale-down" }}
+                            alt='Not Found'
+                            loading="lazy"
+                        />
+                        <ImageListItemBar
+                            title={
+                                <Typography
+                                    onClick={() => navg(`/book/${book._id}`)}
+                                    variant="subtitle2"
+                                    sx={{ 
+                                        fontVariantCaps: "petite-caps", 
+                                        cursor: "pointer", 
+                                        display: { sm: "block", xs: "none" } 
+                                    }}
+                                >{book.title}</Typography>
+                            }
+                            actionIcon={
+                                <IconButton
+                                    id={book._id}
+                                    sx={{ color: '#ed424b' }}
+                                    aria-label="Remove From Library"
+                                    onClick={(event) => {
+                                        const id = event.currentTarget.id
+                                        axios.post(`/library/removeItem`, { id })
+                                            .then((resp) => {
+                                                if(resp.status === 200)
+                                                    setFeed((prevFeed) => [...prevFeed].filter(book => book._id !== id))
+                                            })
+                                    }}
+                                >
+                                    <Delete fontSize="small"/>
+                                </IconButton>
+                            }
+                        />
+                    </ImageListItem>
+                ))}
+            </ImageList>
+        )
+    else
+        return (
+            <Typography
+                variant="h3"
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    p: "5%",
+                    color: "dimgrey",
+                    fontVariantCaps: "petite-caps"
+                }}
+            >Nothing Yet to see here</Typography>
+        )
 }
 
 function Title({ data, setData }){

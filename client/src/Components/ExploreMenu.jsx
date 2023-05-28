@@ -1,13 +1,34 @@
-import { Menu, MenuItem, IconButton, Box } from '@mui/material'
+import { 
+    Menu, Stack, IconButton, Box, Button,
+    Grid, styled, Typography, Divider 
+} from '@mui/material'
 import { Explore } from '@mui/icons-material'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+
+const Genre = ["Urban", "Eastern", "Games", "Fantasy", "Sci-Fi", "Horror", "Sports", "Action", "War", "Realistic", "History", "Mystery", "Drama"];
+const CustDiv = styled('div')({
+    display: "table-row",
+    padding: "5px",
+    width: "100%"
+})
+
+const StyledButton = styled(Button)({
+    display: "table-cell",
+})
+
+const StyledText = styled(Typography)({
+    fontVariantCaps: "all-petite-caps",
+    display: "flex",
+    justifyContent: "center",
+    fontWeight: "500"
+})
+
 
 export default function ExploreMenu(){
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl);
 
-    const handleClick = () => {
+    const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     }
 
@@ -22,64 +43,63 @@ export default function ExploreMenu(){
             </IconButton>
             <Menu
                 anchorEl={anchorEl}
-                id="account-menu"
+                id="explore-menu"
                 open={open}
                 onClose={handleClose}
                 onClick={handleClose}
-                PaperProps={{
-                    elevation: 0,
-                    sx: {
-                        overflow: 'visible',
-                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                        mt: 1.5,
-                        '& .MuiAvatar-root': {
-                            width: 32,
-                            height: 32,
-                            ml: -0.5,
-                            mr: 1,
-                        },
-                        '&:before': {
-                            content: '""',
-                            display: 'block',
-                            position: 'absolute',
-                            top: 0,
-                            right: 14,
-                            width: 10,
-                            height: 10,
-                            bgcolor: 'background.paper',
-                            transform: 'translateY(-50%) rotate(45deg)',
-                            zIndex: 0,
-                        },
-                    },
-                }}
-                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem onClick={handleClose}>
-                    <Avatar /> Profile
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <Avatar /> My account
-                </MenuItem>
-                <Divider />
-                <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                        <PersonAdd fontSize="small" />
-                    </ListItemIcon>
-                    Add another account
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                        <Settings fontSize="small" />
-                    </ListItemIcon>
-                    Settings
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                        <Logout fontSize="small" />
-                    </ListItemIcon>
-                    Logout
-                </MenuItem>
+                <Grid container sx={{
+                    fontWeight: "400",
+                    fontSize: "18px",
+                    lineHeight: "1.5",
+                    letterSpacing: "1px",
+                    display: "flex",
+                    flexDirection: "row",
+                    flexWrap: "nowrap"
+                }}>
+                    <Grid item xs={6} sx={{ display: "table" }}>
+                        <CustDiv>
+                            <StyledButton></StyledButton>
+                            <StyledText variant="h5" sx={{ display: "table-cell" }}>Genre</StyledText>
+                            <StyledButton></StyledButton>
+
+                        </CustDiv>
+                        <CustDiv>
+                            <StyledButton href='/genre/Urban'>Urban</StyledButton>
+                            <StyledButton href='/genre/Eastern'>Eastern</StyledButton>
+                            <StyledButton href='/genre/Games'>Games</StyledButton>
+                        </CustDiv>
+                        <CustDiv>
+                            <StyledButton href='/genre/Fantasy'>Fantasy</StyledButton>
+                            <StyledButton href='/genre/Sci-fi'>Sci-fi</StyledButton>
+                            <StyledButton href='/genre/Horror'>Horror</StyledButton>
+                        </CustDiv>
+                        <CustDiv>
+                            <StyledButton href='/genre/Sports'>Sports</StyledButton>
+                            <StyledButton href='/genre/Action'>Action</StyledButton>
+                            <StyledButton href='/genre/War'>War</StyledButton>
+                        </CustDiv>
+                        <CustDiv>
+                            <StyledButton href='/genre/Realistic'>Realistic</StyledButton>
+                            <StyledButton href='/genre/History'>History</StyledButton>
+                            <StyledButton href='/genre/Mystery'>Mystery</StyledButton>
+                        </CustDiv>
+                        <CustDiv>
+                            <StyledButton href='/genre/Drama'>Drama</StyledButton>
+                        </CustDiv>
+                    </Grid>
+                    <Divider orientation="vertical" flexItem/>
+                    <Grid item xs={6}>
+                        <StyledText variant="h5">Ranking</StyledText>
+                        <Stack alignItems="center">
+                            <StyledButton href="/ranking/hot">Hot Ranking</StyledButton>
+                            <StyledButton href="/ranking/popular">Popular Ranking</StyledButton>
+                            <StyledButton href="/ranking/newest">Newest</StyledButton>
+                            <StyledButton href="/ranking/all">Highest Rated</StyledButton>
+                        </Stack>
+                    </Grid>
+                </Grid>
+
             </Menu>
         </Box>
     )

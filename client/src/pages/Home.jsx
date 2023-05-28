@@ -9,6 +9,10 @@ function Feed({ catg, catgTitle, routeName = "" }) {
     const navg = useNavigate();
     const bookCatg = useContext(Context)[0][catg];
 
+    const handleRedirect = (book) => {
+        window.scrollTo(0,0);
+        navg(`/book/${book}`);
+    }
     return (
         <>
             <Grid
@@ -42,19 +46,20 @@ function Feed({ catg, catgTitle, routeName = "" }) {
                 {bookCatg.map((book) => (
                     <ImageListItem key={book._id}>
                         <img
-                            onClick={() => navg(`/book/${book._id}`)}
+                            onClick={() => handleRedirect(book._id)}
                             src={book.img}
                             style={{ resize: "auto", objectFit: "scale-down" }}
                             alt='Not Found'
                             loading="lazy"
                         />
                         <ImageListItemBar
-                            onClick={() => navg(`/book/${book._id}`)}
+                            onClick={() => handleRedirect(book._id)}
                             title={
                                 <Typography
                                     variant="subtitle2"
                                     sx={{ 
-                                        cursor: "pointer" 
+                                        cursor: "pointer",
+                                        fontVariantCaps: "petite-caps" 
                                     }}
                                 >{book.title}</Typography>
                             }
